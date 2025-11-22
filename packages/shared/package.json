@@ -1,16 +1,26 @@
 {
-  "name": "@ai-stilist/api",
+  "name": "@ai-stilist/shared",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./src/index.ts"
     },
-    "./*": {
-      "types": "./dist/*.d.ts",
-      "default": "./src/*.ts"
+    "./services": {
+      "types": "./dist/services.schema.d.ts",
+      "default": "./src/services.schema.ts"
+    },
+    "./typeid": {
+      "types": "./dist/typeid.schema.d.ts",
+      "default": "./src/typeid.schema.ts"
+    },
+    "./constants": {
+      "types": "./dist/constants.d.ts",
+      "default": "./src/constants.ts"
     }
   },
-  "type": "module",
   "scripts": {
     "build": "tsdown",
     "typecheck": "tsc --noEmit",
@@ -25,14 +35,7 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "@orpc/server": "catalog:",
-    "@orpc/client": "catalog:",
-    "@orpc/openapi": "catalog:",
-    "@orpc/zod": "catalog:",
-    "hono": "catalog:",
     "zod": "catalog:",
-    "@ai-stilist/auth": "workspace:*",
-    "@ai-stilist/db": "workspace:*",
-    "@ai-stilist/shared": "workspace:*"
+    "typeid-js": "^1.0.1"
   }
 }

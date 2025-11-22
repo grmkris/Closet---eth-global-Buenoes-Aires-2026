@@ -3,12 +3,16 @@
   "type": "module",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./src/index.ts"
+      "types": "./dist/db.d.ts",
+      "default": "./src/db.ts"
     },
-    "./*": {
-      "types": "./dist/*.d.ts",
-      "default": "./src/*.ts"
+    "./schema/auth": {
+      "types": "./dist/schema/auth/index.d.ts",
+      "default": "./src/schema/auth/index.ts"
+    },
+    "./schema/auth/index": {
+      "types": "./dist/schema/auth/index.d.ts",
+      "default": "./src/schema/auth/index.ts"
     }
   },
   "scripts": {
@@ -17,7 +21,6 @@
     "lint": "ultracite check",
     "fix": "ultracite fix",
     "fix:unsafe": "ultracite fix --unsafe",
-    "format": "ultracite fix",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "db:generate": "drizzle-kit generate",
@@ -36,9 +39,11 @@
     "typescript": "^5"
   },
   "dependencies": {
+    "@ai-stilist/shared": "workspace:*",
+    "@ai-stilist/logger": "workspace:*",
     "drizzle-orm": "^0.44.2",
+    "drizzle-zod": "^0.7.0",
     "pg": "^8.14.1",
-    "dotenv": "catalog:",
     "zod": "catalog:"
   }
 }

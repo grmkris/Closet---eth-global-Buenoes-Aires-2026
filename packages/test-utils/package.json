@@ -12,9 +12,9 @@
   },
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "lint": "bun ultracite check",
-    "fix": "bun ultracite fix",
-    "fix:unsafe": "bun ultracite fix --unsafe"
+    "lint": "ultracite check",
+    "fix": "ultracite fix",
+    "fix:unsafe": "ultracite fix --unsafe"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.3.10",

@@ -16,8 +16,7 @@
     "typecheck": "tsc --noEmit",
     "lint": "ultracite check",
     "fix": "ultracite fix",
-    "fix:unsafe": "ultracite fix --unsafe",
-    "format": "ultracite fix"
+    "fix:unsafe": "ultracite fix --unsafe"
   },
   "devDependencies": {
     "tsdown": "catalog:"
@@ -27,9 +26,9 @@
   },
   "dependencies": {
     "better-auth": "catalog:",
-    "dotenv": "catalog:",
     "zod": "catalog:",
     "drizzle-orm": "^0.44.2",
-    "@ai-stilist/db": "workspace:*"
+    "@ai-stilist/db": "workspace:*",
+    "@ai-stilist/shared": "workspace:*"
   }
 }

@@ -17,7 +17,8 @@
       "zod": "^4.1.11",
       "typescript": "^5.8.2",
       "tsdown": "^0.15.5",
-      "@orpc/client": "^1.10.0"
+      "@orpc/client": "^1.10.0",
+      "typeid-js": "^1.0.1"
     }
   },
   "scripts": {
