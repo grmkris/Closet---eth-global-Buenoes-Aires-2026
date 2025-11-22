@@ -6,15 +6,17 @@ export const envSchema = z.object({
 	NODE_ENV: z
 		.enum(["development", "test", "production"])
 		.default("development"),
-	APP_ENV: Environment,
+	APP_ENV: Environment.default("dev"),
 	PORT: z.coerce.number().default(SERVER_CONFIG.DEFAULT_PORT),
 	DATABASE_URL: z.string(),
 	BETTER_AUTH_SECRET: z.string(),
+	LOG_LEVEL: z.string(),
 
 	// MinIO / S3 (credentials only, URLs come from SERVICE_URLS)
-	MINIO_ACCESS_KEY: z.string(),
-	MINIO_SECRET_KEY: z.string(),
-	MINIO_BUCKET_NAME: z.string(),
+	// Optional in test environment (uses mock S3)
+	MINIO_ACCESS_KEY: z.string().optional(),
+	MINIO_SECRET_KEY: z.string().optional(),
+	MINIO_BUCKET_NAME: z.string().optional(),
 
 	// AI Providers
 	GEMINI_API_KEY: z.string().optional(),

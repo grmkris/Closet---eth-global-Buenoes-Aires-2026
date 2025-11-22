@@ -17,3 +17,6 @@ const requireAuth = o.middleware(({ context, next }) => {
 });
 
 export const protectedProcedure = publicProcedure.use(requireAuth);
+
+// Export routers for testing and reuse
+export { wardrobeRouter } from "./routers/wardrobe.router";

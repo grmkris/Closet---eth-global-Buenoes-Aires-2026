@@ -25,7 +25,9 @@
     "@ai-stilist/ai": "workspace:*",
     "@ai-stilist/db": "workspace:*",
     "@ai-stilist/logger": "workspace:*",
+    "@ai-stilist/redis": "workspace:*",
     "@ai-stilist/shared": "workspace:*",
+    "@ai-stilist/storage": "workspace:*",
     "ai": "^5.0.93",
     "zod": "catalog:"
   }

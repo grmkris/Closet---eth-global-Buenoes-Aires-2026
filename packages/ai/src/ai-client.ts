@@ -42,6 +42,11 @@ export type {
 	Tool,
 	XaiModelId,
 } from "./ai-providers";
+export {
+	createMockAiClient,
+	MOCK_CLOTHING_ANALYSIS,
+	type MockResponse,
+} from "./mock-ai-client";
 
 export type AiProviderCredentials = AiClientConfig["providerConfigs"];
 

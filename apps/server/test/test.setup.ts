@@ -2,11 +2,7 @@ import { createAiClient } from "@ai-stilist/ai";
 import { type Auth, createAuth } from "@ai-stilist/auth";
 import { createDb, type Database, runMigrations } from "@ai-stilist/db";
 import type { Logger as DrizzleLogger } from "@ai-stilist/db/drizzle";
-import {
-	createLogger,
-	type Logger,
-	type LoggerConfig,
-} from "@ai-stilist/logger";
+import { createLogger, type Logger } from "@ai-stilist/logger";
 import { createQueueClient } from "@ai-stilist/queue";
 import type { Environment } from "@ai-stilist/shared/services";
 import { createStorageClient } from "@ai-stilist/storage";
@@ -100,13 +96,10 @@ async function createTestUser(
  * Creates a complete test environment with in-memory database and all services
  */
 export async function createTestSetup(): Promise<TestSetup> {
-	// Create logger
-	const testLogLevel =
-		(process.env.TEST_LOG_LEVEL as LoggerConfig["level"]) ?? "error";
 	const logger = createLogger({
 		appName: "test.setup",
-		level: testLogLevel,
-		nodeEnv: "test",
+		level: env.LOG_LEVEL,
+		environment: env.APP_ENV,
 	});
 
 	// Create in-memory PGlite database
@@ -115,7 +108,7 @@ export async function createTestSetup(): Promise<TestSetup> {
 	// Only log SQL queries in debug mode to reduce test noise
 	const drizzleLogger: DrizzleLogger = {
 		logQuery: (query, params) => {
-			if (testLogLevel === "debug" || testLogLevel === "trace") {
+			if (env.LOG_LEVEL === "debug" || env.LOG_LEVEL === "trace") {
 				logger.debug({ msg: "SQL Query", query, params });
 			}
 		},

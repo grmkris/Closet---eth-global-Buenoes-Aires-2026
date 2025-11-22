@@ -1,84 +1,82 @@
-import {
-	clothingCategoryEnum,
-	clothingFitEnum,
-	clothingFormalityEnum,
-	clothingSeasonEnum,
-} from "@ai-stilist/db/schema/wardrobe";
 import { z } from "zod";
 
-// Import enums from DB schema (single source of truth)
-export const ClothingCategory = z.enum(clothingCategoryEnum);
-export type ClothingCategory = z.infer<typeof ClothingCategory>;
-
-export const ClothingFormality = z.enum(clothingFormalityEnum);
-export type ClothingFormality = z.infer<typeof ClothingFormality>;
-
-export const ClothingFit = z.enum(clothingFitEnum);
-export type ClothingFit = z.infer<typeof ClothingFit>;
-
-export const ClothingSeason = z.enum(clothingSeasonEnum);
-export type ClothingSeason = z.infer<typeof ClothingSeason>;
-
 /**
- * Schema for AI-extracted clothing metadata
- * This is what the vision AI should return
+ * Schema for AI-extracted clothing analysis
+ * Flexible schema that allows AI to dynamically categorize and tag items
  */
-export const ClothingMetadataSchema = z.object({
-	category: ClothingCategory,
-	subcategory: z
+export const ClothingAnalysisSchema = z.object({
+	category: z
 		.string()
-		.describe("Specific type like 'shirt', 'jeans', 'sneakers'"),
+		.describe(
+			"Main category like 'top', 'bottom', 'dress', 'shoes', 'accessory' - AI decides"
+		),
+
 	colors: z
-		.array(z.string().regex(/^#[0-9A-F]{6}$/i))
-		.describe("Array of hex color codes"),
-	primaryColor: z
-		.string()
-		.regex(/^#[0-9A-F]{6}$/i)
-		.describe("Primary hex color code"),
-	patterns: z
 		.array(z.string())
-		.describe("Patterns like 'solid', 'striped', 'floral', 'checked'"),
-	formality: ClothingFormality,
-	seasons: z
-		.array(ClothingSeason)
-		.min(1)
-		.describe("Suitable seasons for this item"),
-	occasions: z
-		.array(z.string())
-		.describe("Occasions like 'work', 'date', 'gym', 'party'"),
-	fit: ClothingFit,
-	material: z
-		.string()
-		.nullable()
-		.describe("Material like 'cotton', 'denim', 'leather'"),
-	styleTags: z
-		.array(z.string())
-		.describe("Style tags like 'minimalist', 'streetwear', 'vintage'"),
+		.describe(
+			"Array of colors - can be names ('navy', 'white') or hex codes ('#FF5733')"
+		),
+
+	tags: z.array(z.string()).describe(`Comprehensive tags including:
+		- Type: 't-shirt', 'jeans', 'sneakers', 'blazer'
+		- Style: 'casual', 'formal', 'streetwear', 'minimalist', 'vintage'
+		- Season: 'summer', 'winter', 'all-season'
+		- Material: 'cotton', 'denim', 'leather', 'silk'
+		- Brand: 'Nike', 'Zara', 'Uniqlo'
+		- Fit: 'slim', 'regular', 'oversized'
+		- Pattern: 'solid', 'striped', 'floral', 'checked'
+		- Features: 'breathable', 'waterproof', 'stretch'
+		- Occasion: 'work', 'party', 'gym', 'date-night'
+		- Details: 'crew-neck', 'v-neck', 'button-up', 'high-waisted'`),
+
 	confidence: z
 		.number()
 		.min(0)
 		.max(1)
-		.describe("AI confidence score for this analysis"),
+		.describe("AI confidence score for this analysis (0-1)"),
 });
 
-export type ClothingMetadata = z.infer<typeof ClothingMetadataSchema>;
+export type ClothingAnalysis = z.infer<typeof ClothingAnalysisSchema>;
 
 /**
- * System prompt for clothing image analysis
+ * System prompt for clothing image analysis - encourages flexible tagging
  */
-export const CLOTHING_ANALYSIS_PROMPT = `You are an expert fashion analyst. Analyze the clothing item in the image and extract detailed metadata.
+export const CLOTHING_ANALYSIS_PROMPT = `You are an expert fashion analyst with deep knowledge of clothing, styles, and fashion trends.
+Analyze the clothing item in the image and extract comprehensive metadata.
+
+Your goal is to create a rich set of tags that fully describe this item, making it easy to search, match, and style.
 
 Instructions:
-- Be specific and accurate
-- Extract ALL visible colors as hex codes
-- Identify the primary/dominant color
-- Detect patterns (solid, striped, floral, checked, polka-dot, etc.)
-- Determine formality level based on style and context
-- Suggest suitable seasons based on material and style
-- List appropriate occasions for wearing this item
-- Identify fit type (slim, regular, loose, oversized)
-- Detect material if visible (cotton, denim, leather, silk, etc.)
-- Add relevant style tags (minimalist, streetwear, vintage, preppy, bohemian, etc.)
-- Provide a confidence score (0-1) for your analysis
+1. **Category**: Choose the most appropriate main category (top, bottom, dress, shoes, outerwear, accessory, etc.)
 
-Be thorough but concise. Focus on observable characteristics.`;
+2. **Colors**: List ALL visible colors. Use common color names when possible ('navy', 'forest green', 'burgundy'), or hex codes for precise colors.
+
+3. **Tags**: Create comprehensive tags covering ALL aspects:
+   - Specific type (e.g., 'crew-neck-tshirt', 'high-top-sneakers', 'midi-dress')
+   - Style attributes ('casual', 'business-casual', 'athleisure', 'bohemian')
+   - Season suitability ('summer', 'winter', 'transitional', 'all-season')
+   - Material if identifiable ('cotton', 'denim', 'knit', 'leather')
+   - Brand if visible
+   - Fit description ('slim-fit', 'relaxed', 'tailored', 'oversized')
+   - Patterns ('solid', 'striped', 'geometric', 'abstract')
+   - Special features ('moisture-wicking', 'stretch', 'distressed')
+   - Suitable occasions ('office', 'weekend', 'formal-event', 'workout')
+   - Specific details ('button-front', 'zipper-closure', 'elastic-waist')
+
+4. **Confidence**: Rate your confidence in the analysis (0.0 to 1.0)
+
+Be thorough but accurate. Create tags that would help someone find this exact type of item or style an outfit with it.
+Focus on observable characteristics and common fashion terminology.`;
+
+/**
+ * Extended prompt for getting existing tags (for consistency)
+ */
+export const TAG_CONSISTENCY_PROMPT = `Based on these existing tags in the wardrobe, suggest which ones apply to this item:
+{{existing_tags}}
+
+Also suggest any new tags that would be appropriate for this item that aren't in the existing set.`;
+
+/**
+ * Model version for tracking
+ */
+export const ANALYSIS_MODEL_VERSION = "gemini-2.0-flash-exp-v1";
