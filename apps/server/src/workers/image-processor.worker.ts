@@ -1,7 +1,10 @@
 import type { AiClient } from "@ai-stilist/ai";
 import type { Database } from "@ai-stilist/db";
 import { eq } from "@ai-stilist/db/drizzle";
-import { clothingAnalysis, clothingItem } from "@ai-stilist/db/schema/wardrobe";
+import {
+	clothingAnalysesTable,
+	tagsTable,
+} from "@ai-stilist/db/schema/wardrobe";
 import type { Logger } from "@ai-stilist/logger";
 import type { QueueClient } from "@ai-stilist/queue";
 import type { ProcessImageJob } from "@ai-stilist/queue/jobs/process-image-job";
@@ -9,6 +12,11 @@ import { WORKER_CONFIG } from "@ai-stilist/shared/constants";
 import { typeIdGenerator } from "@ai-stilist/shared/typeid";
 import type { StorageClient } from "@ai-stilist/storage";
 import { analyzeClothingImage } from "@ai-stilist/wardrobe/clothing-analyzer";
+import {
+	insertClothingCategory,
+	insertClothingColors,
+	insertClothingTags,
+} from "@ai-stilist/wardrobe/wardrobe-lookups";
 
 export type ImageProcessorConfig = {
 	queue: QueueClient;
@@ -40,9 +48,9 @@ export function createImageProcessorWorker(
 			try {
 				// 1. Update status to processing
 				await db
-					.update(clothingItem)
+					.update(clothingItemsTable)
 					.set({ status: "processing" })
-					.where(eq(clothingItem.id, itemId));
+					.where(eq(clothingItemsTable.id, itemId));
 
 				// 2. Generate signed URL for AI analysis
 				const imageUrl = storage.getSignedUrl({
@@ -51,15 +59,19 @@ export function createImageProcessorWorker(
 				});
 
 				// 3. Get existing tags for consistency (optional)
-				const existingAnalyses = await db
-					.select({ tags: clothingAnalysis.tags })
-					.from(clothingAnalysis)
-					.innerJoin(clothingItem, eq(clothingItem.id, clothingAnalysis.itemId))
-					.where(eq(clothingItem.userId, userId));
+				const existingTagRecords = await db
+					.select({ tagName: tagsTable.name })
+					.from(clothingItemTagsTable)
+					.innerJoin(tagsTable, eq(tagsTable.id, clothingItemTagsTable.tagId))
+					.innerJoin(
+						clothingItemsTable,
+						eq(clothingItemsTable.id, clothingItemTagsTable.itemId)
+					)
+					.where(eq(clothingItemsTable.userId, userId));
 
-				// Flatten and deduplicate all existing tags
+				// Deduplicate tag names
 				const existingTags = [
-					...new Set(existingAnalyses.flatMap((a) => a.tags)),
+					...new Set(existingTagRecords.map((t) => t.tagName)),
 				];
 
 				// 4. Analyze image with AI
@@ -74,22 +86,24 @@ export function createImageProcessorWorker(
 
 				// 5. Save analysis to database
 				await db.transaction(async (tx) => {
-					// Save analysis with flexible tags
-					await tx.insert(clothingAnalysis).values({
-						id: typeIdGenerator("clothingAnalysis"),
+					// Save analysis metadata
+					await tx.insert(clothingAnalysesTable).values({
+						id: typeIdGenerator("clothingAnalysesTable"),
 						itemId,
-						category: analysis.category,
-						colors: analysis.colors,
-						tags: analysis.tags,
 						confidence: analysis.confidence,
 						modelVersion,
 					});
 
+					// Insert normalized category, colors, and tags
+					await insertClothingCategory(tx, itemId, analysis.category, true);
+					await insertClothingColors(tx, itemId, analysis.colors);
+					await insertClothingTags(tx, itemId, analysis.tags, "ai");
+
 					// Update item status to ready
 					await tx
-						.update(clothingItem)
+						.update(clothingItemsTable)
 						.set({ status: "ready" })
-						.where(eq(clothingItem.id, itemId));
+						.where(eq(clothingItemsTable.id, itemId));
 				});
 
 				logger.info({
@@ -116,9 +130,9 @@ export function createImageProcessorWorker(
 
 				// Update item status to failed
 				await db
-					.update(clothingItem)
+					.update(clothingItemsTable)
 					.set({ status: "failed" })
-					.where(eq(clothingItem.id, itemId));
+					.where(eq(clothingItemsTable.id, itemId));
 
 				throw error; // BullMQ will retry
 			}

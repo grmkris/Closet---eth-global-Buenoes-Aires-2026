@@ -2,7 +2,6 @@ import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import { createMockAiClient, MOCK_CLOTHING_ANALYSIS } from "@ai-stilist/ai";
 import { wardrobeRouter } from "@ai-stilist/api/routers/wardrobe.router";
 import { eq } from "@ai-stilist/db/drizzle";
-import { clothingItem } from "@ai-stilist/db/schema/wardrobe";
 import { call } from "@orpc/server";
 import { createImageProcessorWorker } from "../../src/workers/image-processor.worker";
 import { getTestImageBuffer, TEST_IMAGES } from "../fixtures/test-images";
@@ -54,8 +53,8 @@ describe("Wardrobe Flow Integration", () => {
 			);
 
 			// Step 3: Get job ID and verify it was queued
-			const dbItem = await setup.deps.db.query.clothingItem.findFirst({
-				where: eq(clothingItem.id, uploadResult.itemId),
+			const dbItem = await setup.deps.db.query.clothingItemsTable.findFirst({
+				where: eq(clothingItemsTable.id, uploadResult.itemId),
 			});
 			expect(dbItem?.status).toBe("pending");
 
@@ -133,7 +132,7 @@ describe("Wardrobe Flow Integration", () => {
 			// Step 2: Upload files to S3
 			for (let i = 0; i < batchResult.items.length; i++) {
 				const item = batchResult.items[i];
-				const imageKey = item.uploadUrl.split("?")[0].split("/").slice(-1)[0];
+				const imageKey = item.uploadUrl.split("?")[0].split("/").at(-1);
 
 				await uploadTestFile(
 					setup.deps,
@@ -193,7 +192,7 @@ describe("Wardrobe Flow Integration", () => {
 
 			await uploadTestFile(
 				setup.deps,
-				uploadResult.uploadUrl.split("?")[0].split("/").slice(-1)[0],
+				uploadResult.uploadUrl.split("?")[0].split("/").at(-1),
 				getTestImageBuffer("tShirt"),
 				TEST_IMAGES.tShirt.contentType
 			);
@@ -251,7 +250,7 @@ describe("Wardrobe Flow Integration", () => {
 		});
 
 		test("should aggregate tags across multiple items", async () => {
-			const context = createAuthenticatedContext(setup);
+			const _context = createAuthenticatedContext(setup);
 
 			// Create mock AI with specific responses
 			const tShirtMock = createMockAiClient({
@@ -276,7 +275,7 @@ describe("Wardrobe Flow Integration", () => {
 
 			await uploadTestFile(
 				setup1.deps,
-				upload1.uploadUrl.split("?")[0].split("/").slice(-1)[0],
+				upload1.uploadUrl.split("?")[0].split("/").at(-1),
 				getTestImageBuffer("tShirt"),
 				TEST_IMAGES.tShirt.contentType
 			);
@@ -306,11 +305,11 @@ describe("Wardrobe Flow Integration", () => {
 			await worker1.close();
 
 			const setup2 = await createTestSetup({ aiClient: jeansMock });
-			const context2 = createAuthenticatedContext(setup2);
+			const _context2 = createAuthenticatedContext(setup2);
 
 			await uploadTestFile(
 				setup2.deps,
-				upload2.uploadUrl.split("?")[0].split("/").slice(-1)[0],
+				upload2.uploadUrl.split("?")[0].split("/").at(-1),
 				getTestImageBuffer("jeans"),
 				TEST_IMAGES.jeans.contentType
 			);
@@ -337,10 +336,7 @@ describe("Wardrobe Flow Integration", () => {
 				{ context }
 			);
 
-			const imageKey = uploadResult.uploadUrl
-				.split("?")[0]
-				.split("/")
-				.slice(-1)[0];
+			const imageKey = uploadResult.uploadUrl.split("?")[0].split("/").at(-1);
 
 			await uploadTestFile(
 				setup.deps,
@@ -369,12 +365,12 @@ describe("Wardrobe Flow Integration", () => {
 			expect(item).toBeDefined();
 
 			// Get the actual image key from DB
-			const dbItem = await setup.deps.db.query.clothingItem.findFirst({
-				where: eq(clothingItem.id, uploadResult.itemId),
+			const dbItem = await setup.deps.db.query.clothingItemsTable.findFirst({
+				where: eq(clothingItemsTable.id, uploadResult.itemId),
 			});
 			expect(dbItem).toBeDefined();
 
-			const actualImageKey = dbItem!.imageKey;
+			const actualImageKey = dbItem?.imageKey;
 
 			// Verify file exists in storage
 			const existsBefore = await setup.deps.storage.exists({
@@ -390,9 +386,10 @@ describe("Wardrobe Flow Integration", () => {
 			);
 
 			// Verify item deleted from DB
-			const dbItemAfter = await setup.deps.db.query.clothingItem.findFirst({
-				where: eq(clothingItem.id, uploadResult.itemId),
-			});
+			const dbItemAfter =
+				await setup.deps.db.query.clothingItemsTable.findFirst({
+					where: eq(clothingItemsTable.id, uploadResult.itemId),
+				});
 			expect(dbItemAfter).toBeUndefined();
 
 			// Verify file deleted from storage

@@ -1,5 +1,4 @@
-import type { QueueClient } from "@ai-stilist/queue";
-import type { JobType } from "@ai-stilist/queue";
+import type { JobType, QueueClient } from "@ai-stilist/queue";
 import { waitFor } from "../test-helpers";
 
 /**
@@ -14,7 +13,7 @@ export async function waitForJobCompletion(
 		interval?: number;
 	} = {}
 ): Promise<"completed" | "failed"> {
-	const { timeout = 10000, interval = 100 } = options;
+	const { timeout = 10_000, interval = 100 } = options;
 
 	let finalState: "completed" | "failed" | null = null;
 
@@ -154,7 +153,9 @@ export async function assertJobCompleted(
 	}
 
 	if (status.state !== "completed") {
-		throw new Error(`Job ${jobId} is in state ${status.state}, expected completed`);
+		throw new Error(
+			`Job ${jobId} is in state ${status.state}, expected completed`
+		);
 	}
 }
 

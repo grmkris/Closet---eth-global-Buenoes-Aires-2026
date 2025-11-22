@@ -7,6 +7,16 @@ export const NUMERIC_CONSTANTS = {
 	},
 };
 
+// Field Length Limits
+export const FIELD_LIMITS = {
+	minLength: 1,
+	// Wardrobe field limits
+	wardrobeItemName: 100,
+	wardrobeDisplayName: 100,
+	wardrobeModelVersion: 50,
+	wardrobeHexCode: 7, // #RRGGBB
+} as const;
+
 // HTTP Status Codes
 export const HTTP_STATUS = {
 	INTERNAL_SERVER_ERROR: 500,

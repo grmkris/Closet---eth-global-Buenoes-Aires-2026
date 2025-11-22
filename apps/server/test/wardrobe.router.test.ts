@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import { wardrobeRouter } from "@ai-stilist/api/routers/wardrobe.router";
 import { eq } from "@ai-stilist/db/drizzle";
-import { clothingAnalysis, clothingItem } from "@ai-stilist/db/schema/wardrobe";
+import { clothingAnalysesTable } from "@ai-stilist/db/schema/wardrobe";
 import { typeIdGenerator, UserId } from "@ai-stilist/shared/typeid";
 import { call } from "@orpc/server";
 import { SAMPLE_ANALYSIS } from "./fixtures/sample-analysis";
@@ -45,8 +45,8 @@ describe("Wardrobe Router", () => {
 			expect(result.status).toBe("pending");
 
 			// Verify DB record created
-			const dbItem = await setup.deps.db.query.clothingItem.findFirst({
-				where: eq(clothingItem.id, result.itemId),
+			const dbItem = await setup.deps.db.query.clothingItemsTable.findFirst({
+				where: eq(clothingItemsTable.id, result.itemId),
 			});
 
 			expect(dbItem).toBeDefined();
@@ -94,8 +94,8 @@ describe("Wardrobe Router", () => {
 			expect(result.uploadUrl).toBeDefined();
 			expect(result.status).toBe("pending");
 
-			const dbItem = await setup.deps.db.query.clothingItem.findFirst({
-				where: eq(clothingItem.id, result.itemId),
+			const dbItem = await setup.deps.db.query.clothingItemsTable.findFirst({
+				where: eq(clothingItemsTable.id, result.itemId),
 			});
 
 			expect(dbItem?.imageKey).toContain(".jpeg");
@@ -137,8 +137,8 @@ describe("Wardrobe Router", () => {
 				expect(item.status).toBe("pending");
 
 				// Check DB
-				const dbItem = await setup.deps.db.query.clothingItem.findFirst({
-					where: eq(clothingItem.id, item.itemId),
+				const dbItem = await setup.deps.db.query.clothingItemsTable.findFirst({
+					where: eq(clothingItemsTable.id, item.itemId),
 				});
 				expect(dbItem).toBeDefined();
 			}
@@ -180,10 +180,10 @@ describe("Wardrobe Router", () => {
 			const context = createAuthenticatedContext(setup);
 
 			// Create test items
-			const itemId1 = typeIdGenerator("clothingItem");
-			const itemId2 = typeIdGenerator("clothingItem");
+			const itemId1 = typeIdGenerator("clothingItemsTable");
+			const itemId2 = typeIdGenerator("clothingItemsTable");
 
-			await setup.deps.db.insert(clothingItem).values([
+			await setup.deps.db.insert(clothingItemsTable).values([
 				{
 					id: itemId1,
 					userId: setup.users.authenticated.id,
@@ -199,7 +199,7 @@ describe("Wardrobe Router", () => {
 			]);
 
 			// Add analysis for first item
-			await setup.deps.db.insert(clothingAnalysis).values({
+			await setup.deps.db.insert(clothingAnalysesTable).values({
 				category: SAMPLE_ANALYSIS.tShirt.category,
 				colors: SAMPLE_ANALYSIS.tShirt.colors,
 				tags: SAMPLE_ANALYSIS.tShirt.tags,
@@ -240,9 +240,9 @@ describe("Wardrobe Router", () => {
 
 			// Create item for different user
 			const otherUserId = typeIdGenerator("user");
-			const itemId = typeIdGenerator("clothingItem");
+			const itemId = typeIdGenerator("clothingItemsTable");
 
-			await setup.deps.db.insert(clothingItem).values({
+			await setup.deps.db.insert(clothingItemsTable).values({
 				id: itemId,
 				userId: otherUserId,
 				imageKey: `users/${otherUserId}/clothing/${itemId}.png`,
@@ -262,17 +262,17 @@ describe("Wardrobe Router", () => {
 			const context = createAuthenticatedContext(setup);
 
 			// Create test item
-			const itemId = typeIdGenerator("clothingItem");
-			const analysisId = typeIdGenerator("clothingAnalysis");
+			const itemId = typeIdGenerator("clothingItemsTable");
+			const analysisId = typeIdGenerator("clothingAnalysesTable");
 
-			await setup.deps.db.insert(clothingItem).values({
+			await setup.deps.db.insert(clothingItemsTable).values({
 				id: itemId,
 				userId: setup.users.authenticated.id,
 				imageKey: `users/${setup.users.authenticated.id}/clothing/${itemId}.png`,
 				status: "ready",
 			});
 
-			await setup.deps.db.insert(clothingAnalysis).values({
+			await setup.deps.db.insert(clothingAnalysesTable).values({
 				id: analysisId,
 				itemId,
 				category: SAMPLE_ANALYSIS.dress.category,
@@ -297,7 +297,7 @@ describe("Wardrobe Router", () => {
 		test("should throw if item not found", async () => {
 			const context = createAuthenticatedContext(setup);
 
-			const nonExistentId = typeIdGenerator("clothingItem");
+			const nonExistentId = typeIdGenerator("clothingItemsTable");
 
 			await expect(
 				call(wardrobeRouter.getItem, { itemId: nonExistentId }, { context })
@@ -308,9 +308,9 @@ describe("Wardrobe Router", () => {
 			const context = createAuthenticatedContext(setup);
 
 			const otherUserId = typeIdGenerator("user");
-			const itemId = typeIdGenerator("clothingItem");
+			const itemId = typeIdGenerator("clothingItemsTable");
 
-			await setup.deps.db.insert(clothingItem).values({
+			await setup.deps.db.insert(clothingItemsTable).values({
 				id: itemId,
 				userId: otherUserId,
 				imageKey: `users/${otherUserId}/clothing/${itemId}.png`,
@@ -328,10 +328,10 @@ describe("Wardrobe Router", () => {
 			const context = createAuthenticatedContext(setup);
 
 			// Create items with analyses
-			const itemId1 = typeIdGenerator("clothingItem");
-			const itemId2 = typeIdGenerator("clothingItem");
+			const itemId1 = typeIdGenerator("clothingItemsTable");
+			const itemId2 = typeIdGenerator("clothingItemsTable");
 
-			await setup.deps.db.insert(clothingItem).values([
+			await setup.deps.db.insert(clothingItemsTable).values([
 				{
 					id: itemId1,
 					userId: setup.users.authenticated.id,
@@ -346,9 +346,9 @@ describe("Wardrobe Router", () => {
 				},
 			]);
 
-			await setup.deps.db.insert(clothingAnalysis).values([
+			await setup.deps.db.insert(clothingAnalysesTable).values([
 				{
-					id: typeIdGenerator("clothingAnalysis"),
+					id: typeIdGenerator("clothingAnalysesTable"),
 					itemId: itemId1,
 					category: "t-shirt",
 					colors: ["blue"],
@@ -357,7 +357,7 @@ describe("Wardrobe Router", () => {
 					modelVersion: "test",
 				},
 				{
-					id: typeIdGenerator("clothingAnalysis"),
+					id: typeIdGenerator("clothingAnalysesTable"),
 					itemId: itemId2,
 					category: "jeans",
 					colors: ["blue"],
@@ -396,17 +396,17 @@ describe("Wardrobe Router", () => {
 		test("should replace tags when append is false", async () => {
 			const context = createAuthenticatedContext(setup);
 
-			const itemId = typeIdGenerator("clothingItem");
-			const analysisId = typeIdGenerator("clothingAnalysis");
+			const itemId = typeIdGenerator("clothingItemsTable");
+			const analysisId = typeIdGenerator("clothingAnalysesTable");
 
-			await setup.deps.db.insert(clothingItem).values({
+			await setup.deps.db.insert(clothingItemsTable).values({
 				id: itemId,
 				userId: setup.users.authenticated.id,
 				imageKey: "test.png",
 				status: "ready",
 			});
 
-			await setup.deps.db.insert(clothingAnalysis).values({
+			await setup.deps.db.insert(clothingAnalysesTable).values({
 				id: analysisId,
 				itemId,
 				category: "t-shirt",
@@ -430,9 +430,11 @@ describe("Wardrobe Router", () => {
 			expect(result.tags).toEqual(["formal", "business"]);
 
 			// Verify in DB
-			const updated = await setup.deps.db.query.clothingAnalysis.findFirst({
-				where: eq(clothingAnalysis.itemId, itemId),
-			});
+			const updated = await setup.deps.db.query.clothingAnalysesTable.findFirst(
+				{
+					where: eq(clothingAnalysesTable.itemId, itemId),
+				}
+			);
 
 			expect(updated?.tags).toEqual(["formal", "business"]);
 		});
@@ -440,17 +442,17 @@ describe("Wardrobe Router", () => {
 		test("should append tags when append is true", async () => {
 			const context = createAuthenticatedContext(setup);
 
-			const itemId = typeIdGenerator("clothingItem");
-			const analysisId = typeIdGenerator("clothingAnalysis");
+			const itemId = typeIdGenerator("clothingItemsTable");
+			const analysisId = typeIdGenerator("clothingAnalysesTable");
 
-			await setup.deps.db.insert(clothingItem).values({
+			await setup.deps.db.insert(clothingItemsTable).values({
 				id: itemId,
 				userId: setup.users.authenticated.id,
 				imageKey: "test.png",
 				status: "ready",
 			});
 
-			await setup.deps.db.insert(clothingAnalysis).values({
+			await setup.deps.db.insert(clothingAnalysesTable).values({
 				id: analysisId,
 				itemId,
 				category: "t-shirt",
@@ -480,9 +482,9 @@ describe("Wardrobe Router", () => {
 		test("should throw if item not analyzed yet", async () => {
 			const context = createAuthenticatedContext(setup);
 
-			const itemId = typeIdGenerator("clothingItem");
+			const itemId = typeIdGenerator("clothingItemsTable");
 
-			await setup.deps.db.insert(clothingItem).values({
+			await setup.deps.db.insert(clothingItemsTable).values({
 				id: itemId,
 				userId: setup.users.authenticated.id,
 				imageKey: "test.png",
@@ -507,8 +509,8 @@ describe("Wardrobe Router", () => {
 		test("should delete item and cascade to analysis", async () => {
 			const context = createAuthenticatedContext(setup);
 
-			const itemId = typeIdGenerator("clothingItem");
-			const analysisId = typeIdGenerator("clothingAnalysis");
+			const itemId = typeIdGenerator("clothingItemsTable");
+			const analysisId = typeIdGenerator("clothingAnalysesTable");
 			const imageKey = `users/${setup.users.authenticated.id}/clothing/${itemId}.png`;
 
 			// Upload test image to storage
@@ -520,14 +522,14 @@ describe("Wardrobe Router", () => {
 			);
 
 			// Create DB records
-			await setup.deps.db.insert(clothingItem).values({
+			await setup.deps.db.insert(clothingItemsTable).values({
 				id: itemId,
 				userId: setup.users.authenticated.id,
 				imageKey,
 				status: "ready",
 			});
 
-			await setup.deps.db.insert(clothingAnalysis).values({
+			await setup.deps.db.insert(clothingAnalysesTable).values({
 				id: analysisId,
 				itemId,
 				category: "t-shirt",
@@ -551,15 +553,16 @@ describe("Wardrobe Router", () => {
 			expect(result.success).toBe(true);
 
 			// Verify item deleted from DB
-			const dbItem = await setup.deps.db.query.clothingItem.findFirst({
-				where: eq(clothingItem.id, itemId),
+			const dbItem = await setup.deps.db.query.clothingItemsTable.findFirst({
+				where: eq(clothingItemsTable.id, itemId),
 			});
 			expect(dbItem).toBeUndefined();
 
 			// Verify analysis deleted (cascade)
-			const dbAnalysis = await setup.deps.db.query.clothingAnalysis.findFirst({
-				where: eq(clothingAnalysis.itemId, itemId),
-			});
+			const dbAnalysis =
+				await setup.deps.db.query.clothingAnalysesTable.findFirst({
+					where: eq(clothingAnalysesTable.itemId, itemId),
+				});
 			expect(dbAnalysis).toBeUndefined();
 
 			// Verify deleted from storage
@@ -570,7 +573,7 @@ describe("Wardrobe Router", () => {
 		test("should throw if item not found", async () => {
 			const context = createAuthenticatedContext(setup);
 
-			const nonExistentId = typeIdGenerator("clothingItem");
+			const nonExistentId = typeIdGenerator("clothingItemsTable");
 
 			await expect(
 				call(wardrobeRouter.deleteItem, { itemId: nonExistentId }, { context })
@@ -581,9 +584,9 @@ describe("Wardrobe Router", () => {
 			const context = createAuthenticatedContext(setup);
 
 			const otherUserId = typeIdGenerator("user");
-			const itemId = typeIdGenerator("clothingItem");
+			const itemId = typeIdGenerator("clothingItemsTable");
 
-			await setup.deps.db.insert(clothingItem).values({
+			await setup.deps.db.insert(clothingItemsTable).values({
 				id: itemId,
 				userId: otherUserId,
 				imageKey: "test.png",

@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import { createMockAiClient, MOCK_CLOTHING_ANALYSIS } from "@ai-stilist/ai";
 import { eq } from "@ai-stilist/db/drizzle";
-import { clothingAnalysis, clothingItem } from "@ai-stilist/db/schema/wardrobe";
+import { clothingAnalysesTable } from "@ai-stilist/db/schema/wardrobe";
 import { typeIdGenerator } from "@ai-stilist/shared/typeid";
 import { createImageProcessorWorker } from "../../src/workers/image-processor.worker";
 import { SAMPLE_ANALYSIS } from "../fixtures/sample-analysis";
@@ -28,7 +28,7 @@ describe("Image Processor Worker", () => {
 
 	describe("Successful Processing", () => {
 		test("should process image and create analysis", async () => {
-			const itemId = typeIdGenerator("clothingItem");
+			const itemId = typeIdGenerator("clothingItemsTable");
 			const userId = setup.users.authenticated.id;
 			const imageKey = `users/${userId}/clothing/${itemId}.png`;
 
@@ -41,7 +41,7 @@ describe("Image Processor Worker", () => {
 			);
 
 			// Create DB record
-			await setup.deps.db.insert(clothingItem).values({
+			await setup.deps.db.insert(clothingItemsTable).values({
 				id: itemId,
 				userId,
 				imageKey,
@@ -72,15 +72,17 @@ describe("Image Processor Worker", () => {
 			await assertJobCompleted(setup.deps.queue, job.jobId, "process-image");
 
 			// Verify item status updated to ready
-			const updatedItem = await setup.deps.db.query.clothingItem.findFirst({
-				where: eq(clothingItem.id, itemId),
-			});
+			const updatedItem =
+				await setup.deps.db.query.clothingItemsTable.findFirst({
+					where: eq(clothingItemsTable.id, itemId),
+				});
 			expect(updatedItem?.status).toBe("ready");
 
 			// Verify analysis created
-			const analysis = await setup.deps.db.query.clothingAnalysis.findFirst({
-				where: eq(clothingAnalysis.itemId, itemId),
-			});
+			const analysis =
+				await setup.deps.db.query.clothingAnalysesTable.findFirst({
+					where: eq(clothingAnalysesTable.itemId, itemId),
+				});
 
 			expect(analysis).toBeDefined();
 			expect(analysis?.category).toBe("t-shirt");
@@ -108,7 +110,7 @@ describe("Image Processor Worker", () => {
 				// Create separate setup with this mock
 				const testSetupInstance = await testSetup({ aiClient: mockAi });
 
-				const itemId = typeIdGenerator("clothingItem");
+				const itemId = typeIdGenerator("clothingItemsTable");
 				const userId = testSetupInstance.users.authenticated.id;
 				const imageKey = `users/${userId}/clothing/${itemId}.png`;
 
@@ -119,7 +121,7 @@ describe("Image Processor Worker", () => {
 					TEST_IMAGES[testCase.type].contentType
 				);
 
-				await testSetupInstance.deps.db.insert(clothingItem).values({
+				await testSetupInstance.deps.db.insert(clothingItemsTable).values({
 					id: itemId,
 					userId,
 					imageKey,
@@ -141,9 +143,11 @@ describe("Image Processor Worker", () => {
 				);
 
 				const analysis =
-					await testSetupInstance.deps.db.query.clothingAnalysis.findFirst({
-						where: eq(clothingAnalysis.itemId, itemId),
-					});
+					await testSetupInstance.deps.db.query.clothingAnalysesTable.findFirst(
+						{
+							where: eq(clothingAnalysesTable.itemId, itemId),
+						}
+					);
 
 				expect(analysis?.category).toBe(testCase.mock.object.category);
 
@@ -156,7 +160,7 @@ describe("Image Processor Worker", () => {
 			const userId = setup.users.authenticated.id;
 
 			// Create first item with analysis
-			const existingItemId = typeIdGenerator("clothingItem");
+			const existingItemId = typeIdGenerator("clothingItemsTable");
 			const existingImageKey = `users/${userId}/clothing/${existingItemId}.png`;
 
 			await uploadTestFile(
@@ -166,15 +170,15 @@ describe("Image Processor Worker", () => {
 				TEST_IMAGES.jeans.contentType
 			);
 
-			await setup.deps.db.insert(clothingItem).values({
+			await setup.deps.db.insert(clothingItemsTable).values({
 				id: existingItemId,
 				userId,
 				imageKey: existingImageKey,
 				status: "ready",
 			});
 
-			await setup.deps.db.insert(clothingAnalysis).values({
-				id: typeIdGenerator("clothingAnalysis"),
+			await setup.deps.db.insert(clothingAnalysesTable).values({
+				id: typeIdGenerator("clothingAnalysesTable"),
 				itemId: existingItemId,
 				category: SAMPLE_ANALYSIS.jeans.category,
 				colors: SAMPLE_ANALYSIS.jeans.colors,
@@ -184,7 +188,7 @@ describe("Image Processor Worker", () => {
 			});
 
 			// Now process new item - worker should fetch existing tags
-			const newItemId = typeIdGenerator("clothingItem");
+			const newItemId = typeIdGenerator("clothingItemsTable");
 			const newImageKey = `users/${userId}/clothing/${newItemId}.png`;
 
 			await uploadTestFile(
@@ -194,7 +198,7 @@ describe("Image Processor Worker", () => {
 				TEST_IMAGES.tShirt.contentType
 			);
 
-			await setup.deps.db.insert(clothingItem).values({
+			await setup.deps.db.insert(clothingItemsTable).values({
 				id: newItemId,
 				userId,
 				imageKey: newImageKey,
@@ -212,9 +216,10 @@ describe("Image Processor Worker", () => {
 			await waitForJobCompletion(setup.deps.queue, job.jobId, "process-image");
 
 			// Verify new analysis was created
-			const newAnalysis = await setup.deps.db.query.clothingAnalysis.findFirst({
-				where: eq(clothingAnalysis.itemId, newItemId),
-			});
+			const newAnalysis =
+				await setup.deps.db.query.clothingAnalysesTable.findFirst({
+					where: eq(clothingAnalysesTable.itemId, newItemId),
+				});
 
 			expect(newAnalysis).toBeDefined();
 
@@ -224,7 +229,7 @@ describe("Image Processor Worker", () => {
 
 	describe("Status Transitions", () => {
 		test("should transition from pending -> processing -> ready", async () => {
-			const itemId = typeIdGenerator("clothingItem");
+			const itemId = typeIdGenerator("clothingItemsTable");
 			const userId = setup.users.authenticated.id;
 			const imageKey = `users/${userId}/clothing/${itemId}.png`;
 
@@ -235,7 +240,7 @@ describe("Image Processor Worker", () => {
 				TEST_IMAGES.tShirt.contentType
 			);
 
-			await setup.deps.db.insert(clothingItem).values({
+			await setup.deps.db.insert(clothingItemsTable).values({
 				id: itemId,
 				userId,
 				imageKey,
@@ -243,8 +248,8 @@ describe("Image Processor Worker", () => {
 			});
 
 			// Verify initial status
-			let item = await setup.deps.db.query.clothingItem.findFirst({
-				where: eq(clothingItem.id, itemId),
+			let item = await setup.deps.db.query.clothingItemsTable.findFirst({
+				where: eq(clothingItemsTable.id, itemId),
 			});
 			expect(item?.status).toBe("pending");
 
@@ -259,8 +264,8 @@ describe("Image Processor Worker", () => {
 			await waitForJobCompletion(setup.deps.queue, job.jobId, "process-image");
 
 			// Verify final status
-			item = await setup.deps.db.query.clothingItem.findFirst({
-				where: eq(clothingItem.id, itemId),
+			item = await setup.deps.db.query.clothingItemsTable.findFirst({
+				where: eq(clothingItemsTable.id, itemId),
 			});
 			expect(item?.status).toBe("ready");
 
@@ -278,7 +283,7 @@ describe("Image Processor Worker", () => {
 
 			const testSetupInstance = await testSetup({ aiClient: failingAi });
 
-			const itemId = typeIdGenerator("clothingItem");
+			const itemId = typeIdGenerator("clothingItemsTable");
 			const userId = testSetupInstance.users.authenticated.id;
 			const imageKey = `users/${userId}/clothing/${itemId}.png`;
 
@@ -289,7 +294,7 @@ describe("Image Processor Worker", () => {
 				TEST_IMAGES.tShirt.contentType
 			);
 
-			await testSetupInstance.deps.db.insert(clothingItem).values({
+			await testSetupInstance.deps.db.insert(clothingItemsTable).values({
 				id: itemId,
 				userId,
 				imageKey,
@@ -315,17 +320,16 @@ describe("Image Processor Worker", () => {
 			expect(state).toBe("failed");
 
 			// Verify item status is failed
-			const item = await testSetupInstance.deps.db.query.clothingItem.findFirst(
-				{
-					where: eq(clothingItem.id, itemId),
-				}
-			);
+			const item =
+				await testSetupInstance.deps.db.query.clothingItemsTable.findFirst({
+					where: eq(clothingItemsTable.id, itemId),
+				});
 			expect(item?.status).toBe("failed");
 
 			// Verify no analysis was created
 			const analysis =
-				await testSetupInstance.deps.db.query.clothingAnalysis.findFirst({
-					where: eq(clothingAnalysis.itemId, itemId),
+				await testSetupInstance.deps.db.query.clothingAnalysesTable.findFirst({
+					where: eq(clothingAnalysesTable.itemId, itemId),
 				});
 			expect(analysis).toBeUndefined();
 
@@ -334,13 +338,13 @@ describe("Image Processor Worker", () => {
 		});
 
 		test("should handle missing image file", async () => {
-			const itemId = typeIdGenerator("clothingItem");
+			const itemId = typeIdGenerator("clothingItemsTable");
 			const userId = setup.users.authenticated.id;
 			const imageKey = `users/${userId}/clothing/${itemId}.png`;
 
 			// Don't upload image - simulate missing file
 
-			await setup.deps.db.insert(clothingItem).values({
+			await setup.deps.db.insert(clothingItemsTable).values({
 				id: itemId,
 				userId,
 				imageKey,
@@ -365,8 +369,8 @@ describe("Image Processor Worker", () => {
 			// Should fail since image doesn't exist
 			expect(state).toBe("failed");
 
-			const item = await setup.deps.db.query.clothingItem.findFirst({
-				where: eq(clothingItem.id, itemId),
+			const item = await setup.deps.db.query.clothingItemsTable.findFirst({
+				where: eq(clothingItemsTable.id, itemId),
 			});
 			expect(item?.status).toBe("failed");
 
@@ -379,7 +383,7 @@ describe("Image Processor Worker", () => {
 			// This test verifies that if something fails during the transaction,
 			// neither the analysis nor the status update should be saved
 
-			const itemId = typeIdGenerator("clothingItem");
+			const itemId = typeIdGenerator("clothingItemsTable");
 			const userId = setup.users.authenticated.id;
 			const imageKey = `users/${userId}/clothing/${itemId}.png`;
 
@@ -390,7 +394,7 @@ describe("Image Processor Worker", () => {
 				TEST_IMAGES.tShirt.contentType
 			);
 
-			await setup.deps.db.insert(clothingItem).values({
+			await setup.deps.db.insert(clothingItemsTable).values({
 				id: itemId,
 				userId,
 				imageKey,
@@ -405,7 +409,7 @@ describe("Image Processor Worker", () => {
 			const testSetupInstance = await testSetup({ aiClient: failingAi });
 
 			// Copy item to new test setup DB
-			await testSetupInstance.deps.db.insert(clothingItem).values({
+			await testSetupInstance.deps.db.insert(clothingItemsTable).values({
 				id: itemId,
 				userId,
 				imageKey,
@@ -436,17 +440,16 @@ describe("Image Processor Worker", () => {
 
 			// Verify no analysis was created (transaction rolled back)
 			const analysis =
-				await testSetupInstance.deps.db.query.clothingAnalysis.findFirst({
-					where: eq(clothingAnalysis.itemId, itemId),
+				await testSetupInstance.deps.db.query.clothingAnalysesTable.findFirst({
+					where: eq(clothingAnalysesTable.itemId, itemId),
 				});
 			expect(analysis).toBeUndefined();
 
 			// Status should be failed (outside transaction)
-			const item = await testSetupInstance.deps.db.query.clothingItem.findFirst(
-				{
-					where: eq(clothingItem.id, itemId),
-				}
-			);
+			const item =
+				await testSetupInstance.deps.db.query.clothingItemsTable.findFirst({
+					where: eq(clothingItemsTable.id, itemId),
+				});
 			expect(item?.status).toBe("failed");
 
 			await worker.close();
@@ -461,7 +464,7 @@ describe("Image Processor Worker", () => {
 
 			// Create 3 items
 			for (let i = 0; i < 3; i++) {
-				const itemId = typeIdGenerator("clothingItem");
+				const itemId = typeIdGenerator("clothingItemsTable");
 				const imageKey = `users/${userId}/clothing/${itemId}.png`;
 
 				await uploadTestFile(
@@ -471,7 +474,7 @@ describe("Image Processor Worker", () => {
 					TEST_IMAGES.tShirt.contentType
 				);
 
-				await setup.deps.db.insert(clothingItem).values({
+				await setup.deps.db.insert(clothingItemsTable).values({
 					id: itemId,
 					userId,
 					imageKey,
@@ -498,14 +501,15 @@ describe("Image Processor Worker", () => {
 
 			// Verify all items processed
 			for (const job of jobs) {
-				const item = await setup.deps.db.query.clothingItem.findFirst({
-					where: eq(clothingItem.id, job.itemId),
+				const item = await setup.deps.db.query.clothingItemsTable.findFirst({
+					where: eq(clothingItemsTable.id, job.itemId),
 				});
 				expect(item?.status).toBe("ready");
 
-				const analysis = await setup.deps.db.query.clothingAnalysis.findFirst({
-					where: eq(clothingAnalysis.itemId, job.itemId),
-				});
+				const analysis =
+					await setup.deps.db.query.clothingAnalysesTable.findFirst({
+						where: eq(clothingAnalysesTable.itemId, job.itemId),
+					});
 				expect(analysis).toBeDefined();
 			}
 

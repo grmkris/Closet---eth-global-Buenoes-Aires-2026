@@ -15,6 +15,10 @@ export const idTypesMapNameToPrefix = {
 	// wardrobe related
 	clothingItem: "itm",
 	clothingAnalysis: "anl",
+	category: "cat",
+	color: "col",
+	tagType: "tty",
+	tag: "tag",
 
 	// request tracking
 	request: "req",
@@ -105,6 +109,18 @@ export type ClothingItemId = z.infer<typeof ClothingItemId>;
 
 export const ClothingAnalysisId = typeIdValidator("clothingAnalysis");
 export type ClothingAnalysisId = z.infer<typeof ClothingAnalysisId>;
+
+export const CategoryId = typeIdValidator("category");
+export type CategoryId = z.infer<typeof CategoryId>;
+
+export const ColorId = typeIdValidator("color");
+export type ColorId = z.infer<typeof ColorId>;
+
+export const TagTypeId = typeIdValidator("tagType");
+export type TagTypeId = z.infer<typeof TagTypeId>;
+
+export const TagId = typeIdValidator("tag");
+export type TagId = z.infer<typeof TagId>;
 
 export const RequestId = typeIdValidator("request");
 export type RequestId = z.infer<typeof RequestId>;
