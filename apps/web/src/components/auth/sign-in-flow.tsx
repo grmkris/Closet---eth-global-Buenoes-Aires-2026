@@ -2,12 +2,13 @@
 
 import { UI_CONFIG } from "@ai-stilist/shared/constants";
 import { SignIn } from "@coinbase/cdp-react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useAccount } from "wagmi";
+import { useRouter } from "next/navigation";
+import { parseAsStringLiteral, useQueryState } from "nuqs";
+import { useEffect } from "react";
+import { useAccount, useChainId } from "wagmi";
 import { useSiweAuthentication } from "@/hooks/use-siwe-authentication";
 
-type Step = "wallet" | "otp" | "complete";
+const stepOptions = ["wallet", "otp", "complete"] as const;
 
 type SignInFlowProps = {
 	session: { user: unknown } | null;
@@ -19,6 +20,7 @@ type OtpStepContentProps = {
 	address: `0x${string}` | undefined;
 	error: Error | null;
 	authenticate: (params: { address: string; chainId: number }) => void;
+	chainId: number;
 };
 
 function OtpStepContent({
@@ -27,6 +29,7 @@ function OtpStepContent({
 	address,
 	error,
 	authenticate,
+	chainId,
 }: OtpStepContentProps) {
 	// Show pending state while authentication is in progress
 	if (isPending) {
@@ -53,7 +56,7 @@ function OtpStepContent({
 						className="w-full rounded bg-blue-600 py-2 text-white hover:bg-blue-700"
 						onClick={() => {
 							if (address && isConnected) {
-								authenticate({ address, chainId: 8453 });
+								authenticate({ address, chainId });
 							}
 						}}
 						type="button"
@@ -78,41 +81,24 @@ function OtpStepContent({
 
 export function SignInFlow({ session }: SignInFlowProps) {
 	const router = useRouter();
-	const searchParams = useSearchParams();
-	const urlStep = (searchParams.get("step") as Step) || "wallet";
 
-	const [step, setStep] = useState<Step>(urlStep);
-	const [isInitializing, setIsInitializing] = useState(true);
+	const [step, setStep] = useQueryState(
+		"step",
+		parseAsStringLiteral(stepOptions).withDefault("wallet")
+	);
 
 	const { address, isConnected } = useAccount();
-
-	// Sync URL changes to component state
-	useEffect(() => {
-		const newUrlStep = (searchParams.get("step") as Step) || "wallet";
-		if (newUrlStep !== step) {
-			setStep(newUrlStep);
-		}
-	}, [searchParams, step]);
-
-	// Update step and URL together
-	const updateStep = (newStep: Step) => {
-		setStep(newStep);
-		if (newStep === "wallet") {
-			router.replace("/login");
-		} else {
-			router.replace(`/login?step=${newStep}`);
-		}
-	};
+	const chainId = useChainId();
 
 	const { authenticate, isPending, error } = useSiweAuthentication({
 		onSuccess: () => {
-			updateStep("complete");
+			setStep("complete");
 			setTimeout(() => router.push("/dashboard"), UI_CONFIG.REDIRECT_DELAY_MS);
 		},
 	});
 
 	const handleWalletCreated = () => {
-		updateStep("otp");
+		setStep("otp");
 	};
 
 	// Smart initialization: check auth state and auto-progress
@@ -120,42 +106,36 @@ export function SignInFlow({ session }: SignInFlowProps) {
 		// If already authenticated, redirect to dashboard
 		if (session?.user) {
 			router.push("/dashboard");
-			return;
 		}
-
-		setIsInitializing(false);
 	}, [session, router]);
 
 	// Detect pre-existing wallet connection and auto-advance to OTP step
 	// useEffect(() => {
-	// 	// Skip if still initializing or already authenticated
-	// 	if (isInitializing || session?.user) {
+	// 	// Skip if already authenticated
+	// 	if (session?.user) {
 	// 		return;
 	// 	}
 	//
 	// 	// If wallet already connected and we're on wallet step, skip to OTP
 	// 	if (isConnected && address && step === "wallet") {
 	// 		setStep("otp");
-	// 		router.replace("/login?step=otp");
 	// 	}
-	// }, [isInitializing, session, isConnected, address, step, router]);
+	// }, [session, isConnected, address, step, setStep]);
 
 	// Auto-trigger SIWE when on OTP step and wallet is connected
 	useEffect(() => {
 		if (isConnected && address && !isPending && !error && !session?.user) {
-			authenticate({ address, chainId: 8453 });
+			authenticate({ address, chainId });
 		}
-	}, [isConnected, address, isPending, error, authenticate, session?.user]);
-
-	// Show loading state only during initial auth check, not on refetches
-	if (isInitializing) {
-		return (
-			<div className="mx-auto max-w-md p-6 text-center">
-				<div className="mb-4 text-4xl">⏳</div>
-				<p className="text-gray-600">Checking authentication...</p>
-			</div>
-		);
-	}
+	}, [
+		isConnected,
+		address,
+		chainId,
+		isPending,
+		error,
+		authenticate,
+		session?.user,
+	]);
 
 	return (
 		<div className="mx-auto max-w-md p-6">
@@ -199,6 +179,7 @@ export function SignInFlow({ session }: SignInFlowProps) {
 					<OtpStepContent
 						address={address}
 						authenticate={authenticate}
+						chainId={chainId}
 						error={error}
 						isConnected={isConnected}
 						isPending={isPending}

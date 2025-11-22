@@ -3,22 +3,32 @@
 import type { MyUIMessagePart } from "@ai-stilist/api/features/ai/message-type";
 import type { MessageId } from "@ai-stilist/shared/typeid";
 import { DefaultToolRenderer } from "./default-tool-renderer";
+import { ItemDetailsRenderer } from "./item-details-renderer";
+import { OutfitPreviewRenderer } from "./outfit-preview-renderer";
 import type { ToolRendererEntry } from "./types";
 import { getToolName, isToolPart } from "./types";
+import { WardrobeSearchRenderer } from "./wardrobe-search-renderer";
 
 /**
  * Registry of tool renderers
  * Maps tool names/patterns to their specific renderer components
- *
- * NOTE: You can add custom renderers here for specific tools:
- * Example:
- *   getWeather: {
- *     renderer: WeatherToolRenderer,
- *     displayName: "Weather",
- *   },
  */
 const toolRenderers: Record<string, ToolRendererEntry> = {
-	// Default fallback - handles all tools
+	// Wardrobe tools
+	generateOutfitPreview: {
+		renderer: OutfitPreviewRenderer,
+		displayName: "Outfit Preview",
+	},
+	searchWardrobe: {
+		renderer: WardrobeSearchRenderer,
+		displayName: "Wardrobe Search",
+	},
+	getItemDetails: {
+		renderer: ItemDetailsRenderer,
+		displayName: "Item Details",
+	},
+
+	// Default fallback - handles all other tools
 	default: {
 		renderer: DefaultToolRenderer,
 		displayName: "Tool",

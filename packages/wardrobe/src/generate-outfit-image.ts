@@ -1,8 +1,18 @@
 import type { AiClient } from "@ai-stilist/ai";
 import type { Logger } from "@ai-stilist/logger";
-import { WORKER_CONFIG } from "@ai-stilist/shared/constants";
+import {
+	type AspectRatio,
+	OUTFIT_IMAGE_CONFIG,
+	WORKER_CONFIG,
+} from "@ai-stilist/shared/constants";
 import type { ClothingItemId, UserId } from "@ai-stilist/shared/typeid";
 import type { StorageClient } from "@ai-stilist/storage";
+
+// Image quality options
+export type ImageQuality = "standard" | "hd";
+
+// Image style options
+export type ImageStyle = "natural" | "vivid";
 
 export type ClothingItemWithMetadata = {
 	id: ClothingItemId;
@@ -21,6 +31,9 @@ export type GenerateOutfitImageInput = {
 	items: ClothingItemWithMetadata[];
 	occasion?: string;
 	style?: string;
+	aspectRatio: AspectRatio;
+	quality: ImageQuality;
+	imageStyle: ImageStyle;
 	aiClient: AiClient;
 	storageClient: StorageClient;
 	logger: Logger;
@@ -34,24 +47,37 @@ export type GenerateOutfitImageResult = {
 };
 
 /**
- * Generate an outfit preview image using Google Gemini multimodal with reference images
- * Uses Gemini 2.5 Flash Image model with image inputs and image outputs
+ * Generate an outfit preview image using Google Gemini 3 Pro Image (Nano Banana Pro)
+ * Uses Gemini multimodal model with image inputs and image outputs
  */
 export async function generateOutfitImage(
 	input: GenerateOutfitImageInput
 ): Promise<GenerateOutfitImageResult> {
-	const { items, occasion, style, aiClient, storageClient, logger, userId } =
-		input;
+	const {
+		items,
+		occasion,
+		style,
+		aspectRatio,
+		quality,
+		imageStyle,
+		aiClient,
+		storageClient,
+		logger,
+		userId,
+	} = input;
 
 	if (items.length === 0) {
 		throw new Error("At least one clothing item is required");
 	}
 
 	logger.info({
-		msg: "Generating outfit image with Gemini multimodal",
+		msg: "Generating outfit image with Gemini 3 Pro Image",
 		itemCount: items.length,
 		occasion,
 		style,
+		aspectRatio,
+		quality,
+		imageStyle,
 		userId,
 	});
 
@@ -70,7 +96,8 @@ export async function generateOutfitImage(
 				);
 			}
 
-			return new Uint8Array(await response.arrayBuffer());
+			// Convert to Buffer for file type input
+			return Buffer.from(await response.arrayBuffer());
 		})
 	);
 
@@ -89,23 +116,25 @@ export async function generateOutfitImage(
 
 	// 3. Build multimodal message content with text + reference images
 	const messageContent: Array<
-		{ type: "text"; text: string } | { type: "image"; image: Uint8Array }
+		| { type: "text"; text: string }
+		| { type: "file"; mediaType: string; data: Buffer }
 	> = [{ type: "text", text: textPrompt }];
 
-	// Add each reference image to the message
+	// Add each reference image to the message using file type
 	for (const imageData of referenceImages) {
 		messageContent.push({
-			type: "image",
-			image: imageData,
+			type: "file",
+			mediaType: "image/webp",
+			data: imageData,
 		});
 	}
 
-	// 4. Generate image using Gemini multimodal with image output
+	// 4. Generate image using Gemini 3 Pro Image with multimodal input
 	try {
 		const result = await aiClient.generateText({
 			model: aiClient.getModel({
 				provider: "google",
-				modelId: "gemini-2.5-flash-image-preview",
+				modelId: "google/gemini-3-pro-image",
 			}),
 			messages: [
 				{
@@ -115,23 +144,34 @@ export async function generateOutfitImage(
 			],
 			providerOptions: {
 				google: {
-					responseModalities: ["IMAGE"],
+					aspectRatio,
+					quality,
+					style: imageStyle,
 				},
 			},
 		});
 
 		// 5. Extract generated image from files
-		const generatedImageFile = result.files?.find((file) =>
+		if (!result.files || result.files.length === 0) {
+			throw new Error(
+				"No files returned in response. Ensure the model supports image generation."
+			);
+		}
+
+		const generatedImageFile = result.files.find((file) =>
 			file.mediaType?.startsWith("image/")
 		);
 
 		if (!generatedImageFile?.base64) {
-			throw new Error("No image generated in response");
+			throw new Error(
+				`No image found in response. Received ${result.files.length} file(s) with media types: ${result.files.map((f) => f.mediaType).join(", ")}`
+			);
 		}
 
 		logger.debug({
 			msg: "Image generated successfully",
 			mediaType: generatedImageFile.mediaType,
+			fileCount: result.files.length,
 		});
 
 		// 6. Decode the base64 image data
@@ -153,10 +193,10 @@ export async function generateOutfitImage(
 			storageKey,
 		});
 
-		// 8. Return permanent signed URL
+		// 8. Return signed URL
 		const imageUrl = storageClient.getSignedUrl({
 			key: storageKey,
-			expiresIn: 86_400, // 24 hours
+			expiresIn: OUTFIT_IMAGE_CONFIG.OUTPUT_EXPIRY_SECONDS,
 		});
 
 		return {
@@ -169,6 +209,10 @@ export async function generateOutfitImage(
 			msg: "Failed to generate outfit image",
 			error: error instanceof Error ? error.message : String(error),
 			stack: error instanceof Error ? error.stack : undefined,
+			aspectRatio,
+			quality,
+			imageStyle,
+			itemCount: items.length,
 		});
 		throw error;
 	}

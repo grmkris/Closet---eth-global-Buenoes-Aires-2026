@@ -1,3 +1,5 @@
+import z from "zod";
+
 export const NUMERIC_CONSTANTS = {
 	MAX_DELAY: 1000,
 	NONCE_LENGTH: 32,
@@ -74,9 +76,46 @@ export const WARDROBE_AI_CONSTANTS = {
 	TOP_TAGS_LIMIT: 30, // Max tags to include in wardrobe context
 	TOP_COLORS_LIMIT: 5, // Colors to include in summary
 	TOP_TAGS_IN_SUMMARY: 15, // Tags to include in summary
+	RECENT_ITEMS_LIMIT: 40, // Recent items to include in AI context with full metadata
 } as const;
 
 // Screen Size Constants
 export const SCREEN_SIZE = {
 	DESKTOP: 768,
+} as const;
+
+// Outfit Image Generation Configuration
+export const OUTFIT_IMAGE_CONFIG = {
+	SUPPORTED_ASPECT_RATIOS: [
+		"1:1",
+		"3:4",
+		"4:3",
+		"9:16",
+		"16:9",
+		"9:21",
+		"21:9",
+	] as const,
+	OUTPUT_EXPIRY_SECONDS: 86_400, // 24 hours
+} as const;
+
+export const AspectRatio = z.enum(OUTFIT_IMAGE_CONFIG.SUPPORTED_ASPECT_RATIOS);
+export type AspectRatio = z.infer<typeof AspectRatio>;
+
+// Chain IDs
+export const CHAIN_IDS = {
+	POLYGON_MAINNET: 137,
+	POLYGON_AMOY_TESTNET: 80002,
+} as const;
+
+// USDC Contract Addresses by Chain ID
+export const USDC_ADDRESSES = {
+	[CHAIN_IDS.POLYGON_MAINNET]: "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359", // Polygon Mainnet
+	[CHAIN_IDS.POLYGON_AMOY_TESTNET]: "0x41E94Eb019C0762f9Bfcf9Fb1E58725BfB0e7582", // Polygon Amoy Testnet
+} as const;
+
+// Wallet UI Configuration
+export const WALLET_UI_CONFIG = {
+	USDC_DECIMALS: 2, // Display decimals for USDC balance
+	POL_DECIMALS: 4, // Display decimals for POL gas balance
+	TOAST_COPY_TIMEOUT_MS: 2000, // Timeout for "copied" toast messages
 } as const;

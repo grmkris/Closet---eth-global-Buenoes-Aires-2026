@@ -64,7 +64,6 @@ export function useSiweAuthentication(
 			// Step 3: Sign the message with the user's wallet
 			const messageString = siweMessage.prepareMessage();
 			const signature = await signMessageAsync({ message: messageString });
-
 			// Step 4: Verify the signature on the server
 			const { data: verifyData, error: verifyError } =
 				await authClient.siwe.verify({

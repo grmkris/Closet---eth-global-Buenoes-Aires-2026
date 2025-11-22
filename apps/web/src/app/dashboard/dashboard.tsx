@@ -7,6 +7,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { WalletBalanceCard } from "@/components/wallet/balance-card";
 import type { authClient } from "@/lib/auth-client";
 import { orpc } from "@/utils/orpc";
 
@@ -82,23 +83,27 @@ export default function Dashboard({
 				</Card>
 			)}
 
-			{/* Quick Stats */}
-			{stats && stats.totalItems > 0 && (
-				<div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-					<Card className="p-4 text-center">
-						<p className="text-muted-foreground text-sm">Total Items</p>
-						<p className="mt-1 font-bold text-2xl">{stats.totalItems}</p>
-					</Card>
-					<Card className="p-4 text-center">
-						<p className="text-muted-foreground text-sm">Categories</p>
-						<p className="mt-1 font-bold text-2xl">{stats.categories.length}</p>
-					</Card>
-					<Card className="col-span-2 p-4 text-center sm:col-span-1">
-						<p className="text-muted-foreground text-sm">Tags</p>
-						<p className="mt-1 font-bold text-2xl">{stats.totalTags}</p>
-					</Card>
-				</div>
-			)}
+			{/* Wallet Balance and Quick Stats */}
+			<div className="grid gap-4 md:grid-cols-2">
+				{/* Wallet Balance Card */}
+				<WalletBalanceCard />
+
+				{/* Quick Stats */}
+				{stats && stats.totalItems > 0 && (
+					<div className="grid grid-cols-2 gap-4">
+						<Card className="p-4 text-center">
+							<p className="text-muted-foreground text-sm">Total Items</p>
+							<p className="mt-1 font-bold text-2xl">{stats.totalItems}</p>
+						</Card>
+						<Card className="p-4 text-center">
+							<p className="text-muted-foreground text-sm">Categories</p>
+							<p className="mt-1 font-bold text-2xl">
+								{stats.categories.length}
+							</p>
+						</Card>
+					</div>
+				)}
+			</div>
 
 			{/* Primary Actions */}
 			<div className="space-y-3">

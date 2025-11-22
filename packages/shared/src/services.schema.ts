@@ -14,6 +14,11 @@ export const SERVICE_URLS: Record<
 		cookieDomain: string;
 		storage: string;
 		redis: string;
+		chain: {
+			id: number;
+			name: string;
+			rpcUrl: string;
+		};
 	}
 > = {
 	dev: {
@@ -23,6 +28,11 @@ export const SERVICE_URLS: Record<
 		cookieDomain: "localhost",
 		storage: "http://localhost:9000",
 		redis: "redis://localhost:63791",
+		chain: {
+			id: 80_002, // Polygon Amoy testnet
+			name: "polygon-amoy",
+			rpcUrl: "https://polygon-amoy.gateway.tatum.io",
+		},
 	},
 	prod: {
 		auth: "https://api.ai-stilist.com",
@@ -31,5 +41,10 @@ export const SERVICE_URLS: Record<
 		cookieDomain: ".ai-stilist.com",
 		storage: "https://storage.ai-stilist.com",
 		redis: "redis://redis.ai-stilist.com:6379",
+		chain: {
+			id: 137, // Polygon mainnet
+			name: "polygon",
+			rpcUrl: "https://polygon-rpc.com",
+		},
 	},
 } as const;

@@ -164,92 +164,128 @@ async function generateWardrobeContext(params: {
 		} = await import("@ai-stilist/db/schema/wardrobe");
 
 		// Get wardrobe summary (similar to getTags endpoint)
-		const [tagsResult, categoriesResult, colorsResult, totalItemsResult] =
-			await Promise.all([
-				// Tags with counts
-				db
-					.select({
-						tag: tagsTable.name,
-						type: tagTypesTable.name,
-						count: count(clothingItemTagsTable.itemId).as("count"),
-					})
-					.from(clothingItemTagsTable)
-					.innerJoin(tagsTable, eq(tagsTable.id, clothingItemTagsTable.tagId))
-					.innerJoin(tagTypesTable, eq(tagTypesTable.id, tagsTable.typeId))
-					.innerJoin(
-						clothingItemsTable,
-						eq(clothingItemsTable.id, clothingItemTagsTable.itemId)
+		const [
+			tagsResult,
+			categoriesResult,
+			colorsResult,
+			totalItemsResult,
+			recentItems,
+		] = await Promise.all([
+			// Tags with counts
+			db
+				.select({
+					tag: tagsTable.name,
+					type: tagTypesTable.name,
+					count: count(clothingItemTagsTable.itemId).as("count"),
+				})
+				.from(clothingItemTagsTable)
+				.innerJoin(tagsTable, eq(tagsTable.id, clothingItemTagsTable.tagId))
+				.innerJoin(tagTypesTable, eq(tagTypesTable.id, tagsTable.typeId))
+				.innerJoin(
+					clothingItemsTable,
+					eq(clothingItemsTable.id, clothingItemTagsTable.itemId)
+				)
+				.where(
+					and(
+						eq(clothingItemsTable.userId, userId),
+						eq(clothingItemsTable.status, "completed")
 					)
-					.where(
-						and(
-							eq(clothingItemsTable.userId, userId),
-							eq(clothingItemsTable.status, "completed")
-						)
-					)
-					.groupBy(tagsTable.id, tagsTable.name, tagTypesTable.name)
-					.orderBy(descFn(count(clothingItemTagsTable.itemId)))
-					.limit(WARDROBE_AI_CONSTANTS.TOP_TAGS_LIMIT), // Top tags for context
+				)
+				.groupBy(tagsTable.id, tagsTable.name, tagTypesTable.name)
+				.orderBy(descFn(count(clothingItemTagsTable.itemId)))
+				.limit(WARDROBE_AI_CONSTANTS.TOP_TAGS_LIMIT), // Top tags for context
 
-				// Categories with counts
-				db
-					.select({
-						name: categoriesTable.name,
-						count: count(clothingItemCategoriesTable.itemId).as("count"),
-					})
-					.from(clothingItemCategoriesTable)
-					.innerJoin(
-						categoriesTable,
-						eq(categoriesTable.id, clothingItemCategoriesTable.categoryId)
+			// Categories with counts
+			db
+				.select({
+					name: categoriesTable.name,
+					count: count(clothingItemCategoriesTable.itemId).as("count"),
+				})
+				.from(clothingItemCategoriesTable)
+				.innerJoin(
+					categoriesTable,
+					eq(categoriesTable.id, clothingItemCategoriesTable.categoryId)
+				)
+				.innerJoin(
+					clothingItemsTable,
+					eq(clothingItemsTable.id, clothingItemCategoriesTable.itemId)
+				)
+				.where(
+					and(
+						eq(clothingItemsTable.userId, userId),
+						eq(clothingItemsTable.status, "completed")
 					)
-					.innerJoin(
-						clothingItemsTable,
-						eq(clothingItemsTable.id, clothingItemCategoriesTable.itemId)
-					)
-					.where(
-						and(
-							eq(clothingItemsTable.userId, userId),
-							eq(clothingItemsTable.status, "completed")
-						)
-					)
-					.groupBy(categoriesTable.id, categoriesTable.name)
-					.orderBy(descFn(count(clothingItemCategoriesTable.itemId))),
+				)
+				.groupBy(categoriesTable.id, categoriesTable.name)
+				.orderBy(descFn(count(clothingItemCategoriesTable.itemId))),
 
-				// Colors with counts
-				db
-					.select({
-						name: colorsTable.name,
-						count: count(clothingItemColorsTable.itemId).as("count"),
-					})
-					.from(clothingItemColorsTable)
-					.innerJoin(
-						colorsTable,
-						eq(colorsTable.id, clothingItemColorsTable.colorId)
+			// Colors with counts
+			db
+				.select({
+					name: colorsTable.name,
+					count: count(clothingItemColorsTable.itemId).as("count"),
+				})
+				.from(clothingItemColorsTable)
+				.innerJoin(
+					colorsTable,
+					eq(colorsTable.id, clothingItemColorsTable.colorId)
+				)
+				.innerJoin(
+					clothingItemsTable,
+					eq(clothingItemsTable.id, clothingItemColorsTable.itemId)
+				)
+				.where(
+					and(
+						eq(clothingItemsTable.userId, userId),
+						eq(clothingItemsTable.status, "completed")
 					)
-					.innerJoin(
-						clothingItemsTable,
-						eq(clothingItemsTable.id, clothingItemColorsTable.itemId)
-					)
-					.where(
-						and(
-							eq(clothingItemsTable.userId, userId),
-							eq(clothingItemsTable.status, "completed")
-						)
-					)
-					.groupBy(colorsTable.id, colorsTable.name)
-					.orderBy(descFn(count(clothingItemColorsTable.itemId)))
-					.limit(10), // Top 10 colors
+				)
+				.groupBy(colorsTable.id, colorsTable.name)
+				.orderBy(descFn(count(clothingItemColorsTable.itemId)))
+				.limit(10), // Top 10 colors
 
-				// Total items
-				db
-					.select({ count: count(clothingItemsTable.id).as("count") })
-					.from(clothingItemsTable)
-					.where(
-						and(
-							eq(clothingItemsTable.userId, userId),
-							eq(clothingItemsTable.status, "completed")
-						)
-					),
-			]);
+			// Total items
+			db
+				.select({ count: count(clothingItemsTable.id).as("count") })
+				.from(clothingItemsTable)
+				.where(
+					and(
+						eq(clothingItemsTable.userId, userId),
+						eq(clothingItemsTable.status, "completed")
+					)
+				),
+
+			// Recent items with metadata for immediate AI reference
+			db.query.clothingItemsTable.findMany({
+				where: and(
+					eq(clothingItemsTable.userId, userId),
+					eq(clothingItemsTable.status, "completed")
+				),
+				orderBy: descFn(clothingItemsTable.createdAt),
+				limit: WARDROBE_AI_CONSTANTS.RECENT_ITEMS_LIMIT,
+				with: {
+					categories: {
+						with: {
+							category: true,
+						},
+					},
+					colors: {
+						with: {
+							color: true,
+						},
+					},
+					tags: {
+						with: {
+							tag: {
+								with: {
+									type: true,
+								},
+							},
+						},
+					},
+				},
+			}),
+		]);
 
 		const totalItems = totalItemsResult[0]?.count || 0;
 
@@ -281,6 +317,21 @@ The user's wardrobe is currently empty. Help them get started by asking what the
 			.map((t) => t.tag)
 			.join(", ");
 
+		// Format recent items with metadata for AI context
+		const recentItemsList = recentItems
+			.map((item) => {
+				const categories = item.categories
+					.map((c) => c.category.name)
+					.join(", ");
+				const colors = item.colors.map((c) => c.color.name).join(", ");
+				const tags = item.tags
+					.map((t) => t.tag.name)
+					.slice(0, WARDROBE_AI_CONSTANTS.TOP_TAGS_IN_SUMMARY) // Limit to top 5 tags per item
+					.join(", ");
+				return `  - ${item.id}: ${categories} | ${colors}${tags ? ` | ${tags}` : ""}`;
+			})
+			.join("\n");
+
 		const context = `
 Current Date: ${now.toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}
 Day: ${dayOfWeek}
@@ -292,7 +343,11 @@ Wardrobe Overview:
 - Main colors: ${colorSummary}
 - Popular tags: ${topTags}
 
-Use this context when making recommendations. Consider the current season and day when suggesting outfits.`;
+Recent Items (use these IDs directly):
+${recentItemsList}
+
+Use this context when making recommendations. Consider the current season and day when suggesting outfits.
+When generating outfit previews, use the item IDs from the Recent Items list above or from searchWardrobe tool results.`;
 
 		logger.info({
 			msg: "Wardrobe context generated",
