@@ -1,10 +1,13 @@
 import type { Logger } from "@ai-stilist/logger";
+import { NUMERIC_CONSTANTS, WORKER_CONFIG } from "@ai-stilist/shared/constants";
 import { Queue, Worker } from "bullmq";
-import type Redis from "ioredis";
+
+import { Redis } from "ioredis";
+
 import type { ProcessImageJob } from "./jobs/process-image-job";
 
 export type QueueConfig = {
-	redis: Redis;
+	url: string;
 	logger?: Logger;
 };
 
@@ -19,7 +22,8 @@ export type JobResult = {
 };
 
 export function createQueueClient(config: QueueConfig) {
-	const { redis, logger } = config;
+	const { url, logger } = config;
+	const redis = new Redis(url);
 
 	const connection = redis;
 
@@ -35,11 +39,14 @@ export function createQueueClient(config: QueueConfig) {
 				},
 				removeOnComplete: {
 					count: 100,
-					age: 24 * 3600, // 24 hours
+					age: 24 * WORKER_CONFIG.SIGNED_URL_EXPIRY_SECONDS, // 24 hours
 				},
 				removeOnFail: {
 					count: 1000,
-					age: 7 * 24 * 3600, // 7 days
+					age:
+						NUMERIC_CONSTANTS.SEVEN_DAYS *
+						24 *
+						WORKER_CONFIG.SIGNED_URL_EXPIRY_SECONDS, // 7 days
 				},
 			},
 		}),
@@ -95,7 +102,7 @@ export function createQueueClient(config: QueueConfig) {
 			},
 			{
 				connection,
-				concurrency: options?.concurrency || 5,
+				concurrency: options?.concurrency || WORKER_CONFIG.MAX_CONCURRENT_JOBS,
 			}
 		);
 

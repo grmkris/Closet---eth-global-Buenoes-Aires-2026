@@ -25,7 +25,7 @@ export type AiClientConfig = {
 		googleGeminiApiKey?: string;
 		anthropicApiKey?: string;
 		groqApiKey?: string;
-		xaiApiKey: string;
+		xaiApiKey?: string;
 	};
 	posthog?: PostHog;
 	environment: Environment;

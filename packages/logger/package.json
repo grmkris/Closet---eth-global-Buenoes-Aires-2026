@@ -2,10 +2,7 @@
   "name": "@ai-stilist/logger",
   "type": "module",
   "exports": {
-    ".": {
-      "types": "./dist/logger.d.ts",
-      "default": "./src/logger.ts"
-    }
+    ".": "./src/logger.ts"
   },
   "scripts": {
     "build": "tsdown",

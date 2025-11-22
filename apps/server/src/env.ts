@@ -1,12 +1,13 @@
+import { SERVER_CONFIG } from "@ai-stilist/shared/constants";
 import { Environment } from "@ai-stilist/shared/services";
+import { env as bunEnv } from "bun";
 import { z } from "zod";
-
 export const envSchema = z.object({
 	NODE_ENV: z
 		.enum(["development", "test", "production"])
 		.default("development"),
 	APP_ENV: Environment,
-	PORT: z.coerce.number().default(8000),
+	PORT: z.coerce.number().default(SERVER_CONFIG.DEFAULT_PORT),
 	DATABASE_URL: z.string(),
 	BETTER_AUTH_SECRET: z.string(),
 
@@ -22,4 +23,4 @@ export const envSchema = z.object({
 	XAI_API_KEY: z.string().optional(),
 });
 
-export const env = envSchema.parse(Bun.env);
+export const env = envSchema.parse(bunEnv);

@@ -1,31 +1,22 @@
 import {
-	clothingItem,
 	clothingMetadata,
 	outfit,
 	outfitItem,
-	type SelectOutfit,
 } from "@ai-stilist/db/schema/wardrobe";
-import { type ClothingItemId, OutfitId, typeIdGenerator } from "@ai-stilist/shared/typeid";
+import {
+	ClothingItemId,
+	OutfitId,
+	typeIdGenerator,
+	UserId,
+} from "@ai-stilist/shared/typeid";
 import { eq, inArray } from "drizzle-orm";
 import { z } from "zod";
 import { protectedProcedure } from "../index";
 
 // Input schemas
-const GenerateOutfitInput = z.object({
-	occasion: z.string(),
-	season: z.enum(["spring", "summer", "fall", "winter"]).optional(),
-	weather: z.string().optional(),
-	preferences: z
-		.object({
-			formality: z.string().optional(),
-			colors: z.array(z.string()).optional(),
-		})
-		.optional(),
-});
-
 const SaveOutfitInput = z.object({
 	name: z.string().optional(),
-	itemIds: z.array(z.string()).min(1),
+	itemIds: z.array(ClothingItemId).min(1),
 	occasion: z.string(),
 	season: z.string().optional(),
 	aiGenerated: z.boolean().default(true),
@@ -42,45 +33,14 @@ const DeleteOutfitInput = z.object({
 
 export const outfitsRouter = {
 	/**
-	 * Generate outfit suggestions using AI
-	 */
-	generate: protectedProcedure
-		.input(GenerateOutfitInput)
-		.handler(async ({ input, context }) => {
-			const userId = context.session.user.id;
-
-			context.logger.info({
-				msg: "Generating outfit suggestions",
-				userId,
-				input,
-			});
-
-			// Use outfit generator service
-			const suggestions = await context.outfitGenerator.generateOutfits({
-				userId,
-				...input,
-			});
-
-			return {
-				suggestions,
-			};
-		}),
-
-	/**
 	 * Save an outfit
 	 */
 	saveOutfit: protectedProcedure
 		.input(SaveOutfitInput)
 		.handler(async ({ input, context }) => {
-			const {
-				name,
-				itemIds,
-				occasion,
-				season,
-				aiGenerated,
-				generationPrompt,
-			} = input;
-			const userId = context.session.user.id;
+			const { name, itemIds, occasion, season, aiGenerated, generationPrompt } =
+				input;
+			const userId = UserId.parse(context.session.user.id);
 
 			// Fetch metadata for all items to determine slots
 			const itemsMetadata = await context.db
@@ -89,7 +49,7 @@ export const outfitsRouter = {
 					category: clothingMetadata.category,
 				})
 				.from(clothingMetadata)
-				.where(inArray(clothingMetadata.itemId, itemIds as ClothingItemId[]));
+				.where(inArray(clothingMetadata.itemId, itemIds));
 
 			// Create a map of itemId -> category for quick lookup
 			const itemCategoryMap = new Map(
@@ -137,7 +97,7 @@ export const outfitsRouter = {
 	 * Get all saved outfits for user
 	 */
 	getOutfits: protectedProcedure.handler(async ({ context }) => {
-		const userId = context.session.user.id;
+		const userId = UserId.parse(context.session.user.id);
 
 		const outfits = await context.db.query.outfit.findMany({
 			where: eq(outfit.userId, userId),
@@ -181,7 +141,7 @@ export const outfitsRouter = {
 		.input(GetOutfitInput)
 		.handler(async ({ input, context }) => {
 			const { outfitId } = input;
-			const userId = context.session.user.id;
+			const userId = UserId.parse(context.session.user.id);
 
 			const outfitData = await context.db.query.outfit.findFirst({
 				where: eq(outfit.id, outfitId),
@@ -227,7 +187,7 @@ export const outfitsRouter = {
 		.input(DeleteOutfitInput)
 		.handler(async ({ input, context }) => {
 			const { outfitId } = input;
-			const userId = context.session.user.id;
+			const userId = UserId.parse(context.session.user.id);
 
 			// Verify outfit belongs to user
 			const outfitData = await context.db.query.outfit.findFirst({

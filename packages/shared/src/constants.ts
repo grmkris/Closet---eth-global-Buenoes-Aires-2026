@@ -18,6 +18,12 @@ export const SERVER_CONFIG = {
 	DEFAULT_PORT: 8000,
 } as const;
 
+// API Limits
+export const API_LIMITS = {
+	MIN_BATCH_UPLOAD: 1,
+	MAX_BATCH_UPLOAD: 50,
+} as const;
+
 // Worker Configuration
 export const WORKER_CONFIG = {
 	MAX_CONCURRENT_JOBS: 5,

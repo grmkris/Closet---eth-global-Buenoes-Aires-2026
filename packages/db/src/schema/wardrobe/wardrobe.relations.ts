@@ -16,37 +16,46 @@ export const userWardrobeRelations = relations(user, ({ many }) => ({
 }));
 
 // Clothing Item relations
-export const clothingItemRelations = relations(clothingItem, ({ one, many }) => ({
-	user: one(user, {
-		fields: [clothingItem.userId],
-		references: [user.id],
-	}),
-	metadata: one(clothingMetadata, {
-		fields: [clothingItem.id],
-		references: [clothingMetadata.itemId],
-	}),
-	embedding: one(clothingEmbedding, {
-		fields: [clothingItem.id],
-		references: [clothingEmbedding.itemId],
-	}),
-	outfitItems: many(outfitItem),
-}));
+export const clothingItemRelations = relations(
+	clothingItem,
+	({ one, many }) => ({
+		user: one(user, {
+			fields: [clothingItem.userId],
+			references: [user.id],
+		}),
+		metadata: one(clothingMetadata, {
+			fields: [clothingItem.id],
+			references: [clothingMetadata.itemId],
+		}),
+		embedding: one(clothingEmbedding, {
+			fields: [clothingItem.id],
+			references: [clothingEmbedding.itemId],
+		}),
+		outfitItems: many(outfitItem),
+	})
+);
 
 // Clothing Metadata relations
-export const clothingMetadataRelations = relations(clothingMetadata, ({ one }) => ({
-	item: one(clothingItem, {
-		fields: [clothingMetadata.itemId],
-		references: [clothingItem.id],
-	}),
-}));
+export const clothingMetadataRelations = relations(
+	clothingMetadata,
+	({ one }) => ({
+		item: one(clothingItem, {
+			fields: [clothingMetadata.itemId],
+			references: [clothingItem.id],
+		}),
+	})
+);
 
 // Clothing Embedding relations
-export const clothingEmbeddingRelations = relations(clothingEmbedding, ({ one }) => ({
-	item: one(clothingItem, {
-		fields: [clothingEmbedding.itemId],
-		references: [clothingItem.id],
-	}),
-}));
+export const clothingEmbeddingRelations = relations(
+	clothingEmbedding,
+	({ one }) => ({
+		item: one(clothingItem, {
+			fields: [clothingEmbedding.itemId],
+			references: [clothingItem.id],
+		}),
+	})
+);
 
 // Outfit relations
 export const outfitRelations = relations(outfit, ({ one, many }) => ({

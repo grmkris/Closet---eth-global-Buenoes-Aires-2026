@@ -5,7 +5,6 @@ import type { Logger } from "@ai-stilist/logger";
 import type { QueueClient } from "@ai-stilist/queue";
 import type { RequestId } from "@ai-stilist/shared/typeid";
 import type { StorageClient } from "@ai-stilist/storage";
-import type { OutfitGenerator } from "@ai-stilist/wardrobe/outfit-generator";
 
 export type OrpcContextParams = {
 	db: Database;
@@ -14,7 +13,6 @@ export type OrpcContextParams = {
 	storage: StorageClient;
 	queue: QueueClient;
 	aiClient: AiClient;
-	outfitGenerator: OutfitGenerator;
 	headers: Headers;
 	requestId: RequestId;
 };

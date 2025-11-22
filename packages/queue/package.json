@@ -3,14 +3,8 @@
   "version": "1.0.0",
   "type": "module",
   "exports": {
-    ".": {
-      "types": "./dist/queue-client.d.ts",
-      "default": "./src/queue-client.ts"
-    },
-    "./jobs": {
-      "types": "./dist/jobs/index.d.ts",
-      "default": "./src/jobs/index.ts"
-    }
+    ".": "./src/queue-client.ts",
+    "./jobs/process-image-job": "./src/jobs/process-image-job.ts"
   },
   "scripts": {
     "build": "tsdown",

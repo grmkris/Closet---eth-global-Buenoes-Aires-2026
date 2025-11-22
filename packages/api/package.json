@@ -1,14 +1,8 @@
 {
   "name": "@ai-stilist/api",
   "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./src/index.ts"
-    },
-    "./*": {
-      "types": "./dist/*.d.ts",
-      "default": "./src/*.ts"
-    }
+    ".": "./src/index.ts",
+    "./*": "./src/*.ts"
   },
   "type": "module",
   "scripts": {
@@ -25,6 +19,12 @@
     "typescript": "^5"
   },
   "dependencies": {
+    "@ai-stilist/ai": "workspace:*",
+    "@ai-stilist/logger": "workspace:*",
+    "@ai-stilist/queue": "workspace:*",
+    "@ai-stilist/storage": "workspace:*",
+    "@ai-stilist/wardrobe": "workspace:*",
+    "drizzle-orm": "catalog:",
     "@orpc/server": "catalog:",
     "@orpc/client": "catalog:",
     "@orpc/openapi": "catalog:",

@@ -10,6 +10,13 @@ const SEVEN_DAYS_MS =
  */
 export function createAuthenticatedContext(testEnv: TestSetup): Context {
 	return {
+		headers: new Headers(),
+		requestId: `req_${crypto.randomUUID()}`,
+		db: testEnv.deps.db,
+		storage: testEnv.deps.storage,
+		queue: testEnv.deps.queue,
+		aiClient: testEnv.deps.aiClient,
+		logger: testEnv.deps.logger,
 		session: {
 			session: {
 				id: crypto.randomUUID(),
@@ -37,9 +44,16 @@ export function createAuthenticatedContext(testEnv: TestSetup): Context {
 /**
  * Creates an orpc context without authentication
  */
-export function createUnauthenticatedContext(): Context {
+export function createUnauthenticatedContext(testEnv: TestSetup): Context {
 	return {
 		session: null,
+		headers: new Headers(),
+		requestId: `req_${crypto.randomUUID()}`,
+		db: testEnv.deps.db,
+		storage: testEnv.deps.storage,
+		queue: testEnv.deps.queue,
+		aiClient: testEnv.deps.aiClient,
+		logger: testEnv.deps.logger,
 	};
 }
 

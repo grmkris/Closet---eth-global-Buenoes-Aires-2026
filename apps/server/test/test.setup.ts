@@ -1,3 +1,4 @@
+import { createAiClient } from "@ai-stilist/ai";
 import { type Auth, createAuth } from "@ai-stilist/auth";
 import { createDb, type Database, runMigrations } from "@ai-stilist/db";
 import {
@@ -5,6 +6,7 @@ import {
 	type Logger,
 	type LoggerConfig,
 } from "@ai-stilist/logger";
+import { createQueueClient } from "@ai-stilist/queue";
 import type { Environment } from "@ai-stilist/shared/services";
 import { createStorageClient } from "@ai-stilist/storage";
 import { createPgLite, type PGlite } from "@ai-stilist/test-utils/pg-lite";
@@ -12,6 +14,7 @@ import { createTestRedisSetup } from "@ai-stilist/test-utils/redis-test-server";
 import { createTestS3Setup } from "@ai-stilist/test-utils/s3-test-server";
 import type { User } from "better-auth";
 import type { Logger as DrizzleLogger } from "drizzle-orm";
+import { env } from "@/env";
 
 const SessionTokenRegex = /better-auth\.session_token=([^;]+)/;
 
@@ -31,6 +34,8 @@ export type TestSetup = {
 		logger: Logger;
 		storage: ReturnType<typeof createStorageClient>;
 		redis: Awaited<ReturnType<typeof createTestRedisSetup>>;
+		queue: ReturnType<typeof createQueueClient>;
+		aiClient: ReturnType<typeof createAiClient>;
 	};
 	users: {
 		authenticated: TestUser;
@@ -137,8 +142,8 @@ export async function createTestSetup(): Promise<TestSetup> {
 	// Create auth client
 	const authClient = createAuth({
 		db,
-		appEnv: (process.env.APP_ENV as Environment) || "dev",
-		secret: process.env.BETTER_AUTH_SECRET || "test-secret-key",
+		appEnv: env.APP_ENV,
+		secret: env.BETTER_AUTH_SECRET,
 	});
 
 	logger.debug("Creating test users...");
@@ -173,6 +178,22 @@ export async function createTestSetup(): Promise<TestSetup> {
 		services: ["db", "auth", "storage", "redis"],
 	});
 
+	const queue = createQueueClient({
+		url: redis.url,
+		logger,
+	});
+
+	const aiClient = createAiClient({
+		logger,
+		providerConfigs: {
+			googleGeminiApiKey: env.GEMINI_API_KEY,
+			anthropicApiKey: env.ANTHROPIC_API_KEY,
+			groqApiKey: env.GROQ_API_KEY,
+			xaiApiKey: env.XAI_API_KEY,
+		},
+		environment: env.APP_ENV,
+	});
+
 	// Cleanup function to reset data between tests
 	const cleanup = async () => {
 		// No-op for now - implement database truncation/cleanup if needed
@@ -201,6 +222,8 @@ export async function createTestSetup(): Promise<TestSetup> {
 			logger,
 			storage,
 			redis,
+			queue,
+			aiClient,
 		},
 		users: {
 			authenticated: authenticatedUser,

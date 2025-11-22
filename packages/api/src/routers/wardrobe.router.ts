@@ -1,9 +1,10 @@
+import { clothingItem, clothingMetadata } from "@ai-stilist/db/schema/wardrobe";
+import { API_LIMITS, WORKER_CONFIG } from "@ai-stilist/shared/constants";
 import {
-	clothingItem,
-	clothingMetadata,
-	type SelectClothingItem,
-} from "@ai-stilist/db/schema/wardrobe";
-import { ClothingItemId, typeIdGenerator } from "@ai-stilist/shared/typeid";
+	ClothingItemId,
+	typeIdGenerator,
+	UserId,
+} from "@ai-stilist/shared/typeid";
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 import { protectedProcedure } from "../index";
@@ -15,7 +16,10 @@ const RequestUploadInput = z.object({
 });
 
 const RequestBatchUploadInput = z.object({
-	count: z.number().min(1).max(50),
+	count: z
+		.number()
+		.min(API_LIMITS.MIN_BATCH_UPLOAD)
+		.max(API_LIMITS.MAX_BATCH_UPLOAD),
 	contentType: z.string(),
 	extension: z.string(),
 });
@@ -25,7 +29,10 @@ const ConfirmUploadInput = z.object({
 });
 
 const BatchConfirmUploadInput = z.object({
-	itemIds: z.array(ClothingItemId).min(1).max(50),
+	itemIds: z
+		.array(ClothingItemId)
+		.min(API_LIMITS.MIN_BATCH_UPLOAD)
+		.max(API_LIMITS.MAX_BATCH_UPLOAD),
 });
 
 const GetItemsInput = z.object({
@@ -60,7 +67,7 @@ export const wardrobeRouter = {
 		.input(RequestUploadInput)
 		.handler(async ({ input, context }) => {
 			const { contentType, extension } = input;
-			const userId = context.session.user.id;
+			const userId = UserId.parse(context.session.user.id);
 
 			// Generate item ID
 			const itemId = typeIdGenerator("clothingItem");
@@ -99,7 +106,7 @@ export const wardrobeRouter = {
 		.input(RequestBatchUploadInput)
 		.handler(async ({ input, context }) => {
 			const { count, contentType, extension } = input;
-			const userId = context.session.user.id;
+			const userId = UserId.parse(context.session.user.id);
 
 			// Generate items and keys
 			const items = Array.from({ length: count }, () => {
@@ -114,7 +121,7 @@ export const wardrobeRouter = {
 					key: item.imageKey,
 					contentType,
 				})),
-				3600 // 1 hour
+				WORKER_CONFIG.SIGNED_URL_EXPIRY_SECONDS
 			);
 
 			// Create DB records with pending status
@@ -136,7 +143,7 @@ export const wardrobeRouter = {
 			return {
 				uploads: items.map((item, index) => ({
 					itemId: item.itemId,
-					uploadUrl: uploads[index].uploadUrl,
+					uploadUrl: uploads[index]?.uploadUrl,
 					imageKey: item.imageKey,
 				})),
 			};
@@ -149,7 +156,7 @@ export const wardrobeRouter = {
 		.input(ConfirmUploadInput)
 		.handler(async ({ input, context }) => {
 			const { itemId } = input;
-			const userId = context.session.user.id;
+			const userId = UserId.parse(context.session.user.id);
 
 			// Verify item belongs to user
 			const item = await context.db.query.clothingItem.findFirst({
@@ -202,7 +209,7 @@ export const wardrobeRouter = {
 		.input(BatchConfirmUploadInput)
 		.handler(async ({ input, context }) => {
 			const { itemIds } = input;
-			const userId = context.session.user.id;
+			const userId = UserId.parse(context.session.user.id);
 
 			// Verify all items belong to user
 			const items = await context.db.query.clothingItem.findMany({
@@ -256,7 +263,7 @@ export const wardrobeRouter = {
 		.input(GetItemsInput)
 		.handler(async ({ input, context }) => {
 			const { category, status } = input;
-			const userId = context.session.user.id;
+			const userId = UserId.parse(context.session.user.id);
 
 			const conditions = [eq(clothingItem.userId, userId)];
 
@@ -297,7 +304,7 @@ export const wardrobeRouter = {
 		.input(GetItemInput)
 		.handler(async ({ input, context }) => {
 			const { itemId } = input;
-			const userId = context.session.user.id;
+			const userId = UserId.parse(context.session.user.id);
 
 			const item = await context.db.query.clothingItem.findFirst({
 				where: and(
@@ -333,7 +340,7 @@ export const wardrobeRouter = {
 		.input(UpdateMetadataInput)
 		.handler(async ({ input, context }) => {
 			const { itemId, updates } = input;
-			const userId = context.session.user.id;
+			const userId = UserId.parse(context.session.user.id);
 
 			// Verify item belongs to user
 			const item = await context.db.query.clothingItem.findFirst({
@@ -372,7 +379,7 @@ export const wardrobeRouter = {
 		.input(DeleteItemInput)
 		.handler(async ({ input, context }) => {
 			const { itemId } = input;
-			const userId = context.session.user.id;
+			const userId = UserId.parse(context.session.user.id);
 
 			// Verify item belongs to user
 			const item = await context.db.query.clothingItem.findFirst({
@@ -390,9 +397,7 @@ export const wardrobeRouter = {
 			await context.storage.delete({ key: item.imageKey });
 
 			// Delete from DB (cascade will handle metadata and embeddings)
-			await context.db
-				.delete(clothingItem)
-				.where(eq(clothingItem.id, itemId));
+			await context.db.delete(clothingItem).where(eq(clothingItem.id, itemId));
 
 			context.logger.info({ msg: "Item deleted", itemId });
 

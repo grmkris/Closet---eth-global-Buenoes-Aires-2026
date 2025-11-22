@@ -1,5 +1,5 @@
-import { typeIdFromUuid } from "@ai-stilist/shared/typeid";
 import { describe, expect, test } from "bun:test";
+import { typeIdFromUuid } from "@ai-stilist/shared/typeid";
 import {
 	generateClothingImageKey,
 	getClothingImageKeys,
@@ -10,11 +10,11 @@ describe("Storage Key Helpers", () => {
 	// Use deterministic test IDs for easier debugging
 	const testUserId = typeIdFromUuid(
 		"user",
-		"00000000-0000-0000-0000-000000000001",
+		"00000000-0000-0000-0000-000000000001"
 	);
 	const testItemId = typeIdFromUuid(
 		"clothingItem",
-		"00000000-0000-0000-0000-000000000002",
+		"00000000-0000-0000-0000-000000000002"
 	);
 
 	describe("generateClothingImageKey", () => {
@@ -25,9 +25,7 @@ describe("Storage Key Helpers", () => {
 				type: "original",
 			});
 
-			expect(key).toBe(
-				`users/${testUserId}/clothing/originals/${testItemId}`,
-			);
+			expect(key).toBe(`users/${testUserId}/clothing/originals/${testItemId}`);
 		});
 
 		test("generates key with default type (original)", () => {
@@ -36,9 +34,7 @@ describe("Storage Key Helpers", () => {
 				itemId: testItemId,
 			});
 
-			expect(key).toBe(
-				`users/${testUserId}/clothing/originals/${testItemId}`,
-			);
+			expect(key).toBe(`users/${testUserId}/clothing/originals/${testItemId}`);
 		});
 
 		test("generates key for small thumbnail", () => {
@@ -49,7 +45,7 @@ describe("Storage Key Helpers", () => {
 			});
 
 			expect(key).toBe(
-				`users/${testUserId}/clothing/thumbnails/sm/${testItemId}`,
+				`users/${testUserId}/clothing/thumbnails/sm/${testItemId}`
 			);
 		});
 
@@ -61,7 +57,7 @@ describe("Storage Key Helpers", () => {
 			});
 
 			expect(key).toBe(
-				`users/${testUserId}/clothing/thumbnails/md/${testItemId}`,
+				`users/${testUserId}/clothing/thumbnails/md/${testItemId}`
 			);
 		});
 	});
@@ -160,13 +156,13 @@ describe("Storage Key Helpers", () => {
 			});
 
 			expect(keys.original).toBe(
-				`users/${testUserId}/clothing/originals/${testItemId}`,
+				`users/${testUserId}/clothing/originals/${testItemId}`
 			);
 			expect(keys.thumbnails.sm).toBe(
-				`users/${testUserId}/clothing/thumbnails/sm/${testItemId}`,
+				`users/${testUserId}/clothing/thumbnails/sm/${testItemId}`
 			);
 			expect(keys.thumbnails.md).toBe(
-				`users/${testUserId}/clothing/thumbnails/md/${testItemId}`,
+				`users/${testUserId}/clothing/thumbnails/md/${testItemId}`
 			);
 		});
 

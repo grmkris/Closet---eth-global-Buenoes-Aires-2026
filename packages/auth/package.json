@@ -1,14 +1,8 @@
 {
   "name": "@ai-stilist/auth",
   "exports": {
-    ".": {
-      "types": "./dist/auth-config.d.ts",
-      "default": "./src/auth-config.ts"
-    },
-    "./*": {
-      "types": "./dist/*.d.ts",
-      "default": "./src/*.ts"
-    }
+    ".": "./src/auth-config.ts",
+    "./*": "./src/*.ts"
   },
   "type": "module",
   "scripts": {

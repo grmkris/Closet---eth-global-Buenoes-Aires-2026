@@ -123,7 +123,7 @@ export function createStorageClient(config: StorageConfig) {
 		});
 
 		throw new Error(
-			"listObjects is not supported by Bun S3Client. Use AWS SDK for this functionality.",
+			"listObjects is not supported by Bun S3Client. Use AWS SDK for this functionality."
 		);
 	}
 

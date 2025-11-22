@@ -77,15 +77,3 @@ export async function analyzeClothingImage(
 		throw new Error("Failed to analyze clothing image");
 	}
 }
-
-/**
- * Generate style embeddings for similarity search (optional, for future use)
- */
-export async function generateStyleEmbedding(
-	metadata: ClothingMetadata
-): Promise<number[]> {
-	// Placeholder for embedding generation
-	// Could use a separate embedding model or combine metadata features
-	// For now, return empty array - implement this when needed
-	return [];
-}

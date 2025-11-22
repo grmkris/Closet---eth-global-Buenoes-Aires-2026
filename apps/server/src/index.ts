@@ -3,12 +3,11 @@ import { createAuth } from "@ai-stilist/auth";
 import { createDb } from "@ai-stilist/db";
 import { createLogger } from "@ai-stilist/logger";
 import { createQueueClient } from "@ai-stilist/queue";
+import { createRedisClient } from "@ai-stilist/redis";
 import { SERVER_CONFIG } from "@ai-stilist/shared/constants";
 import { SERVICE_URLS } from "@ai-stilist/shared/services";
 import { createStorageClient } from "@ai-stilist/storage";
-import { createOutfitGenerator } from "@ai-stilist/wardrobe/outfit-generator";
-import { createStylingRulesService } from "@ai-stilist/wardrobe/styling-rules";
-import Redis from "ioredis";
+import { S3Client } from "bun";
 import { createApp } from "@/app";
 import { env } from "@/env";
 import { createImageProcessorWorker } from "@/workers/image-processor.worker";
@@ -27,17 +26,11 @@ const authClient = createAuth({
 	secret: env.BETTER_AUTH_SECRET,
 });
 
-const redis = new Redis(SERVICE_URLS[env.APP_ENV].redis);
-
-redis.on("error", (err: unknown) => {
-	logger.error({ msg: "Redis connection error", error: err });
+const redis = createRedisClient({
+	url: SERVICE_URLS[env.APP_ENV].redis,
 });
 
-redis.on("connect", () => {
-	logger.info({ msg: "Redis connected" });
-});
-
-const s3Client = new Bun.s3({
+const s3Client = new S3Client({
 	accessKeyId: env.MINIO_ACCESS_KEY,
 	secretAccessKey: env.MINIO_SECRET_KEY,
 	endpoint: SERVICE_URLS[env.APP_ENV].storage,
@@ -50,7 +43,10 @@ const storage = createStorageClient({
 	logger,
 });
 
-const queue = createQueueClient({ redis, logger });
+const queue = createQueueClient({
+	url: SERVICE_URLS[env.APP_ENV].redis,
+	logger,
+});
 
 const aiClient = createAiClient({
 	logger,
@@ -61,15 +57,6 @@ const aiClient = createAiClient({
 		xaiApiKey: env.XAI_API_KEY ?? "",
 	},
 	environment: env.APP_ENV,
-});
-
-const stylingRulesService = createStylingRulesService(db);
-
-const outfitGenerator = createOutfitGenerator({
-	db,
-	aiClient,
-	stylingRulesService,
-	logger,
 });
 
 // Start background worker
@@ -97,7 +84,6 @@ const app = await createApp({
 		storage,
 		queue,
 		aiClient,
-		outfitGenerator,
 	},
 });
 
@@ -111,7 +97,7 @@ process.on("SIGTERM", async () => {
 	logger.info({ msg: "SIGTERM received, shutting down gracefully" });
 	await worker.close();
 	await queue.close();
-	await redis.quit();
+	redis.close();
 	process.exit(0);
 });
 
@@ -119,6 +105,6 @@ process.on("SIGINT", async () => {
 	logger.info({ msg: "SIGINT received, shutting down gracefully" });
 	await worker.close();
 	await queue.close();
-	await redis.quit();
+	redis.close();
 	process.exit(0);
 });

@@ -3,18 +3,9 @@
   "version": "1.0.0",
   "type": "module",
   "exports": {
-    ".": {
-      "types": "./dist/storage-client.d.ts",
-      "default": "./src/storage-client.ts"
-    },
-    "./setup-minio": {
-      "types": "./dist/setup-minio.d.ts",
-      "default": "./src/setup-minio.ts"
-    },
-    "./storage-keys": {
-      "types": "./dist/storage-keys.d.ts",
-      "default": "./src/storage-keys.ts"
-    }
+    ".": "./src/storage-client.ts",
+    "./setup-minio": "./src/setup-minio.ts",
+    "./storage-keys": "./src/storage-keys.ts"
   },
   "scripts": {
     "build": "tsdown",

@@ -1,5 +1,5 @@
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
-import { z } from "zod";
+import type { z } from "zod";
 import {
 	clothingEmbedding,
 	clothingItem,
@@ -15,16 +15,28 @@ export type InsertClothingItem = z.infer<typeof insertClothingItemSchema>;
 export type SelectClothingItem = z.infer<typeof selectClothingItemSchema>;
 
 // Clothing Metadata Schemas
-export const insertClothingMetadataSchema = createInsertSchema(clothingMetadata);
-export const selectClothingMetadataSchema = createSelectSchema(clothingMetadata);
-export type InsertClothingMetadata = z.infer<typeof insertClothingMetadataSchema>;
-export type SelectClothingMetadata = z.infer<typeof selectClothingMetadataSchema>;
+export const insertClothingMetadataSchema =
+	createInsertSchema(clothingMetadata);
+export const selectClothingMetadataSchema =
+	createSelectSchema(clothingMetadata);
+export type InsertClothingMetadata = z.infer<
+	typeof insertClothingMetadataSchema
+>;
+export type SelectClothingMetadata = z.infer<
+	typeof selectClothingMetadataSchema
+>;
 
 // Clothing Embedding Schemas
-export const insertClothingEmbeddingSchema = createInsertSchema(clothingEmbedding);
-export const selectClothingEmbeddingSchema = createSelectSchema(clothingEmbedding);
-export type InsertClothingEmbedding = z.infer<typeof insertClothingEmbeddingSchema>;
-export type SelectClothingEmbedding = z.infer<typeof selectClothingEmbeddingSchema>;
+export const insertClothingEmbeddingSchema =
+	createInsertSchema(clothingEmbedding);
+export const selectClothingEmbeddingSchema =
+	createSelectSchema(clothingEmbedding);
+export type InsertClothingEmbedding = z.infer<
+	typeof insertClothingEmbeddingSchema
+>;
+export type SelectClothingEmbedding = z.infer<
+	typeof selectClothingEmbeddingSchema
+>;
 
 // Outfit Schemas
 export const insertOutfitSchema = createInsertSchema(outfit);

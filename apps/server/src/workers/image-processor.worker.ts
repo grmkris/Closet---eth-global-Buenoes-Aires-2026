@@ -3,7 +3,8 @@ import type { Database } from "@ai-stilist/db";
 import { clothingItem, clothingMetadata } from "@ai-stilist/db/schema/wardrobe";
 import type { Logger } from "@ai-stilist/logger";
 import type { QueueClient } from "@ai-stilist/queue";
-import type { ProcessImageJob } from "@ai-stilist/queue/jobs";
+import type { ProcessImageJob } from "@ai-stilist/queue/jobs/process-image-job";
+import { WORKER_CONFIG } from "@ai-stilist/shared/constants";
 import { typeIdGenerator } from "@ai-stilist/shared/typeid";
 import type { StorageClient } from "@ai-stilist/storage";
 import { analyzeClothingImage } from "@ai-stilist/wardrobe/clothing-analyzer";
@@ -20,13 +21,15 @@ export type ImageProcessorConfig = {
 /**
  * Create and start the image processor worker
  */
-export function createImageProcessorWorker(config: ImageProcessorConfig) {
+export function createImageProcessorWorker(
+	config: ImageProcessorConfig
+): ReturnType<QueueClient["createWorker"]> {
 	const { queue, db, storage, aiClient, logger } = config;
 
 	logger.info({ msg: "Starting image processor worker" });
 
 	// Create worker
-	const worker = queue.createWorker(
+	const worker = queue.createWorker<"process-image">(
 		"process-image",
 		async (job: ProcessImageJob) => {
 			const { itemId, imageKey, userId } = job;
@@ -37,7 +40,7 @@ export function createImageProcessorWorker(config: ImageProcessorConfig) {
 				// 1. Generate signed URL for image
 				const imageUrl = storage.getSignedUrl({
 					key: imageKey,
-					expiresIn: 3600,
+					expiresIn: WORKER_CONFIG.SIGNED_URL_EXPIRY_SECONDS,
 				});
 
 				// 2. Analyze image with AI
@@ -107,7 +110,7 @@ export function createImageProcessorWorker(config: ImageProcessorConfig) {
 			}
 		},
 		{
-			concurrency: 5, // Process 5 images concurrently
+			concurrency: WORKER_CONFIG.MAX_CONCURRENT_JOBS, // Process images concurrently
 		}
 	);
 

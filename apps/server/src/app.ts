@@ -111,7 +111,6 @@ export const createApp = async (props: {
 				storage: deps.storage,
 				queue: deps.queue,
 				aiClient: deps.aiClient,
-				outfitGenerator: deps.outfitGenerator,
 				headers: c.req.raw.headers,
 				requestId,
 			});
@@ -161,7 +160,6 @@ export const createApp = async (props: {
 				storage: deps.storage,
 				queue: deps.queue,
 				aiClient: deps.aiClient,
-				outfitGenerator: deps.outfitGenerator,
 				headers: c.req.raw.headers,
 				requestId,
 			});

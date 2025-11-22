@@ -31,7 +31,8 @@
     "@ai-stilist/shared": "workspace:*",
     "@ai-stilist/storage": "workspace:*",
     "@ai-stilist/test-utils": "workspace:*",
-    "@ai-stilist/wardrobe": "workspace:*"
+    "@ai-stilist/wardrobe": "workspace:*",
+    "@ai-stilist/redis": "workspace:*"
   },
   "devDependencies": {
     "typescript": "catalog:",

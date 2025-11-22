@@ -3,22 +3,8 @@
   "version": "1.0.0",
   "type": "module",
   "exports": {
-    "./clothing-analyzer": {
-      "types": "./dist/clothing-analyzer.d.ts",
-      "default": "./src/clothing-analyzer.ts"
-    },
-    "./metadata-schemas": {
-      "types": "./dist/metadata-schemas.d.ts",
-      "default": "./src/metadata-schemas.ts"
-    },
-    "./outfit-generator": {
-      "types": "./dist/outfit-generator.d.ts",
-      "default": "./src/outfit-generator.ts"
-    },
-    "./styling-rules": {
-      "types": "./dist/styling-rules.d.ts",
-      "default": "./src/styling-rules.ts"
-    }
+    "./clothing-analyzer": "./src/clothing-analyzer.ts",
+    "./metadata-schemas": "./src/metadata-schemas.ts"
   },
   "scripts": {
     "build": "tsdown",
@@ -40,6 +26,7 @@
     "@ai-stilist/db": "workspace:*",
     "@ai-stilist/logger": "workspace:*",
     "@ai-stilist/shared": "workspace:*",
+    "drizzle-orm": "catalog:",
     "ai": "^5.0.76",
     "zod": "catalog:"
   }
