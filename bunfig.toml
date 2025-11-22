@@ -1,2 +1,6 @@
 [install]
 linker = "isolated"
+
+[test]
+# Set test timeout for all tests and lifecycle hooks (beforeAll, afterAll, etc.)
+timeout = 120000  # 120 seconds for AI processing + setup

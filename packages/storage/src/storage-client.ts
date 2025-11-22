@@ -6,6 +6,7 @@ export type StorageConfig = {
 	s3Client: S3Client;
 	env: Environment;
 	logger?: Logger;
+	endpoint?: string; // Optional endpoint override for testing
 };
 
 export type UploadOptions = {
@@ -136,9 +137,12 @@ export function createStorageClient(config: StorageConfig) {
 		try {
 			logger?.debug({ msg: "Generating signed URL", key, expiresIn });
 
+			// Use explicit endpoint if provided, otherwise fall back to SERVICE_URLS
+			const endpoint = config.endpoint ?? SERVICE_URLS[config.env].storage;
+
 			const signedUrl = s3Client.presign(key, {
 				expiresIn,
-				endpoint: SERVICE_URLS[config.env].storage,
+				endpoint,
 			});
 
 			logger?.info({ msg: "Signed URL generated", key });
@@ -166,8 +170,11 @@ export function createStorageClient(config: StorageConfig) {
 				contentType,
 			});
 
+			// Use explicit endpoint if provided, otherwise fall back to SERVICE_URLS
+			const endpoint = config.endpoint ?? SERVICE_URLS[config.env].storage;
+
 			const uploadUrl = s3Client.presign(key, {
-				endpoint: SERVICE_URLS[config.env].storage,
+				endpoint,
 				method: "PUT",
 				expiresIn,
 				type: contentType,

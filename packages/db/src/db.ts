@@ -61,6 +61,7 @@ export async function runMigrations(
 ): Promise<void> {
 	logger?.info("Running database migrations");
 
+	logger?.info({ msg: "Environment", env: process.env.NODE_ENV });
 	// Resolve migrations folder
 	// In development: import.meta.dir is packages/db/src, use relative path
 	// In production/Docker: code is bundled, use process.cwd() (must be workspace root)
@@ -70,8 +71,19 @@ export async function runMigrations(
 			: join(import.meta.dir, "../drizzle");
 
 	if (db instanceof BunSQLDatabase) {
+		logger?.info({
+			msg: "Running BunSQL migrations",
+			folder: migrationsFolder,
+		});
 		await migrateBunSql(db, { migrationsFolder });
 	} else if (db instanceof PgliteDatabase) {
+		const currentDir = process.cwd();
+		logger?.info({
+			msg: "Running PGlite migrations",
+			folder: migrationsFolder,
+			currentDir,
+			importMetaDir: import.meta.dir,
+		});
 		await migratePgLite(db, { migrationsFolder });
 	} else {
 		throw new Error("Unsupported database type");

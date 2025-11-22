@@ -8,6 +8,7 @@ export type FilterParams = {
 	categories?: string[];
 	tags?: string[];
 	colors?: string[];
+	status?: "pending" | "processing" | "ready" | "failed";
 };
 
 // Helper to parse array params from URL
@@ -28,11 +29,18 @@ export function useFilterParams() {
 	const searchParams = useSearchParams();
 
 	// Parse current filters from URL
+	const statusParam = searchParams.get("status");
+	const validStatuses = ["pending", "processing", "ready", "failed"];
+
 	const filters: FilterParams = {
 		search: searchParams.get("search") || undefined,
 		categories: parseArrayParam(searchParams.get("categories")),
 		tags: parseArrayParam(searchParams.get("tags")),
 		colors: parseArrayParam(searchParams.get("colors")),
+		status:
+			statusParam && validStatuses.includes(statusParam)
+				? (statusParam as FilterParams["status"])
+				: undefined,
 	};
 
 	// Update URL with new filters
@@ -55,6 +63,10 @@ export function useFilterParams() {
 
 			if (newFilters.colors?.length) {
 				params.set("colors", newFilters.colors.join(","));
+			}
+
+			if (newFilters.status) {
+				params.set("status", newFilters.status);
 			}
 
 			// Update URL (replaces current entry in history)
@@ -83,7 +95,8 @@ export function useFilterParams() {
 		filters.search ||
 			filters.categories?.length ||
 			filters.tags?.length ||
-			filters.colors?.length
+			filters.colors?.length ||
+			filters.status
 	);
 
 	return {

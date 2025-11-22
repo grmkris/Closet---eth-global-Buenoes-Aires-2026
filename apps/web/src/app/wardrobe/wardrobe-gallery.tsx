@@ -3,12 +3,13 @@
 import { POLLING_CONFIG } from "@ai-stilist/shared/constants";
 import type { ClothingItemId } from "@ai-stilist/shared/typeid";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { Filter, ImageOff, Loader2 } from "lucide-react";
+import { ImageOff, Loader2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { Button } from "@/components/ui/button";
 import { FilterPanel } from "@/components/wardrobe/filters/filter-panel";
 import { ItemCard, ItemCardSkeleton } from "@/components/wardrobe/item-card";
 import { ItemDetailDialog } from "@/components/wardrobe/item-detail-dialog";
+import { ProcessingBanner } from "@/components/wardrobe/processing-banner";
+import { StatusFilterChips } from "@/components/wardrobe/status-filter-chips";
 import { UploadManager } from "@/components/wardrobe/upload-manager";
 import { useFilterParams } from "@/hooks/use-filter-params";
 import { orpc } from "@/utils/orpc";
@@ -20,7 +21,6 @@ export function WardrobeGallery() {
 		null
 	);
 	const [dialogOpen, setDialogOpen] = useState(false);
-	const [showFilters, setShowFilters] = useState(false);
 	const { filters, setFilters, clearFilters, hasActiveFilters } =
 		useFilterParams();
 
@@ -89,6 +89,17 @@ export function WardrobeGallery() {
 	const allItems = data?.pages.flatMap((page) => page.items) || [];
 	const totalItems = data?.pages[0]?.pagination.total || 0;
 
+	// Count items by status
+	const statusCounts = {
+		all: allItems.length,
+		pending: allItems.filter((item) => item.status === "pending").length,
+		processing: allItems.filter((item) => item.status === "processing").length,
+		ready: allItems.filter((item) => item.status === "ready").length,
+		failed: allItems.filter((item) => item.status === "failed").length,
+	};
+
+	const processingCount = statusCounts.processing + statusCounts.pending;
+
 	// Loading state
 	if (isLoading) {
 		return (
@@ -135,34 +146,53 @@ export function WardrobeGallery() {
 
 	return (
 		<div className="space-y-6">
+			{/* Processing Status Banner */}
+			<ProcessingBanner
+				onTap={() => {
+					// Scroll to first processing item or show them in filters
+					const firstProcessing = allItems.find(
+						(item) => item.status === "processing" || item.status === "pending"
+					);
+					if (firstProcessing) {
+						// In the future, we could filter by status
+						// For now, just close any modals/drawers
+						setDialogOpen(false);
+					}
+				}}
+				processingCount={processingCount}
+			/>
+
 			{/* Upload Manager */}
 			<UploadManager />
 
-			{/* Filter Toggle */}
+			{/* Status Filter Chips */}
+			<StatusFilterChips
+				counts={statusCounts}
+				onSelect={(status) => {
+					if (status === "all") {
+						setFilters({ ...filters, status: undefined });
+					} else {
+						setFilters({ ...filters, status });
+					}
+				}}
+				selected={filters.status || "all"}
+			/>
+
+			{/* Filter Panel - Always visible but collapsible */}
+			<FilterPanel
+				filters={filters}
+				hasActiveFilters={hasActiveFilters}
+				onClear={clearFilters}
+				onFiltersChange={setFilters}
+			/>
+
+			{/* Item Count */}
 			<div className="flex items-center justify-between">
 				<p className="text-muted-foreground text-sm">
 					{allItems.length} {allItems.length === 1 ? "item" : "items"}
 					{allItems.length !== totalItems && ` of ${totalItems}`}
 				</p>
-				<Button
-					onClick={() => setShowFilters(!showFilters)}
-					size="sm"
-					variant="outline"
-				>
-					<Filter className="mr-2 h-4 w-4" />
-					{showFilters ? "Hide" : "Show"} Filters
-				</Button>
 			</div>
-
-			{/* Filter Panel */}
-			{showFilters && (
-				<FilterPanel
-					filters={filters}
-					hasActiveFilters={hasActiveFilters}
-					onClear={clearFilters}
-					onFiltersChange={setFilters}
-				/>
-			)}
 
 			{/* No results after filtering */}
 			{allItems.length === 0 && hasActiveFilters && (

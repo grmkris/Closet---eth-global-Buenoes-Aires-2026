@@ -8,7 +8,8 @@ import {
 } from "./metadata-schemas";
 
 export type AnalyzeClothingImageInput = {
-	imageUrl: string;
+	imageData: Buffer | Uint8Array;
+	mimeType: string;
 	aiClient: AiClient;
 	logger?: Logger;
 	existingTags?: string[]; // Optional: pass existing tags for consistency
@@ -28,12 +29,11 @@ export type AnalyzeClothingImageResult = {
 export async function analyzeClothingImage(
 	input: AnalyzeClothingImageInput
 ): Promise<AnalyzeClothingImageResult> {
-	const { imageUrl, aiClient, logger, existingTags } = input;
+	const { imageData, mimeType, aiClient, logger, existingTags } = input;
 
 	const startTime = Date.now();
 
 	try {
-		// Note: imageUrl intentionally omitted from logs to avoid logging base64 data
 		logger?.info({ msg: "Analyzing clothing image" });
 
 		// Build prompt with optional existing tags context
@@ -55,7 +55,11 @@ export async function analyzeClothingImage(
 					role: "user",
 					content: [
 						{ type: "text", text: prompt },
-						{ type: "image", image: imageUrl },
+						{
+							type: "image",
+							image: imageData,
+							mimeType,
+						},
 					],
 				},
 			],

@@ -57,6 +57,10 @@ const DeleteItemInput = z.object({
 	itemId: ClothingItemId,
 });
 
+const ConfirmUploadInput = z.object({
+	itemId: ClothingItemId,
+});
+
 export const wardrobeRouter = {
 	/**
 	 * Upload a single image
@@ -89,24 +93,62 @@ export const wardrobeRouter = {
 				status: "pending",
 			});
 
-			// Queue processing job
-			const job = await context.queue.addJob("process-image", {
-				itemId,
-				imageKey,
-				userId,
-			});
-
 			context.logger.info({
-				msg: "Image upload initiated",
+				msg: "Upload URL generated",
 				itemId,
 				userId,
-				jobId: job.jobId,
 			});
 
 			return {
 				itemId,
 				uploadUrl,
 				status: "pending",
+			};
+		}),
+
+	/**
+	 * Confirm upload and start processing
+	 * Called by client after successfully uploading to presigned URL
+	 */
+	confirmUpload: protectedProcedure
+		.input(ConfirmUploadInput)
+		.handler(async ({ input, context }) => {
+			const { itemId } = input;
+			const userId = UserId.parse(context.session.user.id);
+
+			// Verify item exists and belongs to user
+			const item = await context.db.query.clothingItemsTable.findFirst({
+				where: and(
+					eq(clothingItemsTable.id, itemId),
+					eq(clothingItemsTable.userId, userId)
+				),
+			});
+
+			if (!item) {
+				throw new Error("Item not found");
+			}
+
+			if (item.status !== "pending") {
+				throw new Error(`Item status is ${item.status}, expected pending`);
+			}
+
+			// Queue processing job
+			const job = await context.queue.addJob("process-image", {
+				itemId,
+				imageKey: item.imageKey,
+				userId,
+			});
+
+			context.logger.info({
+				msg: "Upload confirmed, processing started",
+				itemId,
+				userId,
+				jobId: job.jobId,
+			});
+
+			return {
+				success: true,
+				jobId: job.jobId,
 			};
 		}),
 
@@ -143,18 +185,10 @@ export const wardrobeRouter = {
 						status: "pending",
 					});
 
-					// Queue processing job
-					const job = await context.queue.addJob("process-image", {
-						itemId,
-						imageKey,
-						userId,
-					});
-
 					return {
 						itemId,
 						uploadUrl,
 						status: "pending",
-						jobId: job.jobId,
 					};
 				})
 			);
@@ -385,68 +419,108 @@ export const wardrobeRouter = {
 	getTags: protectedProcedure.handler(async ({ context }) => {
 		const userId = UserId.parse(context.session.user.id);
 
-		// Get tag counts for user's items using JOIN and GROUP BY
-		const tagStats = await context.db
-			.select({
-				tagId: tagsTable.id,
-				tagName: tagsTable.name,
-				tagType: tagTypesTable.name,
-				tagTypeDisplay: tagTypesTable.displayName,
-				count: sql<number>`count(*)::int`.as("count"),
-			})
-			.from(clothingItemTagsTable)
-			.innerJoin(tagsTable, eq(tagsTable.id, clothingItemTagsTable.tagId))
-			.innerJoin(tagTypesTable, eq(tagTypesTable.id, tagsTable.typeId))
-			.innerJoin(
-				clothingItemsTable,
-				eq(clothingItemsTable.id, clothingItemTagsTable.itemId)
-			)
-			.where(eq(clothingItemsTable.userId, userId))
-			.groupBy(
-				tagsTable.id,
-				tagsTable.name,
-				tagTypesTable.name,
-				tagTypesTable.displayName
-			)
-			.orderBy(sql`count(*) desc`);
+		// Use Drizzle relational queries to fetch all items with relations
+		const items = await context.db.query.clothingItemsTable.findMany({
+			where: eq(clothingItemsTable.userId, userId),
+			with: {
+				tags: {
+					with: {
+						tag: {
+							with: {
+								type: true,
+							},
+						},
+					},
+				},
+				categories: {
+					with: {
+						category: true,
+					},
+				},
+				colors: {
+					with: {
+						color: true,
+					},
+				},
+			},
+		});
 
-		// Get categories with counts using JOIN and GROUP BY
-		const categoryStats = await context.db
-			.select({
-				categoryName: categoriesTable.name,
-				count: sql<number>`count(*)::int`.as("count"),
-			})
-			.from(clothingItemCategoriesTable)
-			.innerJoin(
-				categoriesTable,
-				eq(categoriesTable.id, clothingItemCategoriesTable.categoryId)
-			)
-			.innerJoin(
-				clothingItemsTable,
-				eq(clothingItemsTable.id, clothingItemCategoriesTable.itemId)
-			)
-			.where(eq(clothingItemsTable.userId, userId))
-			.groupBy(categoriesTable.name)
-			.orderBy(sql`count(*) desc`);
+		// Aggregate tag statistics in JavaScript
+		const tagCountMap = new Map<
+			string,
+			{ tag: string; type: string; typeDisplay: string; count: number }
+		>();
 
-		const categories = categoryStats.map((c) => c.categoryName);
+		for (const item of items) {
+			for (const { tag } of item.tags) {
+				const key = tag.id;
+				const existing = tagCountMap.get(key);
+				if (existing) {
+					existing.count++;
+				} else {
+					tagCountMap.set(key, {
+						tag: tag.name,
+						type: tag.type.name,
+						typeDisplay: tag.type.displayName,
+						count: 1,
+					});
+				}
+			}
+		}
 
-		// Get total item count
-		const itemCount = await context.db
-			.select({ count: sql<number>`count(*)::int` })
-			.from(clothingItemsTable)
-			.where(eq(clothingItemsTable.userId, userId));
+		// Sort tags by count descending
+		const tags = Array.from(tagCountMap.values()).sort(
+			(a, b) => b.count - a.count
+		);
+
+		// Aggregate category statistics
+		const categoryCountMap = new Map<string, number>();
+
+		for (const item of items) {
+			for (const { category } of item.categories) {
+				const count = categoryCountMap.get(category.name) || 0;
+				categoryCountMap.set(category.name, count + 1);
+			}
+		}
+
+		// Sort categories by count descending
+		const categories = Array.from(categoryCountMap.keys()).sort(
+			(a, b) => (categoryCountMap.get(b) || 0) - (categoryCountMap.get(a) || 0)
+		);
+
+		// Aggregate color statistics
+		const colorCountMap = new Map<
+			string,
+			{ name: string; hexCode: string | null; count: number }
+		>();
+
+		for (const item of items) {
+			for (const { color } of item.colors) {
+				const key = color.id;
+				const existing = colorCountMap.get(key);
+				if (existing) {
+					existing.count++;
+				} else {
+					colorCountMap.set(key, {
+						name: color.name,
+						hexCode: color.hexCode,
+						count: 1,
+					});
+				}
+			}
+		}
+
+		// Sort colors by count descending
+		const colors = Array.from(colorCountMap.values()).sort(
+			(a, b) => b.count - a.count
+		);
 
 		return {
-			tags: tagStats.map((t) => ({
-				tag: t.tagName,
-				count: t.count,
-				type: t.tagType,
-				typeDisplay: t.tagTypeDisplay,
-			})),
+			tags,
 			categories,
-			totalTags: tagStats.length,
-			totalItems: itemCount[0]?.count || 0,
+			colors,
+			totalTags: tags.length,
+			totalItems: items.length,
 		};
 	}),
 

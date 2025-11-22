@@ -12,6 +12,9 @@
     "./test-setup": "./src/test-setup.ts",
     "./test-helpers": "./src/test-helpers.ts"
   },
+  "redisMemoryServer": {
+    "debug": "1"
+  },
   "scripts": {
     "typecheck": "tsc --noEmit",
     "lint": "ultracite check",

@@ -100,7 +100,7 @@ export function UploadDropzone({
 	return (
 		<Card
 			className={cn(
-				"relative flex flex-col items-center justify-center border-2 border-dashed p-12 transition-colors",
+				"relative flex flex-col items-center justify-center border-2 border-dashed p-8 transition-colors sm:p-12",
 				isDragging && "border-primary bg-primary/5",
 				disabled && "cursor-not-allowed opacity-50",
 				!(disabled || isDragging) && "cursor-pointer hover:border-primary/50"
@@ -118,6 +118,7 @@ export function UploadDropzone({
 			<input
 				accept={accept}
 				aria-label="Upload clothing images"
+				capture="environment"
 				className="hidden"
 				disabled={disabled}
 				id="file-input-dropzone"
@@ -126,17 +127,19 @@ export function UploadDropzone({
 				type="file"
 			/>
 
-			<div className="flex flex-col items-center gap-4 text-center">
-				<div className="rounded-full bg-muted p-4">
-					<Upload className="h-8 w-8 text-muted-foreground" />
+			<div className="flex flex-col items-center gap-3 text-center sm:gap-4">
+				<div className="rounded-full bg-muted p-3 sm:p-4">
+					<Upload className="h-6 w-6 text-muted-foreground sm:h-8 sm:w-8" />
 				</div>
 
-				<div className="space-y-2">
+				<div className="space-y-1 sm:space-y-2">
 					<p className="font-medium text-sm">
-						{isDragging ? "Drop images here" : "Drag & drop images here"}
+						{isDragging
+							? "Drop images here"
+							: "Tap to capture or upload images"}
 					</p>
 					<p className="text-muted-foreground text-xs">
-						or click to browse (max {maxFiles} files, 10MB each)
+						Max {maxFiles} files, 10MB each
 					</p>
 				</div>
 			</div>

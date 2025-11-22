@@ -22,7 +22,7 @@ export const SERVICE_URLS: Record<
 		web: "http://localhost:3001",
 		cookieDomain: "localhost",
 		storage: "http://localhost:9000",
-		redis: "redis://localhost:6379",
+		redis: "redis://localhost:63791",
 	},
 	prod: {
 		auth: "https://api.ai-stilist.com",

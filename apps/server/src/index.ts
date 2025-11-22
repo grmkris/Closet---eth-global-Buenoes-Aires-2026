@@ -51,7 +51,7 @@ const queue = createQueueClient({
 const aiClient = createAiClient({
 	logger,
 	providerConfigs: {
-		googleGeminiApiKey: env.GEMINI_API_KEY,
+		googleGeminiApiKey: env.GOOGLE_GOOGLE_GEMINI_API_KEY,
 		anthropicApiKey: env.ANTHROPIC_API_KEY,
 		groqApiKey: env.GROQ_API_KEY,
 		xaiApiKey: env.XAI_API_KEY ?? "",

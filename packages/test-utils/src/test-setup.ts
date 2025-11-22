@@ -1,20 +1,62 @@
+import type { AiClient } from "@ai-stilist/ai";
 import { createAiClient } from "@ai-stilist/ai";
 import { type Auth, createAuth } from "@ai-stilist/auth";
 import { createDb, type Database, runMigrations } from "@ai-stilist/db";
 import type { Logger as DrizzleLogger } from "@ai-stilist/db/drizzle";
+import {
+	clothingAnalysesTable,
+	clothingItemCategoriesTable,
+	clothingItemColorsTable,
+	clothingItemsTable,
+	clothingItemTagsTable,
+} from "@ai-stilist/db/schema/wardrobe";
 import { createLogger, type Logger } from "@ai-stilist/logger";
+import type { QueueClient } from "@ai-stilist/queue";
 import { createQueueClient } from "@ai-stilist/queue";
-import type { Environment } from "@ai-stilist/shared/services";
+import type { RequestId } from "@ai-stilist/shared/typeid";
 import { typeIdGenerator } from "@ai-stilist/shared/typeid";
+import type { StorageClient } from "@ai-stilist/storage";
 import { createStorageClient } from "@ai-stilist/storage";
 import type { User } from "better-auth";
+import { env } from "bun";
+import { z } from "zod";
 import { createPgLite, type PGlite } from "./pg-lite";
 import { createTestRedisSetup } from "./redis-test-server";
 import { createTestS3Setup } from "./s3-test-server";
-import { defaultTestEnv } from "./test-env";
-import { type Context, createContext } from "./test-helpers";
+import { testEnv } from "./test-env";
+
+/**
+ * ORPC Context type for API tests
+ * This must match the Context type from @ai-stilist/api/context
+ */
+export type Context = {
+	session: Awaited<ReturnType<Auth["api"]["getSession"]>>;
+	db: Database;
+	storage: StorageClient;
+	queue: QueueClient;
+	aiClient: AiClient;
+	logger: Logger;
+	headers: Headers;
+	requestId: RequestId;
+};
 
 const SessionTokenRegex = /better-auth\.session_token=([^;]+)/;
+
+const logger = createLogger({
+	appName: "test.setup",
+	level: "debug",
+	environment: "dev",
+});
+
+const envSchema = z.object({
+	LOG_LEVEL: z.enum(["debug", "info", "warn", "error", "fatal"]),
+	BETTER_AUTH_SECRET: z.string(),
+});
+logger.info({ msg: "Validating environment", env });
+const validatedEnv = envSchema.parse({
+	LOG_LEVEL: "debug",
+	BETTER_AUTH_SECRET: "test-secret-key-for-testing-only",
+});
 
 export type TestUser = {
 	id: string;
@@ -98,19 +140,13 @@ async function createTestUser(
  * Creates a complete test environment with in-memory database and all services
  */
 export async function createTestSetup(): Promise<TestSetup> {
-	const logger = createLogger({
-		appName: "test.setup",
-		level: defaultTestEnv.LOG_LEVEL,
-		environment: defaultTestEnv.APP_ENV,
-	});
-
 	// Create in-memory PGlite database
 	const pgLite = createPgLite();
 
 	// Only log SQL queries in debug mode to reduce test noise
 	const drizzleLogger: DrizzleLogger = {
 		logQuery: (query, params) => {
-			if (defaultTestEnv.LOG_LEVEL === "debug") {
+			if (validatedEnv.LOG_LEVEL === "debug") {
 				logger.debug({ msg: "SQL Query", query, params });
 			}
 		},
@@ -128,7 +164,7 @@ export async function createTestSetup(): Promise<TestSetup> {
 	// Run migrations
 	try {
 		await runMigrations(db, logger);
-		logger.debug("Migrations applied successfully");
+		logger.info("Migrations applied successfully");
 	} catch (error) {
 		logger.error({ msg: "Migration failed", error });
 		throw error;
@@ -137,11 +173,11 @@ export async function createTestSetup(): Promise<TestSetup> {
 	// Create auth client
 	const authClient = createAuth({
 		db,
-		appEnv: defaultTestEnv.APP_ENV,
-		secret: defaultTestEnv.BETTER_AUTH_SECRET,
+		appEnv: testEnv.APP_ENV,
+		secret: testEnv.BETTER_AUTH_SECRET,
 	});
 
-	logger.debug("Creating test users...");
+	logger.info("Creating test users...");
 
 	// Create test users using real auth API
 	const authenticatedUser = await createTestUser(
@@ -156,16 +192,27 @@ export async function createTestSetup(): Promise<TestSetup> {
 		"Unauthenticated User"
 	);
 
+	logger.info({
+		msg: "Test users created",
+		users: [authenticatedUser, unauthenticatedUser],
+	});
+
 	// Create S3 test server and storage client
 	const s3Setup = await createTestS3Setup("test-s3-bucket");
 	const storage = createStorageClient({
 		s3Client: s3Setup.client,
-		env: (process.env.APP_ENV as Environment) || "dev",
+		env: "dev",
 		logger,
+		endpoint: `http://${s3Setup.hostname}:${s3Setup.port}`,
+	});
+
+	logger.info({
+		msg: "S3 test server created",
+		s3Setup,
 	});
 
 	// Create Redis test server
-	const redis = await createTestRedisSetup();
+	const redis = await createTestRedisSetup({ logger });
 
 	logger.info({
 		msg: "Test environment setup complete",
@@ -181,20 +228,26 @@ export async function createTestSetup(): Promise<TestSetup> {
 	const aiClient = createAiClient({
 		logger,
 		providerConfigs: {
-			googleGeminiApiKey: defaultTestEnv.GEMINI_API_KEY,
-			anthropicApiKey: defaultTestEnv.ANTHROPIC_API_KEY,
-			groqApiKey: defaultTestEnv.GROQ_API_KEY,
-			xaiApiKey: defaultTestEnv.XAI_API_KEY,
+			googleGeminiApiKey: testEnv.GOOGLE_GEMINI_API_KEY,
 		},
-		environment: defaultTestEnv.APP_ENV,
+		environment: testEnv.APP_ENV,
 	});
 
 	// Cleanup function to reset data between tests
 	const cleanup = async () => {
-		// No-op for now - implement database truncation/cleanup if needed
-		await Promise.resolve();
+		logger.info("Cleaning up test data...");
 
-		logger.debug("Test data cleaned up");
+		// Delete in order respecting foreign key constraints
+		// Junction tables first, then analysis, then items
+		await db.delete(clothingItemTagsTable);
+		await db.delete(clothingItemColorsTable);
+		await db.delete(clothingItemCategoriesTable);
+		await db.delete(clothingAnalysesTable);
+		await db.delete(clothingItemsTable);
+
+		// Don't delete users, categories, colors, tags - they're shared across tests
+
+		logger.info("Test data cleaned up");
 	};
 
 	// Close function to shut down all services
@@ -248,9 +301,14 @@ export async function createTestContext(props: {
 		token ? { cookie: `better-auth.session_token=${token}` } : {}
 	);
 
-	// Call context creation - auth client will populate session from headers
-	return await createContext({
-		authClient: deps.authClient,
+	// Get session from auth client
+	const session = await deps.authClient.api.getSession({
+		headers,
+	});
+
+	// Build context object directly
+	return {
+		session,
 		db: deps.db,
 		storage: deps.storage,
 		queue: deps.queue,
@@ -258,5 +316,5 @@ export async function createTestContext(props: {
 		logger: deps.logger,
 		headers,
 		requestId: typeIdGenerator("request"),
-	});
+	};
 }

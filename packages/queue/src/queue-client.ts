@@ -23,7 +23,7 @@ export type JobResult = {
 
 export function createQueueClient(config: QueueConfig) {
 	const { url, logger } = config;
-	const redis = new Redis(url);
+	const redis = new Redis(url, { maxRetriesPerRequest: null });
 
 	const connection = redis;
 

@@ -185,7 +185,7 @@ Run `bun run fix` before committing to auto-fix most issues.
    - `BETTER_AUTH_SECRET`: Auth secret key (generate with `openssl rand -base64 32`)
    - `BETTER_AUTH_URL`: Auth URL (development: `http://localhost:3000`)
    - `CORS_ORIGIN`: CORS origin (development: `http://localhost:3001`)
-   - `GOOGLE_GEMINI_API_KEY`: Gemini AI API key (or other AI provider keys)
+   - `GOOGLE_GOOGLE_GEMINI_API_KEY`: Gemini AI API key (or other AI provider keys)
 
 2. Start infrastructure services:
    ```bash

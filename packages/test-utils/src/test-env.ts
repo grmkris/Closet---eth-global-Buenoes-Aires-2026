@@ -1,21 +1,27 @@
-import type { Environment } from "@ai-stilist/shared/services";
+import { Environment } from "@ai-stilist/shared/services";
+import { env as bunEnv } from "bun";
+import { z } from "zod";
 
 /**
- * Default environment configuration for tests
- * Provides sensible defaults that can be overridden by actual env vars
+ * Test environment schema
+ * Uses Zod for validation and type safety, similar to apps/server/src/env.ts
  */
-export const defaultTestEnv = {
-	LOG_LEVEL: (process.env.LOG_LEVEL || "info") as
-		| "debug"
-		| "info"
-		| "warn"
-		| "error"
-		| "fatal",
-	APP_ENV: (process.env.APP_ENV || "dev") as Environment,
-	BETTER_AUTH_SECRET:
-		process.env.BETTER_AUTH_SECRET || "test-secret-key-for-testing-only",
-	GEMINI_API_KEY: process.env.GEMINI_API_KEY || "",
-	ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY || "",
-	GROQ_API_KEY: process.env.GROQ_API_KEY || "",
-	XAI_API_KEY: process.env.XAI_API_KEY || "",
-} as const;
+export const testEnvSchema = z.object({
+	NODE_ENV: z.enum(["development", "test", "production"]).default("test"),
+	APP_ENV: Environment.default("dev"),
+	LOG_LEVEL: z
+		.enum(["debug", "info", "warn", "error", "fatal"])
+		.default("debug"),
+	BETTER_AUTH_SECRET: z.string().default("test-secret-key-for-testing-only"),
+
+	// AI Providers - all optional
+	// When missing, returns undefined (not empty string)
+	// Tests will fail fast with clear error if AI is needed without key
+	GOOGLE_GEMINI_API_KEY: z.string().optional(),
+});
+
+/**
+ * Validated test environment
+ * Set GOOGLE_GEMINI_API_KEY (or other provider keys) to run tests with real AI
+ */
+export const testEnv = testEnvSchema.parse(bunEnv);

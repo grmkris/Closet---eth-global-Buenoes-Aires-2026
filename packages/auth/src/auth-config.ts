@@ -30,6 +30,9 @@ export const createAuth = (config: AuthConfig) => {
 			enabled: true,
 		},
 		advanced: {
+			database: {
+				generateId: false,
+			},
 			defaultCookieAttributes: {
 				sameSite: "none",
 				secure: true,

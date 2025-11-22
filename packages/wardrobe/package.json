@@ -5,6 +5,7 @@
   "exports": {
     "./clothing-analyzer": "./src/clothing-analyzer.ts",
     "./metadata-schemas": "./src/metadata-schemas.ts",
+    "./process-clothing-image": "./src/process-clothing-image.ts",
     "./wardrobe-repository": "./src/wardrobe-repository.ts"
   },
   "scripts": {
@@ -30,6 +31,7 @@
     "@ai-stilist/redis": "workspace:*",
     "@ai-stilist/shared": "workspace:*",
     "@ai-stilist/storage": "workspace:*",
+    "@ai-stilist/queue": "workspace:*",
     "ai": "^5.0.98",
     "zod": "catalog:"
   }

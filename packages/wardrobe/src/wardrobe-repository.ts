@@ -158,7 +158,10 @@ export async function insertClothingTags(
 			})
 			.onConflictDoUpdate({
 				target: [tagsTable.typeId, tagsTable.name],
-				set: { usageCount: sql`usage_count + 1` },
+				set: {
+					usageCount: sql`${tagsTable.usageCount} + 1`,
+					updatedAt: sql`CURRENT_TIMESTAMP`,
+				},
 			})
 			.returning();
 

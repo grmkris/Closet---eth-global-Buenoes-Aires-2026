@@ -13,6 +13,7 @@
     "fix:unsafe": "ultracite fix --unsafe"
   },
   "devDependencies": {
+    "@ai-stilist/test-utils": "workspace:*",
     "tsdown": "catalog:"
   },
   "peerDependencies": {
@@ -26,7 +27,6 @@
     "@ai-stilist/queue": "workspace:*",
     "@ai-stilist/shared": "workspace:*",
     "@ai-stilist/storage": "workspace:*",
-    "@ai-stilist/test-utils": "workspace:*",
     "@ai-stilist/wardrobe": "workspace:*",
     "@orpc/client": "catalog:",
     "@orpc/openapi": "catalog:",

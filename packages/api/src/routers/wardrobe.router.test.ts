@@ -1,4 +1,11 @@
-import { afterAll, beforeAll, describe, expect, test } from "bun:test";
+import {
+	afterAll,
+	afterEach,
+	beforeAll,
+	describe,
+	expect,
+	test,
+} from "bun:test";
 import fs from "node:fs/promises";
 import path from "node:path";
 import type { Database } from "@ai-stilist/db";
@@ -7,16 +14,18 @@ import {
 	clothingAnalysesTable,
 	clothingItemsTable,
 } from "@ai-stilist/db/schema/wardrobe";
-import { NUMERIC_CONSTANTS } from "@ai-stilist/shared/constants";
+import type { QueueClient } from "@ai-stilist/queue";
+import type { ProcessImageJob } from "@ai-stilist/queue/jobs/process-image-job";
+import { NUMERIC_CONSTANTS, WORKER_CONFIG } from "@ai-stilist/shared/constants";
+import type { ClothingItemId } from "@ai-stilist/shared/typeid";
 import {
-	type ClothingItemId,
-	typeIdGenerator,
-} from "@ai-stilist/shared/typeid";
-import { createContext } from "@ai-stilist/test-utils/test-helpers";
-import type { TestSetup } from "@ai-stilist/test-utils/test-setup";
-import { createTestSetup } from "@ai-stilist/test-utils/test-setup";
+	type Context,
+	createTestContext,
+	createTestSetup,
+	type TestSetup,
+} from "@ai-stilist/test-utils/test-setup";
+import { processClothingImage } from "@ai-stilist/wardrobe/process-clothing-image";
 import { call } from "@orpc/server";
-import type { Context } from "../context";
 import { wardrobeRouter } from "./wardrobe.router";
 
 // Test data directory with real images (relative from repo root)
@@ -30,7 +39,7 @@ const TEST_IMAGES = {
 // Test timeout constants
 const AI_PROCESSING_TIMEOUT_MS = 60_000; // 60s for single AI processing
 const MULTIPLE_UPLOADS_TIMEOUT_MS = 120_000; // 120s for multiple uploads
-
+const TEST_TIMEOUT_MS = 10_000;
 // ============================================================================
 // HELPER FUNCTIONS
 // ============================================================================
@@ -130,7 +139,14 @@ async function uploadAndProcessImage(
 		);
 	}
 
-	// Step 3: Wait for background processing to complete
+	// Step 3: Confirm upload to start processing
+	await call(
+		wardrobeRouter.confirmUpload,
+		{ itemId: uploadResult.itemId },
+		{ context }
+	);
+
+	// Step 4: Wait for background processing to complete
 	await waitForProcessing(context.db, uploadResult.itemId);
 
 	return uploadResult.itemId;
@@ -143,24 +159,43 @@ async function uploadAndProcessImage(
 describe("Wardrobe Router", () => {
 	let setup: TestSetup;
 	let context: Context;
+	let worker: ReturnType<QueueClient["createWorker"]>;
 
 	beforeAll(async () => {
 		// Create test environment with real AI
 		setup = await createTestSetup();
-		context = await createContext({
-			authClient: setup.deps.authClient,
-			db: setup.deps.db,
-			storage: setup.deps.storage,
-			queue: setup.deps.queue,
-			aiClient: setup.deps.aiClient,
-			logger: setup.deps.logger,
-			headers: new Headers(),
-			requestId: typeIdGenerator("request"),
+		context = await createTestContext({
+			token: setup.users.authenticated.token,
+			testSetup: setup,
 		});
+
+		// Start image processor worker for integration tests
+		worker = setup.deps.queue.createWorker<"process-image">(
+			"process-image",
+			async (job: ProcessImageJob) =>
+				processClothingImage(
+					{
+						db: setup.deps.db,
+						storage: setup.deps.storage,
+						aiClient: setup.deps.aiClient,
+						logger: setup.deps.logger,
+					},
+					job
+				),
+			{
+				concurrency: WORKER_CONFIG.MAX_CONCURRENT_JOBS,
+			}
+		);
+	});
+
+	afterEach(async () => {
+		// Clean up data after each test to ensure isolation
+		await setup.cleanup();
 	});
 
 	afterAll(async () => {
-		await setup.cleanup();
+		await worker.close();
+		// await setup.close();
 	});
 
 	describe("upload", () => {
@@ -274,46 +309,54 @@ describe("Wardrobe Router", () => {
 	});
 
 	describe("getItem", () => {
-		test("should return item with analysis", async () => {
-			// First upload an image
-			const itemId = await uploadAndProcessImage(context, TEST_IMAGES.dress);
+		test(
+			"should return item with analysis",
+			async () => {
+				// First upload an image
+				const itemId = await uploadAndProcessImage(context, TEST_IMAGES.dress);
 
-			// Then fetch it
-			const result = await call(
-				wardrobeRouter.getItem,
-				{ itemId },
-				{ context }
-			);
+				// Then fetch it
+				const result = await call(
+					wardrobeRouter.getItem,
+					{ itemId },
+					{ context }
+				);
 
-			expect(result.id).toBe(itemId);
-			expect(result.imageUrl).toBeDefined();
-			expect(result.status).toBe("ready");
-			expect(result.analysis).toBeDefined();
-			expect(result.categories).toBeArray();
-			expect(result.tags).toBeArray();
-		});
+				expect(result.id).toBe(itemId);
+				expect(result.imageUrl).toBeDefined();
+				expect(result.status).toBe("ready");
+				expect(result.analysis).toBeDefined();
+				expect(result.categories).toBeArray();
+				expect(result.tags).toBeArray();
+			},
+			TEST_TIMEOUT_MS
+		);
 	});
 
 	describe("deleteItem", () => {
-		test("should delete item and its analysis", async () => {
-			// Upload an image
-			const itemId = await uploadAndProcessImage(context, TEST_IMAGES.shirt);
+		test(
+			"should delete item and its analysis",
+			async () => {
+				// Upload an image
+				const itemId = await uploadAndProcessImage(context, TEST_IMAGES.shirt);
 
-			// Delete it
-			const result = await call(
-				wardrobeRouter.deleteItem,
-				{ itemId },
-				{ context }
-			);
+				// Delete it
+				const result = await call(
+					wardrobeRouter.deleteItem,
+					{ itemId },
+					{ context }
+				);
 
-			expect(result.success).toBe(true);
+				expect(result.success).toBe(true);
 
-			// Verify it's gone
-			const item = await context.db.query.clothingItemsTable.findFirst({
-				where: eq(clothingItemsTable.id, itemId),
-			});
+				// Verify it's gone
+				const item = await context.db.query.clothingItemsTable.findFirst({
+					where: eq(clothingItemsTable.id, itemId),
+				});
 
-			expect(item).toBeUndefined();
-		});
+				expect(item).toBeUndefined();
+			},
+			TEST_TIMEOUT_MS
+		);
 	});
 });

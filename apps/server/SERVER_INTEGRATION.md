@@ -70,7 +70,7 @@ const queue = createQueueClient({ redis, logger });
 const aiClient = createAiClient({
 	logger,
 	providerConfigs: {
-		googleGeminiApiKey: env.GEMINI_API_KEY,
+		googleGeminiApiKey: env.GOOGLE_GEMINI_API_KEY,
 		anthropicApiKey: env.ANTHROPIC_API_KEY,
 		groqApiKey: env.GROQ_API_KEY,
 		xaiApiKey: env.XAI_API_KEY ?? "",
@@ -214,7 +214,7 @@ PORT=8000
 APP_ENV=dev
 
 # AI Providers (at least one required for image analysis)
-GEMINI_API_KEY=your_actual_gemini_key_here
+GOOGLE_GEMINI_API_KEY=your_actual_gemini_key_here
 ANTHROPIC_API_KEY=
 GROQ_API_KEY=
 XAI_API_KEY=
@@ -274,7 +274,7 @@ The background worker should be running and processing jobs automatically.
 - Check credentials in .env match MinIO setup
 
 ### AI API Error
-- Verify GEMINI_API_KEY is set correctly
+- Verify GOOGLE_GEMINI_API_KEY is set correctly
 - Test API key: `curl -H "x-goog-api-key: YOUR_KEY" https://generativelanguage.googleapis.com/v1beta/models`
 
 ### Worker Not Processing Jobs
