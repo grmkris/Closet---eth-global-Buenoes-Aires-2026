@@ -12,7 +12,12 @@
   },
   "type": "module",
   "scripts": {
-    "build": "tsdown"
+    "build": "tsdown",
+    "typecheck": "tsc --noEmit",
+    "lint": "ultracite check",
+    "fix": "ultracite fix",
+    "fix:unsafe": "ultracite fix --unsafe",
+    "format": "ultracite fix"
   },
   "devDependencies": {
     "tsdown": "catalog:"

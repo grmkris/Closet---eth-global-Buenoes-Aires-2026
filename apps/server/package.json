@@ -5,9 +5,14 @@
   "scripts": {
     "build": "tsdown",
     "check-types": "tsc -b",
+    "typecheck": "tsc -b",
     "compile": "bun build --compile --minify --sourcemap --bytecode ./src/index.ts --outfile server",
     "dev": "bun run --hot src/index.ts",
-    "start": "bun run dist/index.js"
+    "start": "bun run dist/index.js",
+    "lint": "ultracite check",
+    "fix": "ultracite fix",
+    "fix:unsafe": "ultracite fix --unsafe",
+    "test": "bun test"
   },
   "dependencies": {
     "hono": "catalog:",
@@ -17,9 +22,11 @@
     "better-auth": "catalog:",
     "dotenv": "catalog:",
     "zod": "catalog:",
+    "drizzle-orm": "^0.44.2",
     "@ai-stilist/api": "workspace:*",
     "@ai-stilist/auth": "workspace:*",
-    "@ai-stilist/db": "workspace:*"
+    "@ai-stilist/db": "workspace:*",
+    "@ai-stilist/test-utils": "workspace:*"
   },
   "devDependencies": {
     "typescript": "catalog:",

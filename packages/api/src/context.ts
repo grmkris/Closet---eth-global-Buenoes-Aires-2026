@@ -1,11 +1,12 @@
+import type { AuthClient } from "@ai-stilist/auth";
 import type { Context as HonoContext } from "hono";
-import { auth } from "@ai-stilist/auth";
 
 export type CreateContextOptions = {
 	context: HonoContext;
+	auth: AuthClient;
 };
 
-export async function createContext({ context }: CreateContextOptions) {
+export async function createContext({ context, auth }: CreateContextOptions) {
 	const session = await auth.api.getSession({
 		headers: context.req.raw.headers,
 	});

@@ -1,0 +1,127 @@
+name: CI Pipeline
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main, develop]
+
+env:
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  code-quality:
+    name: Code Quality - ${{ matrix.task }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        task: [lint, typecheck]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup
+
+      - name: Run ${{ matrix.task }}
+        run: bun run ${{ matrix.task }}
+
+      - name: Upload results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.task }}-results
+          path: |
+            **/*.log
+            .turbo/runs/*
+
+  test:
+    name: Test - Server
+    needs: code-quality
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup
+
+      - name: Run tests
+        run: bun run test
+        env:
+          NODE_ENV: test
+
+      - name: Upload coverage
+        if: always()
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage/coverage-final.json
+          flags: server
+          token: ${{ secrets.CODECOV_TOKEN }}
+        continue-on-error: true
+
+  build:
+    name: Build
+    needs: [code-quality, test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup
+
+      - name: Build all packages
+        run: bun run build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: |
+            apps/**/dist
+            packages/**/dist
+          retention-days: 7
+
+  security:
+    name: Security Scanning
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup
+
+      - name: Run security audit
+        run: |
+          echo "🔍 Checking for known vulnerabilities..."
+          bun pm audit || {
+            echo "::warning::Security vulnerabilities found. Review and update when possible."
+          }
+        continue-on-error: true
+
+  all-checks-passed:
+    name: CI Summary
+    needs: [code-quality, test, build, security]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: CI Results Summary
+        run: |
+          echo "## 📊 CI Pipeline Results"
+          echo ""
+          if [ "${{ needs.code-quality.result }}" == "success" ] && \
+             [ "${{ needs.test.result }}" == "success" ] && \
+             [ "${{ needs.build.result }}" == "success" ]; then
+            echo "### ✅ All CI checks passed!"
+            echo "Your code is ready to merge! 🎉"
+          else
+            echo "### ❌ Some checks failed"
+            echo "Please review the failed jobs and fix any issues."
+          fi
+
+      - name: Fail if any job failed
+        if: |
+          needs.code-quality.result != 'success' ||
+          needs.test.result != 'success' ||
+          needs.build.result != 'success'
+        run: exit 1
