@@ -81,11 +81,49 @@ export function createAuthRequest(
 export async function uploadTestFile(
 	deps: TestSetup["deps"],
 	key: string,
-	content: string | Buffer
+	content: string | Buffer,
+	contentType = "application/octet-stream"
 ): Promise<void> {
 	// Using storage client upload method
 	await deps.storage.upload({
 		key,
 		data: typeof content === "string" ? Buffer.from(content) : content,
+		contentType,
 	});
+}
+
+/**
+ * Sleep helper for async tests
+ */
+export function sleep(ms: number): Promise<void> {
+	return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+/**
+ * Wait for a condition to be true (polling helper)
+ */
+export async function waitFor(
+	condition: () => Promise<boolean> | boolean,
+	options: {
+		timeout?: number;
+		interval?: number;
+		timeoutMessage?: string;
+	} = {}
+): Promise<void> {
+	const {
+		timeout = 5000,
+		interval = 100,
+		timeoutMessage = "Timeout waiting for condition",
+	} = options;
+
+	const start = Date.now();
+
+	while (Date.now() - start < timeout) {
+		if (await condition()) {
+			return;
+		}
+		await sleep(interval);
+	}
+
+	throw new Error(timeoutMessage);
 }

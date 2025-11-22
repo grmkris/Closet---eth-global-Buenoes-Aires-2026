@@ -11,7 +11,7 @@ export type StorageConfig = {
 export type UploadOptions = {
 	key: string;
 	data: Buffer | Uint8Array | string;
-	contentType?: string;
+	contentType: string;
 };
 
 export type DownloadOptions = {
@@ -41,6 +41,8 @@ export function createStorageClient(config: StorageConfig) {
 
 	/**
 	 * Upload a file to storage
+	 * Note: Content-Type is required and stored in S3 object metadata
+	 * File extensions are NOT used in S3 keys - content type is the source of truth
 	 */
 	async function upload(options: UploadOptions): Promise<{ key: string }> {
 		const { key, data, contentType } = options;
@@ -103,23 +105,26 @@ export function createStorageClient(config: StorageConfig) {
 
 	/**
 	 * List files in storage
+	 * Note: Bun's S3Client doesn't provide a list method
+	 * To implement this functionality, you would need to:
+	 * 1. Use the AWS SDK directly (import @aws-sdk/client-s3)
+	 * 2. Or use S3's REST API via presigned URLs
+	 * 3. For development/testing, consider using MinIO's client which has list support
+	 *
+	 * @throws {Error} This operation is not currently supported
 	 */
 	function listObjects(options: ListOptions = {}): string[] {
 		const { prefix = "", maxKeys = 1000 } = options;
 
-		try {
-			logger?.debug({ msg: "Listing objects", prefix, maxKeys });
+		logger?.warn({
+			msg: "List operation not supported by Bun S3Client",
+			prefix,
+			maxKeys,
+		});
 
-			// Note: Bun S3Client doesn't have a built-in list method
-			// This would need to be implemented using the presign method or AWS SDK
-			// For now, return empty array as placeholder
-			logger?.warn({ msg: "List operation not yet implemented" });
-
-			return []; // TODO: Implement
-		} catch (error) {
-			logger?.error({ msg: "List objects failed", prefix, error });
-			throw new Error(`Failed to list objects with prefix: ${prefix}`);
-		}
+		throw new Error(
+			"listObjects is not supported by Bun S3Client. Use AWS SDK for this functionality.",
+		);
 	}
 
 	/**
@@ -178,6 +183,34 @@ export function createStorageClient(config: StorageConfig) {
 	}
 
 	/**
+	 * Get multiple presigned URLs for batch upload
+	 */
+	function getBatchUploadUrls(
+		keys: Array<{ key: string; contentType: string }>,
+		expiresIn = 3600
+	): Array<{ key: string; uploadUrl: string }> {
+		try {
+			logger?.debug({
+				msg: "Generating batch upload URLs",
+				count: keys.length,
+				expiresIn,
+			});
+
+			const urls = keys.map(({ key, contentType }) => ({
+				key,
+				uploadUrl: getUploadUrl({ key, contentType, expiresIn }),
+			}));
+
+			logger?.info({ msg: "Batch upload URLs generated", count: urls.length });
+
+			return urls;
+		} catch (error) {
+			logger?.error({ msg: "Batch upload URL generation failed", error });
+			throw new Error("Failed to generate batch upload URLs");
+		}
+	}
+
+	/**
 	 * Check if a file exists
 	 */
 	async function exists(key: string): Promise<boolean> {
@@ -203,6 +236,7 @@ export function createStorageClient(config: StorageConfig) {
 		listObjects,
 		getSignedUrl,
 		getUploadUrl,
+		getBatchUploadUrls,
 		exists,
 	};
 }

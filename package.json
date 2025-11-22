@@ -18,7 +18,11 @@
       "typescript": "^5.8.2",
       "tsdown": "^0.15.5",
       "@orpc/client": "^1.10.0",
-      "typeid-js": "^1.0.1"
+      "typeid-js": "^1.0.1",
+      "@ai-stilist/logger": "workspace:*",
+      "posthog-node": "^5.11.0",
+      "drizzle-orm": "^0.44.2",
+      "drizzle-zod": "^0.7.0"
     }
   },
   "scripts": {

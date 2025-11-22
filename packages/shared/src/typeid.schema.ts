@@ -11,6 +11,17 @@ export const idTypesMapNameToPrefix = {
 
 	// ai related
 	aiGeneration: "aig",
+
+	// wardrobe related
+	clothingItem: "itm",
+	clothingMetadata: "meta",
+	clothingEmbedding: "emb",
+	outfit: "out",
+	outfitItem: "outi",
+	stylingRule: "rule",
+
+	// request tracking
+	request: "req",
 } as const;
 
 type IdTypesMapNameToPrefix = typeof idTypesMapNameToPrefix;
@@ -92,3 +103,24 @@ export type AccountId = z.infer<typeof AccountId>;
 
 export const VerificationId = typeIdValidator("verification");
 export type VerificationId = z.infer<typeof VerificationId>;
+
+export const ClothingItemId = typeIdValidator("clothingItem");
+export type ClothingItemId = z.infer<typeof ClothingItemId>;
+
+export const ClothingMetadataId = typeIdValidator("clothingMetadata");
+export type ClothingMetadataId = z.infer<typeof ClothingMetadataId>;
+
+export const ClothingEmbeddingId = typeIdValidator("clothingEmbedding");
+export type ClothingEmbeddingId = z.infer<typeof ClothingEmbeddingId>;
+
+export const OutfitId = typeIdValidator("outfit");
+export type OutfitId = z.infer<typeof OutfitId>;
+
+export const OutfitItemId = typeIdValidator("outfitItem");
+export type OutfitItemId = z.infer<typeof OutfitItemId>;
+
+export const StylingRuleId = typeIdValidator("stylingRule");
+export type StylingRuleId = z.infer<typeof StylingRuleId>;
+
+export const RequestId = typeIdValidator("request");
+export type RequestId = z.infer<typeof RequestId>;

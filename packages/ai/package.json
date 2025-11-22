@@ -1,0 +1,39 @@
+{
+  "name": "@ai-stilist/ai",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/ai-client.d.ts",
+      "default": "./src/ai-client.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsdown",
+    "lint": "bun ultracite check",
+    "fix": "bun ultracite fix",
+    "fix:unsafe": "bun ultracite fix --unsafe",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test"
+  },
+  "devDependencies": {
+    "@types/node": "^24.7.1",
+    "tsdown": "catalog:",
+    "typescript": "catalog:"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@ai-sdk/anthropic": "2.0.35",
+    "@ai-sdk/google": "2.0.23",
+    "@ai-sdk/groq": "2.0.24",
+    "@ai-sdk/xai": "2.0.26",
+    "@ai-stilist/logger": "workspace:*",
+    "@ai-stilist/shared": "workspace:*",
+    "@posthog/ai": "^6.4.4",
+    "ai": "5.0.76",
+    "posthog-node": "catalog:",
+    "zod": "catalog:"
+  }
+}

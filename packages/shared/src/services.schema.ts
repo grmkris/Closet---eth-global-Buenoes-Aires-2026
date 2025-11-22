@@ -13,6 +13,7 @@ export const SERVICE_URLS: Record<
 		web: string;
 		cookieDomain: string;
 		storage: string;
+		redis: string;
 	}
 > = {
 	dev: {
@@ -21,6 +22,7 @@ export const SERVICE_URLS: Record<
 		web: "http://localhost:3001",
 		cookieDomain: "localhost",
 		storage: "http://localhost:9000",
+		redis: "redis://localhost:6379",
 	},
 	prod: {
 		auth: "https://api.ai-stilist.com",
@@ -28,5 +30,6 @@ export const SERVICE_URLS: Record<
 		web: "https://ai-stilist.com",
 		cookieDomain: ".ai-stilist.com",
 		storage: "https://storage.ai-stilist.com",
+		redis: "redis://redis.ai-stilist.com:6379",
 	},
 } as const;

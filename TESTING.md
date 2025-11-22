@@ -194,6 +194,91 @@ See `.github/workflows/ci.yml` for the full CI pipeline.
 5. **Arrange-Act-Assert**: Follow the AAA pattern
 6. **Mock External APIs**: Don't call real external services
 
+## AI Stylist-Specific Tests
+
+### Storage Key Helpers (`packages/storage/src/storage-keys.test.ts`)
+
+Tests for S3 key generation and parsing:
+
+```typescript
+import { generateClothingImageKey, parseClothingImageKey } from "./storage-keys";
+
+// Generate key
+const key = generateClothingImageKey({
+  userId: "usr_123",
+  itemId: "itm_456",
+  extension: "jpg"
+});
+
+// Parse key back
+const parsed = parseClothingImageKey(key);
+```
+
+**What it tests:**
+- Key generation for originals and thumbnails
+- Round-trip generation and parsing
+- Invalid key handling
+
+### Clothing Analyzer (`packages/wardrobe/src/clothing-analyzer.test.ts`)
+
+Tests for AI-powered image analysis with mocked AI:
+
+```typescript
+import { createMockAiClient } from "@ai-stilist/test-utils/ai-mock";
+import { analyzeClothingImage } from "./clothing-analyzer";
+
+const mockAi = createMockAiClient({
+  generateObject: {
+    object: {
+      category: "top",
+      colors: ["#0000FF"],
+      confidence: 0.95,
+      // ... metadata
+    }
+  }
+});
+
+const result = await analyzeClothingImage({
+  imageUrl: "http://example.com/image.jpg",
+  aiClient: mockAi
+});
+```
+
+**What it tests:**
+- Successful image analysis
+- Error handling (API failures)
+- Different categories, formality levels
+- Multiple colors and patterns
+- Confidence scores
+
+### Mock AI Client (`packages/test-utils/src/ai-mock.ts`)
+
+Utility for mocking AI responses in tests:
+
+```typescript
+import { createMockAiClient, createFailingMockAiClient } from "@ai-stilist/test-utils/ai-mock";
+
+// Mock successful response
+const mockClient = createMockAiClient({
+  generateObject: { object: {...}, usage: { totalTokens: 1500 } }
+});
+
+// Mock failure
+const failingClient = createFailingMockAiClient("API rate limit");
+```
+
+### Sample Metadata (`apps/server/test/fixtures/sample-metadata.ts`)
+
+Pre-defined test data for clothing items:
+
+```typescript
+import { SAMPLE_METADATA } from "./fixtures/sample-metadata";
+
+// Use in tests
+const blueShirt = SAMPLE_METADATA.blueShirt;
+const blackJeans = SAMPLE_METADATA.blackJeans;
+```
+
 ## Additional Resources
 
 - [Bun Test Runner](https://bun.sh/docs/cli/test)

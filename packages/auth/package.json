@@ -2,8 +2,8 @@
   "name": "@ai-stilist/auth",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./src/index.ts"
+      "types": "./dist/auth-config.d.ts",
+      "default": "./src/auth-config.ts"
     },
     "./*": {
       "types": "./dist/*.d.ts",
@@ -27,7 +27,7 @@
   "dependencies": {
     "better-auth": "catalog:",
     "zod": "catalog:",
-    "drizzle-orm": "^0.44.2",
+    "drizzle-orm": "catalog:",
     "@ai-stilist/db": "workspace:*",
     "@ai-stilist/shared": "workspace:*"
   }

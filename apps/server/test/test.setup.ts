@@ -1,4 +1,4 @@
-import { type AuthClient, createAuth } from "@ai-stilist/auth";
+import { type Auth, createAuth } from "@ai-stilist/auth";
 import { createDb, type Database, runMigrations } from "@ai-stilist/db";
 import {
 	createLogger,
@@ -27,7 +27,7 @@ export type TestSetup = {
 	deps: {
 		db: Database;
 		pgLite: PGlite;
-		authClient: AuthClient;
+		authClient: Auth;
 		logger: Logger;
 		storage: ReturnType<typeof createStorageClient>;
 		redis: Awaited<ReturnType<typeof createTestRedisSetup>>;
@@ -44,7 +44,7 @@ export type TestSetup = {
  * Creates a test user with better-auth API
  */
 async function createTestUser(
-	authClient: AuthClient,
+	authClient: Auth,
 	email: string,
 	name: string
 ): Promise<TestUser> {
@@ -175,7 +175,8 @@ export async function createTestSetup(): Promise<TestSetup> {
 
 	// Cleanup function to reset data between tests
 	const cleanup = async () => {
-		await Promise.resolve(); // TODO
+		// No-op for now - implement database truncation/cleanup if needed
+		await Promise.resolve();
 
 		logger.debug("Test data cleaned up");
 	};

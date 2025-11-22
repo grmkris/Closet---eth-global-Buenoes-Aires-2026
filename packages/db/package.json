@@ -13,6 +13,14 @@
     "./schema/auth/index": {
       "types": "./dist/schema/auth/index.d.ts",
       "default": "./src/schema/auth/index.ts"
+    },
+    "./schema/wardrobe": {
+      "types": "./dist/schema/wardrobe/index.d.ts",
+      "default": "./src/schema/wardrobe/index.ts"
+    },
+    "./schema/wardrobe/index": {
+      "types": "./dist/schema/wardrobe/index.d.ts",
+      "default": "./src/schema/wardrobe/index.ts"
     }
   },
   "scripts": {
@@ -32,7 +40,6 @@
   },
   "devDependencies": {
     "drizzle-kit": "^0.31.2",
-    "@types/pg": "^8.11.11",
     "@electric-sql/pglite": "^0.3.10",
     "tsdown": "catalog:"
   },
@@ -42,9 +49,8 @@
   "dependencies": {
     "@ai-stilist/shared": "workspace:*",
     "@ai-stilist/logger": "workspace:*",
-    "drizzle-orm": "^0.44.2",
-    "drizzle-zod": "^0.7.0",
-    "pg": "^8.14.1",
+    "drizzle-orm": "catalog:",
+    "drizzle-zod": "catalog:",
     "zod": "catalog:"
   }
 }

@@ -22,20 +22,23 @@
     "better-auth": "catalog:",
     "dotenv": "catalog:",
     "zod": "catalog:",
+    "@ai-stilist/ai": "workspace:*",
     "@ai-stilist/api": "workspace:*",
     "@ai-stilist/auth": "workspace:*",
     "@ai-stilist/db": "workspace:*",
     "@ai-stilist/logger": "workspace:*",
+    "@ai-stilist/queue": "workspace:*",
     "@ai-stilist/shared": "workspace:*",
     "@ai-stilist/storage": "workspace:*",
-    "@ai-stilist/test-utils": "workspace:*"
+    "@ai-stilist/test-utils": "workspace:*",
+    "@ai-stilist/wardrobe": "workspace:*"
   },
   "devDependencies": {
     "typescript": "catalog:",
     "@types/bun": "^1.2.6",
     "tsdown": "catalog:",
-    "drizzle-orm": "^0.44.2",
-    "drizzle-zod": "^0.7.0",
+    "drizzle-orm": "catalog:",
+    "drizzle-zod": "catalog:",
     "@faker-js/faker": "^10.0.0"
   }
 }

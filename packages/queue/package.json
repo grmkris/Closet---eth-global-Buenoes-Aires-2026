@@ -1,0 +1,37 @@
+{
+  "name": "@ai-stilist/queue",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/queue-client.d.ts",
+      "default": "./src/queue-client.ts"
+    },
+    "./jobs": {
+      "types": "./dist/jobs/index.d.ts",
+      "default": "./src/jobs/index.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsdown",
+    "lint": "ultracite check",
+    "fix": "ultracite fix",
+    "fix:unsafe": "ultracite fix --unsafe",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test"
+  },
+  "devDependencies": {
+    "tsdown": "catalog:",
+    "typescript": "catalog:"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@ai-stilist/logger": "workspace:*",
+    "@ai-stilist/shared": "workspace:*",
+    "bullmq": "^5.38.1",
+    "ioredis": "^5.4.2",
+    "zod": "catalog:"
+  }
+}

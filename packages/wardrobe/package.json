@@ -1,0 +1,46 @@
+{
+  "name": "@ai-stilist/wardrobe",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    "./clothing-analyzer": {
+      "types": "./dist/clothing-analyzer.d.ts",
+      "default": "./src/clothing-analyzer.ts"
+    },
+    "./metadata-schemas": {
+      "types": "./dist/metadata-schemas.d.ts",
+      "default": "./src/metadata-schemas.ts"
+    },
+    "./outfit-generator": {
+      "types": "./dist/outfit-generator.d.ts",
+      "default": "./src/outfit-generator.ts"
+    },
+    "./styling-rules": {
+      "types": "./dist/styling-rules.d.ts",
+      "default": "./src/styling-rules.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsdown",
+    "lint": "ultracite check",
+    "fix": "ultracite fix",
+    "fix:unsafe": "ultracite fix --unsafe",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test"
+  },
+  "devDependencies": {
+    "tsdown": "catalog:",
+    "typescript": "catalog:"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@ai-stilist/ai": "workspace:*",
+    "@ai-stilist/db": "workspace:*",
+    "@ai-stilist/logger": "workspace:*",
+    "@ai-stilist/shared": "workspace:*",
+    "ai": "^5.0.76",
+    "zod": "catalog:"
+  }
+}

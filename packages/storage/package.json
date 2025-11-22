@@ -10,6 +10,10 @@
     "./setup-minio": {
       "types": "./dist/setup-minio.d.ts",
       "default": "./src/setup-minio.ts"
+    },
+    "./storage-keys": {
+      "types": "./dist/storage-keys.d.ts",
+      "default": "./src/storage-keys.ts"
     }
   },
   "scripts": {
