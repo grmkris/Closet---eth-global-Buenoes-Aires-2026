@@ -10,9 +10,15 @@ export const envSchema = z.object({
 	PORT: z.coerce.number().default(SERVER_CONFIG.DEFAULT_PORT),
 	DATABASE_URL: z.string(),
 	BETTER_AUTH_SECRET: z.string(),
+	BETTER_AUTH_URL: z.string().url(),
+	CORS_ORIGIN: z.string().url(),
 	LOG_LEVEL: z
 		.enum(["debug", "info", "warn", "error", "fatal"])
 		.default("info"),
+
+	// CDP Configuration
+	NEXT_PUBLIC_CDP_PROJECT_ID: z.string(),
+	NEXT_PUBLIC_AUTH_URL: z.string().url(),
 
 	// MinIO / S3 (credentials only, URLs come from SERVICE_URLS)
 	// Optional in test environment (uses mock S3)

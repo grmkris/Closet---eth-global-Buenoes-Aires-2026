@@ -7,7 +7,8 @@
     "./metadata-schemas": "./src/metadata-schemas.ts",
     "./process-image": "./src/process-image.ts",
     "./analyze-clothing-image": "./src/analyze-clothing-image.ts",
-    "./wardrobe-repository": "./src/wardrobe-repository.ts"
+    "./wardrobe-repository": "./src/wardrobe-repository.ts",
+    "./orchestrators": "./src/orchestrators/index.ts"
   },
   "scripts": {
     "build": "tsdown",
@@ -29,12 +30,12 @@
     "@ai-stilist/ai": "workspace:*",
     "@ai-stilist/db": "workspace:*",
     "@ai-stilist/logger": "workspace:*",
+    "@ai-stilist/queue": "workspace:*",
     "@ai-stilist/redis": "workspace:*",
     "@ai-stilist/shared": "workspace:*",
     "@ai-stilist/storage": "workspace:*",
-    "@ai-stilist/queue": "workspace:*",
-    "ai": "^5.0.98",
-    "sharp": "^0.33.5",
+    "ai": "^5.0.99",
+    "sharp": "^0.34.5",
     "zod": "catalog:"
   }
 }

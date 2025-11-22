@@ -7,7 +7,7 @@ import type { QueueClient } from "@ai-stilist/queue";
 import type { AnalyzeImageJob } from "@ai-stilist/queue/jobs/analyze-image-job";
 import { WORKER_CONFIG } from "@ai-stilist/shared/constants";
 import type { StorageClient } from "@ai-stilist/storage";
-import { analyzeClothingImageJob } from "@ai-stilist/wardrobe/analyze-clothing-image";
+import { analyzeImageOrchestrator } from "@ai-stilist/wardrobe/orchestrators";
 
 export type ImageAnalyzerConfig = {
 	queue: QueueClient;
@@ -19,7 +19,7 @@ export type ImageAnalyzerConfig = {
 
 /**
  * Create and start the image analyzer worker
- * Analyzes processed images with AI (second step in pipeline)
+ * Delegates to analyzeImageOrchestrator for business logic
  */
 export function createImageAnalyzerWorker(config: ImageAnalyzerConfig): {
 	close: () => Promise<void>;
@@ -28,13 +28,13 @@ export function createImageAnalyzerWorker(config: ImageAnalyzerConfig): {
 
 	logger.info({ msg: "Starting image analyzer worker" });
 
-	// Create worker - delegates to pure business logic
+	// Create worker - delegates to orchestrator
 	const worker = queue.createWorker<"analyze-image">(
 		"analyze-image",
 		async (job: AnalyzeImageJob) =>
-			analyzeClothingImageJob({ db, storage, aiClient, logger }, job),
+			analyzeImageOrchestrator({ db, storage, aiClient, logger }, job),
 		{
-			concurrency: WORKER_CONFIG.MAX_CONCURRENT_JOBS, // Analyze images concurrently
+			concurrency: WORKER_CONFIG.MAX_CONCURRENT_JOBS,
 			onFailed: async (job: AnalyzeImageJob, error: Error) => {
 				// This runs ONLY after all retries are exhausted
 				logger.warn({

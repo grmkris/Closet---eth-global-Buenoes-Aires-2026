@@ -25,6 +25,7 @@ const authClient = createAuth({
 	db,
 	appEnv: env.APP_ENV,
 	secret: env.BETTER_AUTH_SECRET,
+	logger,
 });
 
 const redis = createRedisClient({

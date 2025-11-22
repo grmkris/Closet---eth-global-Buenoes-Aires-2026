@@ -1,8 +1,13 @@
 import type { Database } from "@ai-stilist/db";
 import { DB_SCHEMA } from "@ai-stilist/db";
+import type { Logger } from "@ai-stilist/logger";
+import { NUMERIC_CONSTANTS } from "@ai-stilist/shared/constants";
 import { type Environment, SERVICE_URLS } from "@ai-stilist/shared/services";
 import { type BetterAuthOptions, betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { generateRandomString } from "better-auth/crypto";
+import { siwe } from "better-auth/plugins";
+import { verifyMessage } from "viem";
 
 export type AuthConfig = {
 	db: Database;
@@ -10,13 +15,17 @@ export type AuthConfig = {
 	secret: string;
 	baseURL?: string;
 	trustedOrigins?: string[];
+	logger: Logger;
 };
 
 export const createAuth = (config: AuthConfig) => {
+	const { logger } = config;
 	const baseURL = config.baseURL ?? SERVICE_URLS[config.appEnv].auth;
 	const trustedOrigins = config.trustedOrigins ?? [
 		SERVICE_URLS[config.appEnv].web,
 	];
+
+	const authDomain = new URL(baseURL).hostname;
 
 	return betterAuth<BetterAuthOptions>({
 		database: drizzleAdapter(config.db, {
@@ -29,6 +38,30 @@ export const createAuth = (config: AuthConfig) => {
 		emailAndPassword: {
 			enabled: true,
 		},
+		plugins: [
+			siwe({
+				domain: authDomain,
+				emailDomainName: authDomain,
+				anonymous: false,
+
+				getNonce: async () =>
+					generateRandomString(NUMERIC_CONSTANTS.NONCE_LENGTH),
+
+				verifyMessage: async ({ message, signature, address }) => {
+					try {
+						const isValid = await verifyMessage({
+							address: address as `0x${string}`,
+							message,
+							signature: signature as `0x${string}`,
+						});
+						return isValid;
+					} catch (error) {
+						logger.error({ msg: "SIWE verification failed", error });
+						return false;
+					}
+				},
+			}),
+		],
 		advanced: {
 			database: {
 				generateId: false,

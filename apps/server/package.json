@@ -32,7 +32,8 @@
     "better-auth": "catalog:",
     "dotenv": "catalog:",
     "hono": "catalog:",
-    "sharp": "^0.33.5",
+    "node-gyp": "^12.1.0",
+    "sharp": "^0.34.5",
     "zod": "catalog:"
   },
   "devDependencies": {

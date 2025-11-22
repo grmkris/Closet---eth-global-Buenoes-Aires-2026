@@ -20,8 +20,11 @@
   },
   "dependencies": {
     "@ai-stilist/db": "workspace:*",
+    "@ai-stilist/logger": "workspace:*",
     "@ai-stilist/shared": "workspace:*",
     "better-auth": "catalog:",
+    "siwe": "catalog:",
+    "viem": "catalog:",
     "zod": "catalog:"
   }
 }

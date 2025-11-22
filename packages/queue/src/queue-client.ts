@@ -87,15 +87,40 @@ export function createQueueClient(config: QueueConfig) {
 		try {
 			logger?.debug({ msg: "Adding job to queue", queueName, data });
 
-			const queue = queues[queueName] as unknown as Queue<JobData[T]>;
-			const job = await queue.add(queueName as never, data as never, {
-				priority: options?.priority,
-				delay: options?.delay,
-			});
+			// Use discriminated union for type safety
+			if (queueName === "process-image") {
+				const queue = queues["process-image"];
+				const job = await queue.add("process-image", data as ProcessImageJob, {
+					priority: options?.priority,
+					delay: options?.delay,
+				});
 
-			logger?.info({ msg: "Job added successfully", queueName, jobId: job.id });
+				logger?.info({
+					msg: "Job added successfully",
+					queueName,
+					jobId: job.id,
+				});
+				return { jobId: job.id, queue: queueName };
+			}
 
-			return { jobId: job.id, queue: queueName };
+			if (queueName === "analyze-image") {
+				const queue = queues["analyze-image"];
+				const job = await queue.add("analyze-image", data as AnalyzeImageJob, {
+					priority: options?.priority,
+					delay: options?.delay,
+				});
+
+				logger?.info({
+					msg: "Job added successfully",
+					queueName,
+					jobId: job.id,
+				});
+				return { jobId: job.id, queue: queueName };
+			}
+
+			// Exhaustiveness check - will cause compile error if new queue types added
+			const _exhaustive: never = queueName;
+			throw new Error(`Unknown queue type: ${_exhaustive}`);
 		} catch (error) {
 			logger?.error({ msg: "Failed to add job", queueName, error });
 			throw new Error(`Failed to add job to queue: ${queueName}`);

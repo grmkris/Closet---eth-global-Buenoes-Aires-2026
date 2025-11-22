@@ -1,5 +1,6 @@
 export const NUMERIC_CONSTANTS = {
 	MAX_DELAY: 1000,
+	NONCE_LENGTH: 32,
 	SEVEN_DAYS: 7,
 	validationLimits: {
 		minStringLength: 1,
@@ -49,4 +50,11 @@ export const POLLING_CONFIG = {
 	PROCESSING_INTERVAL_MS: 5000, // Poll every 5s when items are processing
 	BACKOFF_MULTIPLIER: 1.5, // Exponential backoff multiplier
 	MAX_INTERVAL_MS: 30_000, // Maximum polling interval (30s)
+} as const;
+
+// UI Configuration
+export const UI_CONFIG = {
+	REDIRECT_DELAY_MS: 2000, // Delay before redirecting after successful action
+	ADDRESS_PREFIX_LENGTH: 6, // Number of characters to show at start of wallet address
+	ADDRESS_SUFFIX_LENGTH: 4, // Number of characters to show at end of wallet address
 } as const;

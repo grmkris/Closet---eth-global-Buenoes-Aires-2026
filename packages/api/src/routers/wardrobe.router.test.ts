@@ -24,8 +24,10 @@ import {
 	createTestSetup,
 	type TestSetup,
 } from "@ai-stilist/test-utils/test-setup";
-import { analyzeClothingImageJob } from "@ai-stilist/wardrobe/analyze-clothing-image";
-import { processImage } from "@ai-stilist/wardrobe/process-image";
+import {
+	analyzeImageOrchestrator,
+	processImageOrchestrator,
+} from "@ai-stilist/wardrobe/orchestrators";
 import { call } from "@orpc/server";
 import { wardrobeRouter } from "./wardrobe.router";
 
@@ -170,16 +172,16 @@ describe("Wardrobe Router", () => {
 			testSetup: setup,
 		});
 
-		// Start TWO workers to mirror production setup
-		// Worker 1: Image processing (Sharp conversion)
+		// Start TWO workers using orchestrators (same logic as production)
 		const imageProcessorWorker = setup.deps.queue.createWorker<"process-image">(
 			"process-image",
 			async (job: ProcessImageJob) =>
-				processImage(
+				processImageOrchestrator(
 					{
 						db: setup.deps.db,
 						storage: setup.deps.storage,
 						logger: setup.deps.logger,
+						queue: setup.deps.queue,
 					},
 					job
 				),
@@ -188,11 +190,10 @@ describe("Wardrobe Router", () => {
 			}
 		);
 
-		// Worker 2: AI analysis
 		const imageAnalyzerWorker = setup.deps.queue.createWorker<"analyze-image">(
 			"analyze-image",
 			async (job: AnalyzeImageJob) =>
-				analyzeClothingImageJob(
+				analyzeImageOrchestrator(
 					{
 						db: setup.deps.db,
 						storage: setup.deps.storage,

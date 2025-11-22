@@ -175,6 +175,7 @@ export async function createTestSetup(): Promise<TestSetup> {
 		db,
 		appEnv: testEnv.APP_ENV,
 		secret: testEnv.BETTER_AUTH_SECRET,
+		logger,
 	});
 
 	logger.info("Creating test users...");
