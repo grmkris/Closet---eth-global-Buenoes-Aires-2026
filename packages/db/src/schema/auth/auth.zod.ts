@@ -4,10 +4,11 @@ import {
 	SessionId,
 	UserId,
 	VerificationId,
+	WalletAddressId,
 } from "@ai-stilist/shared/typeid";
 import { createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
-import { account, session, user, verification } from "./auth.db";
+import { account, session, user, verification, walletAddress } from "./auth.db";
 
 // User Schemas
 export const SelectUserSchema = createSelectSchema(user, {
@@ -84,3 +85,23 @@ export const InsertVerificationSchema = z.object({
 });
 export type SelectVerificationSchema = z.infer<typeof SelectVerificationSchema>;
 export type InsertVerificationSchema = z.infer<typeof InsertVerificationSchema>;
+
+// Wallet Address Schemas
+export const SelectWalletAddressSchema = createSelectSchema(walletAddress, {
+	id: WalletAddressId,
+	userId: UserId,
+	createdAt: z.coerce.date(),
+	updatedAt: z.coerce.date(),
+});
+export const InsertWalletAddressSchema = z.object({
+	userId: UserId,
+	address: z.string().min(NUMERIC_CONSTANTS.validationLimits.minStringLength),
+	chainId: z.number().int().positive(),
+	isPrimary: z.boolean().default(false),
+});
+export type SelectWalletAddressSchema = z.infer<
+	typeof SelectWalletAddressSchema
+>;
+export type InsertWalletAddressSchema = z.infer<
+	typeof InsertWalletAddressSchema
+>;

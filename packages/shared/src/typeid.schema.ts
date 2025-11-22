@@ -8,9 +8,13 @@ export const idTypesMapNameToPrefix = {
 	session: "ses",
 	account: "acc",
 	verification: "ver",
+	walletAddress: "wal",
 
 	// ai related
 	aiGeneration: "aig",
+	conversation: "cnv",
+	message: "msg",
+	messagePart: "mpt",
 
 	// wardrobe related
 	clothingItem: "itm",
@@ -104,6 +108,9 @@ export type AccountId = z.infer<typeof AccountId>;
 export const VerificationId = typeIdValidator("verification");
 export type VerificationId = z.infer<typeof VerificationId>;
 
+export const WalletAddressId = typeIdValidator("walletAddress");
+export type WalletAddressId = z.infer<typeof WalletAddressId>;
+
 export const ClothingItemId = typeIdValidator("clothingItem");
 export type ClothingItemId = z.infer<typeof ClothingItemId>;
 
@@ -124,3 +131,12 @@ export type TagId = z.infer<typeof TagId>;
 
 export const RequestId = typeIdValidator("request");
 export type RequestId = z.infer<typeof RequestId>;
+
+export const ConversationId = typeIdValidator("conversation");
+export type ConversationId = z.infer<typeof ConversationId>;
+
+export const MessageId = typeIdValidator("message");
+export type MessageId = z.infer<typeof MessageId>;
+
+export const MessagePartId = typeIdValidator("messagePart");
+export type MessagePartId = z.infer<typeof MessagePartId>;

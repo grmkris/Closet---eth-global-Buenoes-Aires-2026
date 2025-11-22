@@ -6,7 +6,7 @@ dotenv.config({
 });
 
 export default defineConfig({
-	schema: ["./src/schema/auth", "./src/schema/wardrobe"],
+	schema: ["./src/schema/auth", "./src/schema/wardrobe", "./src/schema/ai"],
 	out: "./drizzle",
 	dialect: "postgresql",
 	dbCredentials: {

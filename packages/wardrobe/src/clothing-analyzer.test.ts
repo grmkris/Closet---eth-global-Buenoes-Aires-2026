@@ -9,7 +9,7 @@ import { analyzeClothingImage } from "./clothing-analyzer";
 import type { ClothingAnalysis } from "./metadata-schemas";
 
 const testEnvSchema = z.object({
-	GOOGLE_GOOGLE_GEMINI_API_KEY: z.string(),
+	GOOGLE_GEMINI_API_KEY: z.string(),
 });
 const MAX_TEST_TIME = 100_000;
 const MAX_IMAGES_PER_FOLDER = 5;
@@ -152,7 +152,7 @@ describe("Clothing Analyzer", () => {
 			const aiClient = createAiClient({
 				logger,
 				providerConfigs: {
-					googleGeminiApiKey: testEnv.GOOGLE_GOOGLE_GEMINI_API_KEY,
+					googleGeminiApiKey: testEnv.GOOGLE_GEMINI_API_KEY,
 				},
 				environment: "dev",
 			});

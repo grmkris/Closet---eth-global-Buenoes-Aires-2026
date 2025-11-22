@@ -14,6 +14,13 @@ export type ConvertImageResult = {
 	processedBuffer: Buffer;
 	/** Thumbnail WebP image buffer */
 	thumbnailBuffer: Buffer;
+	/** Metadata about the input image */
+	metadata: {
+		format: string;
+		width: number;
+		height: number;
+		size: number;
+	};
 };
 
 /**
@@ -29,6 +36,54 @@ export async function convertImage(
 	options: ConvertImageOptions
 ): Promise<ConvertImageResult> {
 	const { inputBuffer, targetWidth = 2048, thumbnailWidth = 600 } = options;
+
+	// Validate input buffer
+	if (!inputBuffer || inputBuffer.length === 0) {
+		throw new Error("Input buffer is empty or invalid");
+	}
+
+	// Get and validate image metadata before processing
+	let metadata: sharp.Metadata;
+	try {
+		metadata = await sharp(inputBuffer).metadata();
+	} catch (error) {
+		const message = error instanceof Error ? error.message : String(error);
+		// Provide more helpful error messages for common issues
+		if (message.includes("bad seek")) {
+			throw new Error(
+				`Image file appears to be corrupt or incomplete (bad seek errors). Original error: ${message}`
+			);
+		}
+		if (message.includes("heif") || message.includes("compression format")) {
+			throw new Error(
+				`HEIC/HEIF file uses unsupported compression format. Try re-saving the image or converting to JPEG/PNG first. Original error: ${message}`
+			);
+		}
+		throw new Error(`Failed to read image metadata: ${message}`);
+	}
+
+	// Validate image dimensions
+	if (!(metadata.width && metadata.height)) {
+		throw new Error(
+			`Invalid image dimensions: ${metadata.width}x${metadata.height}`
+		);
+	}
+
+	// Check for supported formats
+	const supportedFormats = [
+		"jpeg",
+		"png",
+		"webp",
+		"tiff",
+		"gif",
+		"svg",
+		"heif",
+	];
+	if (metadata.format && !supportedFormats.includes(metadata.format)) {
+		throw new Error(
+			`Unsupported image format: ${metadata.format}. Supported formats: ${supportedFormats.join(", ")}`
+		);
+	}
 
 	// Convert to full-size WebP
 	const processedBuffer = await sharp(inputBuffer)
@@ -57,5 +112,11 @@ export async function convertImage(
 	return {
 		processedBuffer,
 		thumbnailBuffer,
+		metadata: {
+			format: metadata.format || "unknown",
+			width: metadata.width,
+			height: metadata.height,
+			size: inputBuffer.length,
+		},
 	};
 }

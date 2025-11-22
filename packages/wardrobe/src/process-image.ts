@@ -61,11 +61,25 @@ export async function processImage(
 		const imageBuffer = Buffer.from(await imageResponse.arrayBuffer());
 
 		// 3. Convert image to WebP and generate thumbnail
-		logger.info({ msg: "Converting image to WebP", itemId });
-		const { processedBuffer, thumbnailBuffer } = await convertImage({
+		logger.info({
+			msg: "Converting image to WebP",
+			itemId,
+			bufferSize: imageBuffer.length,
+		});
+		const { processedBuffer, thumbnailBuffer, metadata } = await convertImage({
 			inputBuffer: imageBuffer,
 			targetWidth: 2048,
 			thumbnailWidth: 600,
+		});
+
+		logger.info({
+			msg: "Image converted successfully",
+			itemId,
+			inputFormat: metadata.format,
+			dimensions: `${metadata.width}x${metadata.height}`,
+			inputSize: metadata.size,
+			processedSize: processedBuffer.length,
+			thumbnailSize: thumbnailBuffer.length,
 		});
 
 		// 4. Upload processed images to storage
