@@ -104,13 +104,14 @@ export type AspectRatio = z.infer<typeof AspectRatio>;
 // Chain IDs
 export const CHAIN_IDS = {
 	POLYGON_MAINNET: 137,
-	POLYGON_AMOY_TESTNET: 80002,
+	POLYGON_AMOY_TESTNET: 80_002,
 } as const;
 
 // USDC Contract Addresses by Chain ID
 export const USDC_ADDRESSES = {
 	[CHAIN_IDS.POLYGON_MAINNET]: "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359", // Polygon Mainnet
-	[CHAIN_IDS.POLYGON_AMOY_TESTNET]: "0x41E94Eb019C0762f9Bfcf9Fb1E58725BfB0e7582", // Polygon Amoy Testnet
+	[CHAIN_IDS.POLYGON_AMOY_TESTNET]:
+		"0x41E94Eb019C0762f9Bfcf9Fb1E58725BfB0e7582", // Polygon Amoy Testnet
 } as const;
 
 // Wallet UI Configuration
