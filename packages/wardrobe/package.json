@@ -26,8 +26,8 @@
     "@ai-stilist/db": "workspace:*",
     "@ai-stilist/logger": "workspace:*",
     "@ai-stilist/shared": "workspace:*",
+    "ai": "^5.0.93",
     "drizzle-orm": "catalog:",
-    "ai": "^5.0.76",
     "zod": "catalog:"
   }
 }

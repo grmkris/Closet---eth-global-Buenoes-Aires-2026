@@ -24,8 +24,8 @@
   "dependencies": {
     "@ai-stilist/logger": "workspace:*",
     "@ai-stilist/shared": "workspace:*",
-    "bullmq": "^5.38.1",
-    "ioredis": "^5.4.2",
+    "bullmq": "^5.63.2",
+    "ioredis": "^5.8.2",
     "zod": "catalog:"
   }
 }

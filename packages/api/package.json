@@ -20,19 +20,19 @@
   },
   "dependencies": {
     "@ai-stilist/ai": "workspace:*",
-    "@ai-stilist/logger": "workspace:*",
-    "@ai-stilist/queue": "workspace:*",
-    "@ai-stilist/storage": "workspace:*",
-    "@ai-stilist/wardrobe": "workspace:*",
-    "drizzle-orm": "catalog:",
-    "@orpc/server": "catalog:",
-    "@orpc/client": "catalog:",
-    "@orpc/openapi": "catalog:",
-    "@orpc/zod": "catalog:",
-    "hono": "catalog:",
-    "zod": "catalog:",
     "@ai-stilist/auth": "workspace:*",
     "@ai-stilist/db": "workspace:*",
-    "@ai-stilist/shared": "workspace:*"
+    "@ai-stilist/logger": "workspace:*",
+    "@ai-stilist/queue": "workspace:*",
+    "@ai-stilist/shared": "workspace:*",
+    "@ai-stilist/storage": "workspace:*",
+    "@ai-stilist/wardrobe": "workspace:*",
+    "@orpc/client": "catalog:",
+    "@orpc/openapi": "catalog:",
+    "@orpc/server": "catalog:",
+    "@orpc/zod": "catalog:",
+    "drizzle-orm": "catalog:",
+    "hono": "catalog:",
+    "zod": "catalog:"
   }
 }

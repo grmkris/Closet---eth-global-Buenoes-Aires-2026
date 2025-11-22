@@ -19,10 +19,10 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "better-auth": "catalog:",
-    "zod": "catalog:",
-    "drizzle-orm": "catalog:",
     "@ai-stilist/db": "workspace:*",
-    "@ai-stilist/shared": "workspace:*"
+    "@ai-stilist/shared": "workspace:*",
+    "better-auth": "catalog:",
+    "drizzle-orm": "catalog:",
+    "zod": "catalog:"
   }
 }

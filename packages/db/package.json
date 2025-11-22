@@ -24,16 +24,16 @@
     "db:down": "docker compose down"
   },
   "devDependencies": {
-    "drizzle-kit": "^0.31.2",
-    "@electric-sql/pglite": "^0.3.10",
+    "@electric-sql/pglite": "^0.3.14",
+    "drizzle-kit": "^0.31.7",
     "tsdown": "catalog:"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
   "dependencies": {
-    "@ai-stilist/shared": "workspace:*",
     "@ai-stilist/logger": "workspace:*",
+    "@ai-stilist/shared": "workspace:*",
     "drizzle-orm": "catalog:",
     "drizzle-zod": "catalog:",
     "zod": "catalog:"

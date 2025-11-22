@@ -17,7 +17,7 @@
     "test": "bun test"
   },
   "devDependencies": {
-    "@types/node": "^24.7.1",
+    "@types/node": "^24.10.1",
     "tsdown": "catalog:",
     "typescript": "catalog:"
   },
@@ -31,7 +31,7 @@
     "@ai-sdk/xai": "2.0.26",
     "@ai-stilist/logger": "workspace:*",
     "@ai-stilist/shared": "workspace:*",
-    "@posthog/ai": "^6.4.4",
+    "@posthog/ai": "^7.1.0",
     "ai": "5.0.76",
     "posthog-node": "catalog:",
     "zod": "catalog:"
