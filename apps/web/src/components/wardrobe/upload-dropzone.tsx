@@ -13,6 +13,26 @@ type UploadDropzoneProps = {
 	accept?: string;
 };
 
+const validateFiles = (files: FileList, maxFiles: number): File[] => {
+	const validFiles: File[] = [];
+
+	for (let i = 0; i < files.length && validFiles.length < maxFiles; i += 1) {
+		const file = files[i];
+
+		if (!file.type.startsWith("image/")) {
+			continue;
+		}
+
+		if (file.size > MAX_UPLOAD_SIZE_BYTES) {
+			continue;
+		}
+
+		validFiles.push(file);
+	}
+
+	return validFiles;
+};
+
 export function UploadDropzone({
 	onFilesSelect,
 	disabled = false,
@@ -20,26 +40,6 @@ export function UploadDropzone({
 	accept = "image/*",
 }: UploadDropzoneProps) {
 	const [isDragging, setIsDragging] = useState(false);
-
-	const validateFiles = (files: FileList): File[] => {
-		const validFiles: File[] = [];
-
-		for (let i = 0; i < files.length && validFiles.length < maxFiles; i += 1) {
-			const file = files[i];
-
-			if (!file.type.startsWith("image/")) {
-				continue;
-			}
-
-			if (file.size > MAX_UPLOAD_SIZE_BYTES) {
-				continue;
-			}
-
-			validFiles.push(file);
-		}
-
-		return validFiles;
-	};
 
 	const handleDrop = useCallback(
 		(e: React.DragEvent<HTMLDivElement>) => {
@@ -51,12 +51,12 @@ export function UploadDropzone({
 				return;
 			}
 
-			const files = validateFiles(e.dataTransfer.files);
+			const files = validateFiles(e.dataTransfer.files, maxFiles);
 			if (files.length > 0) {
 				onFilesSelect(files);
 			}
 		},
-		[disabled, onFilesSelect, validateFiles]
+		[disabled, onFilesSelect, maxFiles]
 	);
 
 	const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
@@ -88,7 +88,7 @@ export function UploadDropzone({
 	const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const files = e.target.files;
 		if (files) {
-			const validFiles = validateFiles(files);
+			const validFiles = validateFiles(files, maxFiles);
 			if (validFiles.length > 0) {
 				onFilesSelect(validFiles);
 			}
