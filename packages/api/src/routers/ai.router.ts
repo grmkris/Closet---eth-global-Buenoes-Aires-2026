@@ -1,4 +1,4 @@
-import { API_LIMITS } from "@ai-stilist/shared/constants";
+import { API_LIMITS, FIELD_LIMITS } from "@ai-stilist/shared/constants";
 import { ConversationId, UserId } from "@ai-stilist/shared/typeid";
 import { ORPCError } from "@orpc/server";
 import { z } from "zod";
@@ -231,6 +231,62 @@ export const aiRouter = {
 
 				throw new ORPCError("INTERNAL_SERVER_ERROR", {
 					message: "Failed to delete conversation",
+				});
+			}
+		}),
+
+	renameConversation: protectedProcedure
+		.input(
+			z.object({
+				conversationId: ConversationId,
+				title: z.string().min(1).max(FIELD_LIMITS.conversationTitle),
+			})
+		)
+		.handler(async ({ input, context }) => {
+			try {
+				const session = context.session;
+
+				if (!session) {
+					throw new ORPCError("UNAUTHORIZED", {
+						message: "Authentication required",
+					});
+				}
+
+				const userId = UserId.parse(session.user.id);
+
+				const aiService = await createAiService({
+					userId,
+					deps: {
+						db: context.db,
+						logger: context.logger,
+						aiClient: context.aiClient,
+						storage: context.storage,
+					},
+				});
+
+				await aiService.renameConversation(input.conversationId, input.title);
+
+				context.logger.info({
+					msg: "Renamed conversation",
+					conversationId: input.conversationId,
+					userId,
+					newTitle: input.title,
+				});
+
+				return { success: true };
+			} catch (error) {
+				if (error instanceof ORPCError) {
+					throw error;
+				}
+
+				context.logger.error({
+					msg: "Failed to rename conversation",
+					conversationId: input.conversationId,
+					error: error instanceof Error ? error.message : String(error),
+				});
+
+				throw new ORPCError("INTERNAL_SERVER_ERROR", {
+					message: "Failed to rename conversation",
 				});
 			}
 		}),

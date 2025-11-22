@@ -1,12 +1,11 @@
 import type { Database } from "@ai-stilist/db";
 import { DB_SCHEMA } from "@ai-stilist/db";
 import type { Logger } from "@ai-stilist/logger";
-import { NUMERIC_CONSTANTS } from "@ai-stilist/shared/constants";
 import { type Environment, SERVICE_URLS } from "@ai-stilist/shared/services";
 import { type BetterAuthOptions, betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { generateRandomString } from "better-auth/crypto";
 import { siwe } from "better-auth/plugins";
+import { generateNonce } from "siwe";
 import { verifyMessage } from "viem";
 
 export type AuthConfig = {
@@ -44,8 +43,7 @@ export const createAuth = (config: AuthConfig) => {
 				emailDomainName: authDomain,
 				anonymous: true,
 
-				getNonce: async () =>
-					generateRandomString(NUMERIC_CONSTANTS.NONCE_LENGTH),
+				getNonce: () => Promise.resolve(generateNonce()),
 
 				verifyMessage: async ({ message, signature, address }) => {
 					try {

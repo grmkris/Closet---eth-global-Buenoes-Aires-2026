@@ -1,5 +1,9 @@
 import type { AiClient } from "@ai-stilist/ai";
-import { convertToModelMessages, createUIMessageStream } from "@ai-stilist/ai";
+import {
+	convertToModelMessages,
+	createUIMessageStream,
+	generateText,
+} from "@ai-stilist/ai";
 import type { Database } from "@ai-stilist/db";
 import type { Logger } from "@ai-stilist/logger";
 import { WARDROBE_AI_CONSTANTS } from "@ai-stilist/shared/constants";
@@ -17,10 +21,12 @@ import {
 	getConversation,
 	getUserConversations,
 	loadConversation,
+	updateConversationTitle,
 	upsertMessages,
 } from "./ai-store";
 import { createAiTools } from "./ai-tools";
 import type { MyUIMessage } from "./message-type";
+import { buildContextualSystemPrompt } from "./system-prompts";
 
 type AiServiceDependencies = {
 	db: Database;
@@ -29,23 +35,24 @@ type AiServiceDependencies = {
 	storage: StorageClient;
 };
 
-const DEFAULT_SYSTEM_PROMPT = `You are a personal style AI assistant with access to the user's digital wardrobe.
+/**
+ * Get user info for context
+ */
+async function getUserInfo(params: {
+	userId: UserId;
+	db: Database;
+}): Promise<{ name?: string }> {
+	const { userId, db } = params;
 
-You can:
-- Search their clothing items by category, color, and tags
-- Suggest outfit combinations for specific occasions
-- Generate visual previews of outfit combinations using AI
-- Provide style advice based on their wardrobe
-- Help them understand what they own
+	const user = await db.query.user.findFirst({
+		where: (t, { eq }) => eq(t.id, userId),
+		columns: { name: true },
+	});
 
-When making suggestions:
-1. Be specific and reference actual items from their wardrobe
-2. Consider color harmony and style coherence
-3. When suggesting outfits, use the generateOutfitPreview tool to show the user what the combination looks like
-4. Be conversational and friendly
-5. Ask clarifying questions when needed
-
-Always base your recommendations on their actual wardrobe items.`;
+	return {
+		name: user?.name || undefined,
+	};
+}
 
 /**
  * Infer the current season based on the month
@@ -74,6 +81,55 @@ function inferSeason(date: Date): string {
 	}
 	return "winter"; // December-February
 }
+
+/**
+ * Generate a concise conversation title using LLM
+ */
+const generateTitleWithLLM = async (params: {
+	messages: MyUIMessage[];
+	logger: Logger;
+	aiClient: AiClient;
+}): Promise<string | null> => {
+	const { messages, logger, aiClient } = params;
+
+	try {
+		// Use a fast model for title generation
+		const titleModel = aiClient.getModel({
+			provider: "google",
+			modelId: "gemini-2.0-flash-exp",
+		});
+
+		// Use LLM to generate a concise, descriptive title
+		const { text } = await generateText({
+			model: titleModel,
+			system:
+				"You are a helpful assistant that generates very short, concise titles for chat conversations. Generate a title that captures the main topic or purpose of the conversation in 3-6 words maximum. Do not use quotes, punctuation, or special characters. Be descriptive but brief.",
+			prompt: `Generate a short title for this conversation:\n\n${messages
+				.map((message) =>
+					message.parts
+						.map((part) => (part.type === "text" ? part.text : ""))
+						.join(" ")
+				)
+				.join("\n")}\n\nTitle:`,
+		});
+
+		// Clean and truncate the title
+		const cleanTitle = text
+			.trim()
+			.replace(/["']/g, "") // Remove quotes
+			.trim();
+		return cleanTitle || null;
+	} catch (error) {
+		logger.error({
+			msg: "Failed to generate title with LLM",
+			error: error instanceof Error ? error.message : String(error),
+		});
+
+		// Fallback to simple date and time
+		const now = new Date();
+		return `${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
+	}
+};
 
 /**
  * Generate wardrobe context to inject into system prompt
@@ -346,20 +402,35 @@ export function createAiService(deps: {
 				logger,
 			});
 
-			// 3. Generate wardrobe context for system prompt
+			// 3. Get user info for context
+			const userInfo = await getUserInfo({ userId, db });
+
+			// 4. Generate wardrobe context for system prompt
 			const wardrobeContext = await generateWardrobeContext({
 				userId,
 				db,
 				logger,
 			});
 
-			// 4. Prepare enhanced system prompt with wardrobe context
-			const basePrompt = params.systemPrompt || DEFAULT_SYSTEM_PROMPT;
-			const enhancedSystemPrompt = `${wardrobeContext}
+			// 5. Build enhanced system prompt with context
+			const now = new Date();
+			const enhancedSystemPrompt = buildContextualSystemPrompt({
+				currentDateAndTime: now.toLocaleDateString("en-US", {
+					year: "numeric",
+					month: "long",
+					day: "numeric",
+					hour: "numeric",
+					minute: "numeric",
+				}),
+				dayOfWeek: now.toLocaleDateString("en-US", { weekday: "long" }),
+				season: inferSeason(now),
+				userName: userInfo.name,
+				userId,
+				wardrobeContext,
+				customPrompt: params.systemPrompt,
+			});
 
-${basePrompt}`;
-
-			// 5. Save incoming user messages
+			// 6. Save incoming user messages
 			await upsertMessages({
 				conversationId,
 				userId,
@@ -368,13 +439,13 @@ ${basePrompt}`;
 				logger,
 			});
 
-			// 6. Load full conversation history
+			// 7. Load full conversation history
 			const allMessages = await loadConversation({
 				conversationId,
 				db,
 			});
 
-			// 7. Create AI tools with user context
+			// 8. Create AI tools with user context
 			const tools = createAiTools({
 				userId,
 				db,
@@ -383,18 +454,29 @@ ${basePrompt}`;
 				aiClient,
 			});
 
-			// 8. Get AI model
+			// 9. Get AI model
 			const model = aiClient.getModel(modelConfig);
 
-			// 9. Create UI message stream
+			// 10. Create UI message stream
 			const stream = createUIMessageStream({
 				generateId: () => typeIdGenerator("message"),
 				execute: ({ writer }) => {
 					const result = aiClient.streamText({
 						model,
+						stopWhen: [],
 						system: enhancedSystemPrompt,
 						messages: convertToModelMessages(allMessages),
 						tools,
+						prepareStep: ({ stepNumber }) => {
+							// Placeholder for future step-based tool control
+							// For now, all tools are available at all steps
+							logger.debug({
+								msg: "AI stream step",
+								conversationId,
+								stepNumber,
+							});
+							return {};
+						},
 						onError: (error) => {
 							logger.error({
 								msg: "AI stream error",
@@ -424,6 +506,30 @@ ${basePrompt}`;
 							logger,
 						});
 
+						// Auto-generate title if first exchange
+						if (!params.conversationId && allMessages.length <= 2) {
+							const title = await generateTitleWithLLM({
+								messages: [...allMessages, responseMessage as MyUIMessage],
+								logger,
+								aiClient,
+							});
+
+							if (title) {
+								await updateConversationTitle({
+									conversationId,
+									userId,
+									title,
+									db,
+								});
+
+								logger.info({
+									msg: "Auto-generated conversation title",
+									conversationId,
+									title,
+								});
+							}
+						}
+
 						logger.info({
 							msg: "AI stream completed",
 							conversationId,
@@ -439,7 +545,7 @@ ${basePrompt}`;
 				},
 			});
 
-			// 10. Convert to event iterator for ORPC
+			// 11. Convert to event iterator for ORPC
 			return streamToEventIterator(stream);
 		},
 
@@ -523,6 +629,38 @@ ${basePrompt}`;
 				msg: "Deleted conversation",
 				conversationId,
 				userId,
+			});
+		},
+
+		renameConversation: async (
+			conversationId: ConversationId,
+			title: string
+		) => {
+			// Verify user owns this conversation
+			const conversation = await getConversation({
+				conversationId,
+				userId,
+				db,
+			});
+
+			if (!conversation) {
+				throw new ORPCError("NOT_FOUND", {
+					message: "Conversation not found",
+				});
+			}
+
+			await updateConversationTitle({
+				conversationId,
+				userId,
+				title,
+				db,
+			});
+
+			logger.info({
+				msg: "Renamed conversation",
+				conversationId,
+				userId,
+				newTitle: title,
 			});
 		},
 	};

@@ -10,6 +10,8 @@ export const NUMERIC_CONSTANTS = {
 // Field Length Limits
 export const FIELD_LIMITS = {
 	minLength: 1,
+	// AI field limits
+	conversationTitle: 200,
 	// Wardrobe field limits
 	wardrobeItemName: 100,
 	wardrobeDisplayName: 100,
@@ -72,4 +74,9 @@ export const WARDROBE_AI_CONSTANTS = {
 	TOP_TAGS_LIMIT: 30, // Max tags to include in wardrobe context
 	TOP_COLORS_LIMIT: 5, // Colors to include in summary
 	TOP_TAGS_IN_SUMMARY: 15, // Tags to include in summary
+} as const;
+
+// Screen Size Constants
+export const SCREEN_SIZE = {
+	DESKTOP: 768,
 } as const;

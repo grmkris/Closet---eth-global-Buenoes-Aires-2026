@@ -9,6 +9,7 @@ import { http } from "viem";
 import { base, baseSepolia } from "viem/chains";
 import { createConfig, WagmiProvider } from "wagmi";
 import { env } from "@/env";
+import { useWalletDisconnectHandler } from "@/hooks/use-wallet-disconnect-handler";
 
 const cdpConfig: Config = {
 	projectId: env.NEXT_PUBLIC_CDP_PROJECT_ID,
@@ -36,11 +37,22 @@ const wagmiConfig = createConfig({
 
 const queryClient = new QueryClient();
 
+/**
+ * Internal component that handles wallet disconnect events.
+ * Must be inside WagmiProvider to access wagmi hooks.
+ */
+function DisconnectHandler({ children }: { children: ReactNode }) {
+	useWalletDisconnectHandler();
+	return <>{children}</>;
+}
+
 export function WagmiProviderWrapper({ children }: { children: ReactNode }) {
 	return (
 		<WagmiProvider config={wagmiConfig}>
 			<QueryClientProvider client={queryClient}>
-				<CDPReactProvider config={cdpConfig}>{children}</CDPReactProvider>
+				<CDPReactProvider config={cdpConfig}>
+					<DisconnectHandler>{children}</DisconnectHandler>
+				</CDPReactProvider>
 			</QueryClientProvider>
 		</WagmiProvider>
 	);

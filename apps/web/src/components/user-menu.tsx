@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useDisconnect } from "wagmi";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -15,6 +16,7 @@ import { Skeleton } from "./ui/skeleton";
 export default function UserMenu() {
 	const router = useRouter();
 	const { data: session, isPending } = authClient.useSession();
+	const { disconnect } = useDisconnect();
 
 	if (isPending) {
 		return <Skeleton className="h-9 w-24" />;
@@ -41,11 +43,26 @@ export default function UserMenu() {
 					<Button
 						className="w-full"
 						onClick={() => {
-							authClient.signOut({
-								fetchOptions: {
-									onSuccess: () => {
-										router.push("/");
-									},
+							// First disconnect the CDP wallet, then sign out from auth
+							disconnect(undefined, {
+								onSuccess: () => {
+									// After wallet disconnects, sign out from Better Auth
+									authClient.signOut({
+										fetchOptions: {
+											onSuccess: () => {
+												router.push("/");
+											},
+										},
+									});
+								},
+								onError: (_error) => {
+									authClient.signOut({
+										fetchOptions: {
+											onSuccess: () => {
+												router.push("/");
+											},
+										},
+									});
 								},
 							});
 						}}

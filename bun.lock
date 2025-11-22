@@ -54,6 +54,7 @@
         "@ai-sdk/react": "^2.0.99",
         "@ai-stilist/api": "workspace:*",
         "@ai-stilist/auth": "workspace:*",
+        "@ai-stilist/logger": "workspace:*",
         "@ai-stilist/shared": "workspace:*",
         "@coinbase/cdp-core": "catalog:",
         "@coinbase/cdp-react": "catalog:",

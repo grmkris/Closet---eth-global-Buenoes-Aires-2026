@@ -17,6 +17,7 @@
     "@ai-stilist/api": "workspace:*",
     "@ai-stilist/auth": "workspace:*",
     "@ai-stilist/shared": "workspace:*",
+    "@ai-stilist/logger": "workspace:*",
     "@coinbase/cdp-core": "catalog:",
     "@coinbase/cdp-react": "catalog:",
     "@coinbase/cdp-wagmi": "catalog:",
@@ -46,6 +47,7 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "embla-carousel-react": "^8.6.0",
+
     "lucide-react": "^0.554.0",
     "motion": "^12.23.24",
     "nanoid": "^5.1.6",

@@ -3,8 +3,7 @@
 import type { MyUIMessage } from "@ai-stilist/api/features/ai/message-type";
 import type { ConversationId } from "@ai-stilist/shared/typeid";
 import { typeIdGenerator } from "@ai-stilist/shared/typeid";
-import { Plus } from "lucide-react";
-import Link from "next/link";
+import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useRef } from "react";
 import { toast } from "sonner";
 import {
@@ -18,9 +17,7 @@ import {
 	PromptInputTextarea,
 	PromptInputTools,
 } from "@/components/ai-elements/prompt-input";
-import { Button } from "@/components/ui/button";
 import { ChatMessages } from "./chat-messages";
-import { ConversationsPopover } from "./conversations-popover";
 import { EmptyChat } from "./empty-chat";
 import { useChatStream } from "./use-chat-stream";
 
@@ -46,6 +43,8 @@ export function Chat({
 	initialMessages,
 	initialPrompt,
 }: ChatProps) {
+	const queryClient = useQueryClient();
+
 	// Track if initial prompt has been sent
 	const initialPromptSent = useRef(false);
 
@@ -60,7 +59,8 @@ export function Chat({
 		conversationId: normalizedConversationId,
 		initialMessages,
 		onFinish: () => {
-			// Could invalidate conversation list query here
+			// Invalidate conversation list to show updated titles and new conversations
+			queryClient.invalidateQueries({ queryKey: ["ai", "listConversations"] });
 		},
 		onError: (error) => {
 			toast.error(`Failed to send message: ${error.message}`);
@@ -113,22 +113,6 @@ export function Chat({
 
 	return (
 		<div className="relative flex h-full flex-col overflow-hidden">
-			{/* New Chat Floating Button - only show when viewing a conversation */}
-			{conversationId && (
-				<Button
-					asChild
-					className="absolute top-4 right-4 z-10 shadow-lg"
-					size="sm"
-					type="button"
-					variant="default"
-				>
-					<Link href="/chat">
-						<Plus className="mr-2 h-4 w-4" />
-						New Chat
-					</Link>
-				</Button>
-			)}
-
 			{/* Content area - show suggested prompts when empty, messages otherwise */}
 			<div className="flex-1 overflow-hidden">
 				{messages.length === 0 ? (
@@ -158,7 +142,6 @@ export function Chat({
 							placeholder="Ask about your wardrobe, style, or outfit ideas..."
 						/>
 						<PromptInputTools>
-							<ConversationsPopover />
 							<PromptInputSubmit status={isLoading ? "streaming" : "ready"} />
 						</PromptInputTools>
 					</PromptInput>
