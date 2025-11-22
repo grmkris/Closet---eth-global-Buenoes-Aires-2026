@@ -1,3 +1,4 @@
+import { eq, inArray } from "@ai-stilist/db/drizzle";
 import {
 	clothingMetadata,
 	outfit,
@@ -9,7 +10,6 @@ import {
 	typeIdGenerator,
 	UserId,
 } from "@ai-stilist/shared/typeid";
-import { eq, inArray } from "drizzle-orm";
 import { z } from "zod";
 import { protectedProcedure } from "../index";
 

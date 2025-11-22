@@ -3,6 +3,7 @@
   "type": "module",
   "exports": {
     ".": "./src/db.ts",
+    "./drizzle": "./src/drizzle.ts",
     "./schema/auth": "./src/schema/auth/index.ts",
     "./schema/auth/index": "./src/schema/auth/index.ts",
     "./schema/wardrobe": "./src/schema/wardrobe/index.ts",

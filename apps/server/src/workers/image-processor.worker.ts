@@ -1,5 +1,6 @@
 import type { AiClient } from "@ai-stilist/ai";
 import type { Database } from "@ai-stilist/db";
+import { eq } from "@ai-stilist/db/drizzle";
 import { clothingItem, clothingMetadata } from "@ai-stilist/db/schema/wardrobe";
 import type { Logger } from "@ai-stilist/logger";
 import type { QueueClient } from "@ai-stilist/queue";
@@ -8,7 +9,6 @@ import { WORKER_CONFIG } from "@ai-stilist/shared/constants";
 import { typeIdGenerator } from "@ai-stilist/shared/typeid";
 import type { StorageClient } from "@ai-stilist/storage";
 import { analyzeClothingImage } from "@ai-stilist/wardrobe/clothing-analyzer";
-import { eq } from "drizzle-orm";
 
 export type ImageProcessorConfig = {
 	queue: QueueClient;

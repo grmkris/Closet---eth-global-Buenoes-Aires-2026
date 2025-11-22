@@ -1,6 +1,7 @@
 import { createAiClient } from "@ai-stilist/ai";
 import { type Auth, createAuth } from "@ai-stilist/auth";
 import { createDb, type Database, runMigrations } from "@ai-stilist/db";
+import type { Logger as DrizzleLogger } from "@ai-stilist/db/drizzle";
 import {
 	createLogger,
 	type Logger,
@@ -13,7 +14,6 @@ import { createPgLite, type PGlite } from "@ai-stilist/test-utils/pg-lite";
 import { createTestRedisSetup } from "@ai-stilist/test-utils/redis-test-server";
 import { createTestS3Setup } from "@ai-stilist/test-utils/s3-test-server";
 import type { User } from "better-auth";
-import type { Logger as DrizzleLogger } from "drizzle-orm";
 import { env } from "@/env";
 
 const SessionTokenRegex = /better-auth\.session_token=([^;]+)/;

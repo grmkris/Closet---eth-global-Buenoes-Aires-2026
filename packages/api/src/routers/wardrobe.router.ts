@@ -1,3 +1,4 @@
+import { and, eq } from "@ai-stilist/db/drizzle";
 import { clothingItem, clothingMetadata } from "@ai-stilist/db/schema/wardrobe";
 import { API_LIMITS, WORKER_CONFIG } from "@ai-stilist/shared/constants";
 import {
@@ -5,7 +6,6 @@ import {
 	typeIdGenerator,
 	UserId,
 } from "@ai-stilist/shared/typeid";
-import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 import { protectedProcedure } from "../index";
 

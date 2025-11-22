@@ -22,7 +22,6 @@
     "@ai-stilist/db": "workspace:*",
     "@ai-stilist/shared": "workspace:*",
     "better-auth": "catalog:",
-    "drizzle-orm": "catalog:",
     "zod": "catalog:"
   }
 }

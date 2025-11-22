@@ -10,7 +10,7 @@
       "devDependencies": {
         "@biomejs/biome": "2.3.2",
         "@types/bun": "^1.3.2",
-        "tsdown": "^0.16.4",
+        "tsdown": "^0.16.5",
         "turbo": "^2.6.1",
         "ultracite": "6.2.0",
       },
@@ -40,7 +40,6 @@
       "devDependencies": {
         "@faker-js/faker": "^10.1.0",
         "@types/bun": "^1.3.2",
-        "drizzle-orm": "catalog:",
         "drizzle-zod": "catalog:",
         "tsdown": "catalog:",
         "typescript": "catalog:",
@@ -55,7 +54,7 @@
         "@ai-stilist/shared": "workspace:*",
         "@orpc/client": "catalog:",
         "@orpc/server": "catalog:",
-        "@orpc/tanstack-query": "^1.11.2",
+        "@orpc/tanstack-query": "^1.11.3",
         "@t3-oss/env-nextjs": "^0.13.8",
         "@tanstack/react-form": "^1.25.0",
         "@tanstack/react-query": "^5.90.10",
@@ -63,7 +62,7 @@
         "better-auth": "catalog:",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
-        "lucide-react": "^0.553.0",
+        "lucide-react": "^0.554.0",
         "motion": "^12.23.24",
         "next": "16.0.0",
         "next-themes": "^0.4.6",
@@ -125,7 +124,6 @@
         "@orpc/openapi": "catalog:",
         "@orpc/server": "catalog:",
         "@orpc/zod": "catalog:",
-        "drizzle-orm": "catalog:",
         "hono": "catalog:",
         "zod": "catalog:",
       },
@@ -142,7 +140,6 @@
         "@ai-stilist/db": "workspace:*",
         "@ai-stilist/shared": "workspace:*",
         "better-auth": "catalog:",
-        "drizzle-orm": "catalog:",
         "zod": "catalog:",
       },
       "devDependencies": {
@@ -251,7 +248,6 @@
         "@ai-stilist/ai": "workspace:*",
         "@electric-sql/pglite": "^0.3.14",
         "@faker-js/faker": "^10.1.0",
-        "drizzle-orm": "catalog:",
         "pg-gateway": "0.3.0-beta.4",
         "redis-memory-server": "^0.14.0",
         "s3rver": "3.7.1",
@@ -272,7 +268,6 @@
         "@ai-stilist/logger": "workspace:*",
         "@ai-stilist/shared": "workspace:*",
         "ai": "^5.0.93",
-        "drizzle-orm": "catalog:",
         "zod": "catalog:",
       },
       "devDependencies": {
@@ -1026,7 +1021,7 @@
 
     "cross-spawn": ["cross-spawn@7.0.6", "", { "dependencies": { "path-key": "^3.1.0", "shebang-command": "^2.0.0", "which": "^2.0.1" } }, "sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA=="],
 
-    "csstype": ["csstype@3.2.2", "", {}, "sha512-D80T+tiqkd/8B0xNlbstWDG4x6aqVfO52+OlSUNIdkTvmNw0uQpJLeos2J/2XvpyidAFuTPmpad+tUxLndwj6g=="],
+    "csstype": ["csstype@3.2.3", "", {}, "sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ=="],
 
     "data-uri-to-buffer": ["data-uri-to-buffer@4.0.1", "", {}, "sha512-0R9ikRb668HB7QDxT1vkpuUBtqc53YyAwMwGeUFKRojY/NWKvdZ+9UYtRfGmhqNbRkTSVpMbmyhXipFFv2cb/A=="],
 
@@ -1306,7 +1301,7 @@
 
     "lru-cache": ["lru-cache@11.2.2", "", {}, "sha512-F9ODfyqML2coTIsQpSkRHnLSZMtkU8Q+mSfcaIyKwy58u+8k5nvAYeiNhsyMARvzNcXJ9QfWVrcPsC9e9rAxtg=="],
 
-    "lucide-react": ["lucide-react@0.553.0", "", { "peerDependencies": { "react": "^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0" } }, "sha512-BRgX5zrWmNy/lkVAe0dXBgd7XQdZ3HTf+Hwe3c9WK6dqgnj9h+hxV+MDncM88xDWlCq27+TKvHGE70ViODNILw=="],
+    "lucide-react": ["lucide-react@0.554.0", "", { "peerDependencies": { "react": "^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0" } }, "sha512-St+z29uthEJVx0Is7ellNkgTEhaeSoA42I7JjOCBCrc5X6LYMGSv0P/2uS5HDLTExP5tpiqRD2PyUEOS6s9UXA=="],
 
     "luxon": ["luxon@3.7.2", "", {}, "sha512-vtEhXh/gNjI9Yg1u4jX/0YVPMvxzHuGgCm6tC5kZyb08yjGWGnqAjGJvcXbqQR2P3MyMEFnRbpcdFS6PBcLqew=="],
 
