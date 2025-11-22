@@ -10,18 +10,22 @@ type StatusFilterChipsProps = {
 	onSelect: (status: ClothingItemStatus | "all") => void;
 	counts?: {
 		all: number;
-		pending: number;
-		processing: number;
-		ready: number;
+		awaiting_upload: number;
+		queued: number;
+		processing_image: number;
+		analyzing: number;
+		completed: number;
 		failed: number;
 	};
 };
 
 const STATUS_OPTIONS = [
 	{ value: "all" as const, label: "All", icon: null },
-	{ value: "ready" as const, label: "Ready", icon: Check },
-	{ value: "processing" as const, label: "Processing", icon: Loader2 },
-	{ value: "pending" as const, label: "Pending", icon: Clock },
+	{ value: "completed" as const, label: "Ready", icon: Check },
+	{ value: "analyzing" as const, label: "Analyzing", icon: Loader2 },
+	{ value: "processing_image" as const, label: "Converting", icon: Loader2 },
+	{ value: "queued" as const, label: "Queued", icon: Clock },
+	{ value: "awaiting_upload" as const, label: "Uploading", icon: Clock },
 	{ value: "failed" as const, label: "Failed", icon: AlertCircle },
 ];
 
@@ -31,7 +35,7 @@ export function StatusFilterChips({
 	counts,
 }: StatusFilterChipsProps) {
 	return (
-		<div className="scrollbar-hide flex gap-2 overflow-x-auto pb-2">
+		<div className="flex flex-wrap gap-2">
 			{STATUS_OPTIONS.map(({ value, label, icon: Icon }) => {
 				const isSelected = selected === value;
 				const count = counts?.[value] || 0;
@@ -57,7 +61,8 @@ export function StatusFilterChips({
 							<Icon
 								className={cn(
 									"h-3.5 w-3.5",
-									value === "processing" && "animate-spin"
+									(value === "processing_image" || value === "analyzing") &&
+										"animate-spin"
 								)}
 							/>
 						)}

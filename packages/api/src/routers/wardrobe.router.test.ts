@@ -14,7 +14,7 @@ import {
 	clothingAnalysesTable,
 	clothingItemsTable,
 } from "@ai-stilist/db/schema/wardrobe";
-import type { QueueClient } from "@ai-stilist/queue";
+import type { AnalyzeImageJob } from "@ai-stilist/queue/jobs/analyze-image-job";
 import type { ProcessImageJob } from "@ai-stilist/queue/jobs/process-image-job";
 import { NUMERIC_CONSTANTS, WORKER_CONFIG } from "@ai-stilist/shared/constants";
 import type { ClothingItemId } from "@ai-stilist/shared/typeid";
@@ -24,7 +24,8 @@ import {
 	createTestSetup,
 	type TestSetup,
 } from "@ai-stilist/test-utils/test-setup";
-import { processClothingImage } from "@ai-stilist/wardrobe/process-clothing-image";
+import { analyzeClothingImageJob } from "@ai-stilist/wardrobe/analyze-clothing-image";
+import { processImage } from "@ai-stilist/wardrobe/process-image";
 import { call } from "@orpc/server";
 import { wardrobeRouter } from "./wardrobe.router";
 
@@ -77,7 +78,7 @@ async function waitForProcessing(
 			throw new Error(`Item ${itemId} not found`);
 		}
 
-		if (item.status === "ready") {
+		if (item.status === "completed") {
 			return; // Success!
 		}
 
@@ -159,7 +160,7 @@ async function uploadAndProcessImage(
 describe("Wardrobe Router", () => {
 	let setup: TestSetup;
 	let context: Context;
-	let worker: ReturnType<QueueClient["createWorker"]>;
+	let _workers: { close: () => Promise<void> }[];
 
 	beforeAll(async () => {
 		// Create test environment with real AI
@@ -169,11 +170,29 @@ describe("Wardrobe Router", () => {
 			testSetup: setup,
 		});
 
-		// Start image processor worker for integration tests
-		worker = setup.deps.queue.createWorker<"process-image">(
+		// Start TWO workers to mirror production setup
+		// Worker 1: Image processing (Sharp conversion)
+		const imageProcessorWorker = setup.deps.queue.createWorker<"process-image">(
 			"process-image",
 			async (job: ProcessImageJob) =>
-				processClothingImage(
+				processImage(
+					{
+						db: setup.deps.db,
+						storage: setup.deps.storage,
+						logger: setup.deps.logger,
+					},
+					job
+				),
+			{
+				concurrency: WORKER_CONFIG.MAX_CONCURRENT_JOBS,
+			}
+		);
+
+		// Worker 2: AI analysis
+		const imageAnalyzerWorker = setup.deps.queue.createWorker<"analyze-image">(
+			"analyze-image",
+			async (job: AnalyzeImageJob) =>
+				analyzeClothingImageJob(
 					{
 						db: setup.deps.db,
 						storage: setup.deps.storage,
@@ -186,6 +205,8 @@ describe("Wardrobe Router", () => {
 				concurrency: WORKER_CONFIG.MAX_CONCURRENT_JOBS,
 			}
 		);
+
+		_workers = [imageProcessorWorker, imageAnalyzerWorker];
 	});
 
 	afterEach(async () => {
@@ -194,7 +215,7 @@ describe("Wardrobe Router", () => {
 	});
 
 	afterAll(async () => {
-		await worker.close();
+		await Promise.all(_workers.map((w) => w.close()));
 		// await setup.close();
 	});
 
@@ -211,7 +232,7 @@ describe("Wardrobe Router", () => {
 
 			expect(result.itemId).toBeDefined();
 			expect(result.uploadUrl).toContain("http");
-			expect(result.status).toBe("pending");
+			expect(result.status).toBe("awaiting_upload");
 		});
 	});
 
@@ -268,7 +289,7 @@ describe("Wardrobe Router", () => {
 				});
 
 				expect(item).toBeDefined();
-				expect(item?.status).toBe("ready");
+				expect(item?.status).toBe("completed");
 				expect(item?.analysis).toBeDefined();
 				expect(item?.categories.length).toBeGreaterThan(0);
 				expect(item?.tags.length).toBeGreaterThan(0);
@@ -301,7 +322,7 @@ describe("Wardrobe Router", () => {
 				});
 
 				for (const item of items) {
-					expect(item.status).toBe("ready");
+					expect(item.status).toBe("completed");
 				}
 			},
 			MULTIPLE_UPLOADS_TIMEOUT_MS
@@ -324,7 +345,7 @@ describe("Wardrobe Router", () => {
 
 				expect(result.id).toBe(itemId);
 				expect(result.imageUrl).toBeDefined();
-				expect(result.status).toBe("ready");
+				expect(result.status).toBe("completed");
 				expect(result.analysis).toBeDefined();
 				expect(result.categories).toBeArray();
 				expect(result.tags).toBeArray();

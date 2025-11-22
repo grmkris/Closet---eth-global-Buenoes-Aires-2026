@@ -27,6 +27,7 @@
     }
   },
   "scripts": {
+    "npkill": "bunx npkill -D -y && rm bun.lock",
     "check": "biome check --write .",
     "format": "turbo format",
     "lint": "turbo lint",

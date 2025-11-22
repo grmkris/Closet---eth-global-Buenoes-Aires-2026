@@ -1,5 +1,6 @@
 "use client";
 
+import type { ClothingItemId } from "@ai-stilist/shared/typeid";
 import { CheckCircle, Loader2, X, XCircle } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -58,7 +59,7 @@ export function UploadManager() {
 				fileName: file.name,
 			}));
 
-			let uploadResponses: Array<{ itemId: string; uploadUrl: string }> = [];
+			let uploadResponses: { itemId: ClothingItemId; uploadUrl: string }[] = [];
 
 			if (files.length === 1) {
 				// Single upload
@@ -95,6 +96,11 @@ export function UploadManager() {
 					if (!response.ok) {
 						throw new Error(`Upload failed: ${response.statusText}`);
 					}
+
+					// Confirm upload to trigger background processing
+					await client.wardrobe.confirmUpload({
+						itemId: uploadResponses[index].itemId,
+					});
 
 					// Update status to processing
 					setUploads((prev) =>

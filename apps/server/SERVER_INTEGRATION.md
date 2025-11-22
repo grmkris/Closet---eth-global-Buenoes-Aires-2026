@@ -210,7 +210,7 @@ BETTER_AUTH_SECRET=your-secret-key-here-change-in-production
 
 # Application
 NODE_ENV=development
-PORT=8000
+PORT=3000
 APP_ENV=dev
 
 # AI Providers (at least one required for image analysis)

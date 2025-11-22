@@ -1,4 +1,13 @@
-import { and, eq, ilike, inArray, or, sql } from "@ai-stilist/db/drizzle";
+import {
+	and,
+	count,
+	desc,
+	eq,
+	ilike,
+	inArray,
+	or,
+	sql,
+} from "@ai-stilist/db/drizzle";
 import {
 	categoriesTable,
 	clothingItemCategoriesTable,
@@ -7,6 +16,7 @@ import {
 	clothingItemTagsTable,
 	colorsTable,
 	tagsTable,
+	tagTypesTable,
 } from "@ai-stilist/db/schema/wardrobe";
 import { API_LIMITS } from "@ai-stilist/shared/constants";
 import {
@@ -61,6 +71,10 @@ const ConfirmUploadInput = z.object({
 	itemId: ClothingItemId,
 });
 
+const RetryFailedItemInput = z.object({
+	itemId: ClothingItemId,
+});
+
 export const wardrobeRouter = {
 	/**
 	 * Upload a single image
@@ -90,7 +104,7 @@ export const wardrobeRouter = {
 				id: itemId,
 				userId,
 				imageKey,
-				status: "pending",
+				status: "awaiting_upload",
 			});
 
 			context.logger.info({
@@ -102,7 +116,7 @@ export const wardrobeRouter = {
 			return {
 				itemId,
 				uploadUrl,
-				status: "pending",
+				status: "awaiting_upload",
 			};
 		}),
 
@@ -128,9 +142,25 @@ export const wardrobeRouter = {
 				throw new Error("Item not found");
 			}
 
-			if (item.status !== "pending") {
-				throw new Error(`Item status is ${item.status}, expected pending`);
+			if (item.status !== "awaiting_upload") {
+				throw new Error(
+					`Item status is ${item.status}, expected awaiting_upload`
+				);
 			}
+
+			// Verify file exists in S3
+			const fileExists = await context.storage.exists(item.imageKey);
+			if (!fileExists) {
+				throw new Error(
+					`File not found in storage. Upload may have failed: ${item.imageKey}`
+				);
+			}
+
+			// Update status to queued
+			await context.db
+				.update(clothingItemsTable)
+				.set({ status: "queued" })
+				.where(eq(clothingItemsTable.id, itemId));
 
 			// Queue processing job
 			const job = await context.queue.addJob("process-image", {
@@ -141,6 +171,72 @@ export const wardrobeRouter = {
 
 			context.logger.info({
 				msg: "Upload confirmed, processing started",
+				itemId,
+				userId,
+				jobId: job.jobId,
+			});
+
+			return {
+				success: true,
+				jobId: job.jobId,
+			};
+		}),
+
+	/**
+	 * Retry a failed item
+	 * Re-queues the processing job for a failed item
+	 */
+	retryFailedItem: protectedProcedure
+		.input(RetryFailedItemInput)
+		.handler(async ({ input, context }) => {
+			const { itemId } = input;
+			const userId = UserId.parse(context.session.user.id);
+
+			// Verify item exists and belongs to user
+			const item = await context.db.query.clothingItemsTable.findFirst({
+				where: and(
+					eq(clothingItemsTable.id, itemId),
+					eq(clothingItemsTable.userId, userId)
+				),
+			});
+
+			if (!item) {
+				throw new Error("Item not found");
+			}
+
+			if (item.status !== "failed") {
+				throw new Error(
+					`Item status is ${item.status}, can only retry failed items`
+				);
+			}
+
+			// Verify file still exists in S3
+			const fileExists = await context.storage.exists(item.imageKey);
+			if (!fileExists) {
+				throw new Error(
+					`File not found in storage. Cannot retry processing: ${item.imageKey}`
+				);
+			}
+
+			// Update status to queued and increment attempt count
+			await context.db
+				.update(clothingItemsTable)
+				.set({
+					status: "queued",
+					attemptCount: sql`${clothingItemsTable.attemptCount} + 1`,
+					lastAttemptAt: new Date(),
+				})
+				.where(eq(clothingItemsTable.id, itemId));
+
+			// Re-queue processing job
+			const job = await context.queue.addJob("process-image", {
+				itemId,
+				imageKey: item.imageKey,
+				userId,
+			});
+
+			context.logger.info({
+				msg: "Failed item retry queued",
 				itemId,
 				userId,
 				jobId: job.jobId,
@@ -182,13 +278,13 @@ export const wardrobeRouter = {
 						id: itemId,
 						userId,
 						imageKey,
-						status: "pending",
+						status: "awaiting_upload",
 					});
 
 					return {
 						itemId,
 						uploadUrl,
-						status: "pending",
+						status: "awaiting_upload",
 					};
 				})
 			);
@@ -303,7 +399,7 @@ export const wardrobeRouter = {
 				where: and(...conditions),
 				limit,
 				offset,
-				orderBy: (items, { desc }) => [desc(items.createdAt)],
+				orderBy: (items, { desc: descFn }) => [descFn(items.createdAt)],
 				with: {
 					analysis: true,
 					categories: {
@@ -336,6 +432,18 @@ export const wardrobeRouter = {
 					key: item.imageKey,
 					expiresIn: 3600,
 				}),
+				processedImageUrl: item.processedImageKey
+					? context.storage.getSignedUrl({
+							key: item.processedImageKey,
+							expiresIn: 3600,
+						})
+					: null,
+				thumbnailUrl: item.thumbnailKey
+					? context.storage.getSignedUrl({
+							key: item.thumbnailKey,
+							expiresIn: 3600,
+						})
+					: null,
 			}));
 
 			// Get total count with same filters
@@ -400,15 +508,31 @@ export const wardrobeRouter = {
 				throw new Error("Item not found");
 			}
 
-			// Generate signed URL
+			// Generate signed URLs
 			const imageUrl = context.storage.getSignedUrl({
 				key: item.imageKey,
 				expiresIn: 3600,
 			});
 
+			const processedImageUrl = item.processedImageKey
+				? context.storage.getSignedUrl({
+						key: item.processedImageKey,
+						expiresIn: 3600,
+					})
+				: null;
+
+			const thumbnailUrl = item.thumbnailKey
+				? context.storage.getSignedUrl({
+						key: item.thumbnailKey,
+						expiresIn: 3600,
+					})
+				: null;
+
 			return {
 				...item,
 				imageUrl,
+				processedImageUrl,
+				thumbnailUrl,
 			};
 		}),
 
@@ -419,108 +543,81 @@ export const wardrobeRouter = {
 	getTags: protectedProcedure.handler(async ({ context }) => {
 		const userId = UserId.parse(context.session.user.id);
 
-		// Use Drizzle relational queries to fetch all items with relations
-		const items = await context.db.query.clothingItemsTable.findMany({
-			where: eq(clothingItemsTable.userId, userId),
-			with: {
-				tags: {
-					with: {
-						tag: {
-							with: {
-								type: true,
-							},
-						},
-					},
-				},
-				categories: {
-					with: {
-						category: true,
-					},
-				},
-				colors: {
-					with: {
-						color: true,
-					},
-				},
-			},
-		});
+		// Aggregate tags with counts using SQL
+		const tagsResult = await context.db
+			.select({
+				tag: tagsTable.name,
+				type: tagTypesTable.name,
+				typeDisplay: tagTypesTable.displayName,
+				count: count(clothingItemTagsTable.itemId).as("count"),
+			})
+			.from(clothingItemTagsTable)
+			.innerJoin(tagsTable, eq(tagsTable.id, clothingItemTagsTable.tagId))
+			.innerJoin(tagTypesTable, eq(tagTypesTable.id, tagsTable.typeId))
+			.innerJoin(
+				clothingItemsTable,
+				eq(clothingItemsTable.id, clothingItemTagsTable.itemId)
+			)
+			.where(eq(clothingItemsTable.userId, userId))
+			.groupBy(
+				tagsTable.id,
+				tagsTable.name,
+				tagTypesTable.name,
+				tagTypesTable.displayName
+			)
+			.orderBy(desc(count(clothingItemTagsTable.itemId)));
 
-		// Aggregate tag statistics in JavaScript
-		const tagCountMap = new Map<
-			string,
-			{ tag: string; type: string; typeDisplay: string; count: number }
-		>();
+		// Aggregate categories with counts using SQL
+		const categoriesResult = await context.db
+			.select({
+				name: categoriesTable.name,
+				count: count(clothingItemCategoriesTable.itemId).as("count"),
+			})
+			.from(clothingItemCategoriesTable)
+			.innerJoin(
+				categoriesTable,
+				eq(categoriesTable.id, clothingItemCategoriesTable.categoryId)
+			)
+			.innerJoin(
+				clothingItemsTable,
+				eq(clothingItemsTable.id, clothingItemCategoriesTable.itemId)
+			)
+			.where(eq(clothingItemsTable.userId, userId))
+			.groupBy(categoriesTable.id, categoriesTable.name)
+			.orderBy(desc(count(clothingItemCategoriesTable.itemId)));
 
-		for (const item of items) {
-			for (const { tag } of item.tags) {
-				const key = tag.id;
-				const existing = tagCountMap.get(key);
-				if (existing) {
-					existing.count += 1;
-				} else {
-					tagCountMap.set(key, {
-						tag: tag.name,
-						type: tag.type.name,
-						typeDisplay: tag.type.displayName,
-						count: 1,
-					});
-				}
-			}
-		}
+		// Aggregate colors with counts using SQL
+		const colorsResult = await context.db
+			.select({
+				name: colorsTable.name,
+				hexCode: colorsTable.hexCode,
+				count: count(clothingItemColorsTable.itemId).as("count"),
+			})
+			.from(clothingItemColorsTable)
+			.innerJoin(
+				colorsTable,
+				eq(colorsTable.id, clothingItemColorsTable.colorId)
+			)
+			.innerJoin(
+				clothingItemsTable,
+				eq(clothingItemsTable.id, clothingItemColorsTable.itemId)
+			)
+			.where(eq(clothingItemsTable.userId, userId))
+			.groupBy(colorsTable.id, colorsTable.name, colorsTable.hexCode)
+			.orderBy(desc(count(clothingItemColorsTable.itemId)));
 
-		// Sort tags by count descending
-		const tags = Array.from(tagCountMap.values()).sort(
-			(a, b) => b.count - a.count
-		);
-
-		// Aggregate category statistics
-		const categoryCountMap = new Map<string, number>();
-
-		for (const item of items) {
-			for (const { category } of item.categories) {
-				const count = categoryCountMap.get(category.name) || 0;
-				categoryCountMap.set(category.name, count + 1);
-			}
-		}
-
-		// Sort categories by count descending
-		const categories = Array.from(categoryCountMap.keys()).sort(
-			(a, b) => (categoryCountMap.get(b) || 0) - (categoryCountMap.get(a) || 0)
-		);
-
-		// Aggregate color statistics
-		const colorCountMap = new Map<
-			string,
-			{ name: string; hexCode: string | null; count: number }
-		>();
-
-		for (const item of items) {
-			for (const { color } of item.colors) {
-				const key = color.id;
-				const existing = colorCountMap.get(key);
-				if (existing) {
-					existing.count += 1;
-				} else {
-					colorCountMap.set(key, {
-						name: color.name,
-						hexCode: color.hexCode,
-						count: 1,
-					});
-				}
-			}
-		}
-
-		// Sort colors by count descending
-		const colors = Array.from(colorCountMap.values()).sort(
-			(a, b) => b.count - a.count
-		);
+		// Get total items count
+		const totalItemsResult = await context.db
+			.select({ count: count(clothingItemsTable.id).as("count") })
+			.from(clothingItemsTable)
+			.where(eq(clothingItemsTable.userId, userId));
 
 		return {
-			tags,
-			categories,
-			colors,
-			totalTags: tags.length,
-			totalItems: items.length,
+			tags: tagsResult,
+			categories: categoriesResult.map((c) => c.name),
+			colors: colorsResult,
+			totalTags: tagsResult.length,
+			totalItems: totalItemsResult[0]?.count || 0,
 		};
 	}),
 

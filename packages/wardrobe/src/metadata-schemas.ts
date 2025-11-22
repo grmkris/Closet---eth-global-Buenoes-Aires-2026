@@ -12,10 +12,23 @@ export const ClothingAnalysisSchema = z.object({
 		),
 
 	colors: z
-		.array(z.string())
-		.describe(
-			"Array of colors - can be names ('navy', 'white') or hex codes ('#FF5733')"
-		),
+		.array(
+			z.object({
+				name: z
+					.string()
+					.describe(
+						"Human-readable color name (e.g., 'Navy Blue', 'Forest Green')"
+					),
+				hex: z
+					.string()
+					.regex(
+						/^#[0-9a-fA-F]{6}$/,
+						"Must be a valid 6-digit hex color code (e.g., '#000080', '#228B22')"
+					)
+					.describe("Hex color code (e.g., '#000080', '#228B22')"),
+			})
+		)
+		.describe("Array of colors with both human-readable names and hex codes"),
 
 	tags: z
 		.array(
@@ -53,7 +66,10 @@ Your goal is to create a rich set of tags that fully describe this item, making 
 Instructions:
 1. **Category**: Choose the most appropriate main category (top, bottom, dress, shoes, outerwear, accessory, etc.)
 
-2. **Colors**: List ALL visible colors. Use common color names when possible ('navy', 'forest green', 'burgundy'), or hex codes for precise colors.
+2. **Colors**: List ALL visible colors as objects with both "name" and "hex" fields.
+   - name: Use descriptive human-readable names ('Navy Blue', 'Forest Green', 'Burgundy')
+   - hex: Provide accurate hex color codes ('#000080', '#228B22', '#800020')
+   Example: {name: 'Navy Blue', hex: '#000080'}
 
 3. **Tags**: Return tags as objects with "type" and "name" fields. Cover ALL relevant aspects:
 

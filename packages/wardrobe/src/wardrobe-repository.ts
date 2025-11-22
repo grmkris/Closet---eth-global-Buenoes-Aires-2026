@@ -24,6 +24,9 @@ import { typeIdGenerator } from "@ai-stilist/shared/typeid";
 // Type for transaction context
 type DbOrTx = Database | Transaction;
 
+// Regex for hex color validation
+const HEX_COLOR_REGEX = /^#[0-9A-F]{6}$/;
+
 // ============================================================================
 // CORE INSERTION FUNCTIONS (Used by AI Worker)
 // ============================================================================
@@ -76,10 +79,19 @@ export async function insertClothingCategory(
 export async function insertClothingColors(
 	tx: DbOrTx,
 	itemId: ClothingItemId,
-	colors: string[]
+	colors: Array<{ name: string; hex: string }>
 ): Promise<void> {
 	for (const [index, colorInput] of colors.entries()) {
-		const colorName = colorInput.trim().toLowerCase();
+		const colorName = colorInput.name.trim().toLowerCase();
+
+		// Normalize and validate hex code
+		let hexCode = colorInput.hex.toUpperCase();
+
+		// Validate hex format - fallback to gray if invalid
+		const isValidHex = HEX_COLOR_REGEX.test(hexCode);
+		if (!isValidHex) {
+			hexCode = "#CCCCCC";
+		}
 
 		// Upsert color (handles race conditions)
 		const [color] = await tx
@@ -87,11 +99,14 @@ export async function insertClothingColors(
 			.values({
 				id: typeIdGenerator("color"),
 				name: colorName,
-				hexCode: null,
+				hexCode,
 			})
 			.onConflictDoUpdate({
 				target: [colorsTable.name],
-				set: { updatedAt: sql`CURRENT_TIMESTAMP` },
+				set: {
+					hexCode,
+					updatedAt: sql`CURRENT_TIMESTAMP`,
+				},
 			})
 			.returning();
 

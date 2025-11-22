@@ -4,6 +4,7 @@ import { Queue, Worker } from "bullmq";
 
 import { Redis } from "ioredis";
 
+import type { AnalyzeImageJob } from "./jobs/analyze-image-job";
 import type { ProcessImageJob } from "./jobs/process-image-job";
 
 export type QueueConfig = {
@@ -11,14 +12,16 @@ export type QueueConfig = {
 	logger?: Logger;
 };
 
-export type JobType = "process-image";
+export type JobType = "process-image" | "analyze-image";
 
 export type JobData = {
 	"process-image": ProcessImageJob;
+	"analyze-image": AnalyzeImageJob;
 };
 
 export type JobResult = {
 	"process-image": { success: boolean; itemId: string };
+	"analyze-image": { success: boolean; itemId: string };
 };
 
 export function createQueueClient(config: QueueConfig) {
@@ -30,6 +33,27 @@ export function createQueueClient(config: QueueConfig) {
 	// Create queues
 	const queues = {
 		"process-image": new Queue<ProcessImageJob>("process-image", {
+			connection,
+			defaultJobOptions: {
+				attempts: 3,
+				backoff: {
+					type: "exponential",
+					delay: 2000,
+				},
+				removeOnComplete: {
+					count: 100,
+					age: 24 * WORKER_CONFIG.SIGNED_URL_EXPIRY_SECONDS, // 24 hours
+				},
+				removeOnFail: {
+					count: 1000,
+					age:
+						NUMERIC_CONSTANTS.SEVEN_DAYS *
+						24 *
+						WORKER_CONFIG.SIGNED_URL_EXPIRY_SECONDS, // 7 days
+				},
+			},
+		}),
+		"analyze-image": new Queue<AnalyzeImageJob>("analyze-image", {
 			connection,
 			defaultJobOptions: {
 				attempts: 3,
@@ -63,8 +87,8 @@ export function createQueueClient(config: QueueConfig) {
 		try {
 			logger?.debug({ msg: "Adding job to queue", queueName, data });
 
-			const queue = queues[queueName];
-			const job = await queue.add(queueName, data, {
+			const queue = queues[queueName] as unknown as Queue<JobData[T]>;
+			const job = await queue.add(queueName as never, data as never, {
 				priority: options?.priority,
 				delay: options?.delay,
 			});
@@ -84,7 +108,10 @@ export function createQueueClient(config: QueueConfig) {
 	function createWorker<T extends JobType>(
 		queueName: T,
 		processor: (job: JobData[T]) => Promise<JobResult[T]>,
-		options?: { concurrency?: number }
+		options?: {
+			concurrency?: number;
+			onFailed?: (job: JobData[T], error: Error) => Promise<void>;
+		}
 	) {
 		const worker = new Worker<JobData[T], JobResult[T]>(
 			queueName,
@@ -106,13 +133,28 @@ export function createQueueClient(config: QueueConfig) {
 			}
 		);
 
-		worker.on("failed", (job, error) => {
+		worker.on("failed", async (job, error) => {
 			logger?.error({
-				msg: "Job failed permanently",
+				msg: "Job failed permanently after all retries",
 				queueName,
 				jobId: job?.id,
+				attemptsMade: job?.attemptsMade,
 				error,
 			});
+
+			// Call custom failure handler if provided
+			if (options?.onFailed && job) {
+				try {
+					await options.onFailed(job.data, error);
+				} catch (callbackError) {
+					logger?.error({
+						msg: "Failure callback error",
+						queueName,
+						jobId: job.id,
+						error: callbackError,
+					});
+				}
+			}
 		});
 
 		worker.on("error", (error) => {

@@ -15,6 +15,7 @@ import {
 	pgTable,
 	primaryKey,
 	text,
+	timestamp,
 	unique,
 } from "drizzle-orm/pg-core";
 import z from "zod";
@@ -23,9 +24,11 @@ import { user } from "../auth/auth.db";
 
 // Only enum we keep - for tracking processing status
 export const CLOTHING_ITEM_STATUSES = [
-	"pending",
-	"processing",
-	"ready",
+	"awaiting_upload",
+	"queued",
+	"processing_image",
+	"analyzing",
+	"completed",
 	"failed",
 ] as const;
 export const ClothingItemStatus = z.enum(CLOTHING_ITEM_STATUSES);
@@ -48,7 +51,14 @@ export const clothingItemsTable = pgTable(
 			.references(() => user.id, { onDelete: "cascade" })
 			.$type<UserId>(),
 		imageKey: text("image_key").notNull(),
-		status: ClothingItemStatusPgEnum("status").notNull().default("pending"),
+		processedImageKey: text("processed_image_key"), // Converted WebP image key
+		thumbnailKey: text("thumbnail_key"), // Thumbnail image key
+		status: ClothingItemStatusPgEnum("status")
+			.notNull()
+			.default("awaiting_upload"),
+		errorDetails: text("error_details"), // Technical error details (JSON) for debugging
+		attemptCount: integer("attempt_count").notNull().default(0), // Track retry attempts
+		lastAttemptAt: timestamp("last_attempt_at"), // Track when last processing attempt was made
 		...baseEntityFields,
 	},
 	(table) => [

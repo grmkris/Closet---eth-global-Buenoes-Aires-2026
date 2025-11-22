@@ -1,5 +1,6 @@
 "use client";
 
+import type { ClothingItemStatus } from "@ai-stilist/shared/wardrobe-types";
 import { AlertCircle, CheckCircle, Clock, Loader2 } from "lucide-react";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
@@ -8,10 +9,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { MAX_VISIBLE_COLORS, MAX_VISIBLE_TAGS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
-type ClothingItemStatus = "pending" | "processing" | "ready" | "failed";
-
 type ItemCardProps = {
 	imageUrl: string;
+	thumbnailUrl?: string | null;
 	status: ClothingItemStatus;
 	category?: string;
 	colors?: string[];
@@ -27,17 +27,27 @@ const STATUS_CONFIG: Record<
 		variant: "default" | "secondary" | "destructive" | "outline";
 	}
 > = {
-	pending: {
-		label: "Pending",
+	awaiting_upload: {
+		label: "Uploading",
 		icon: <Clock className="h-3 w-3" />,
 		variant: "secondary",
 	},
-	processing: {
-		label: "Processing",
+	queued: {
+		label: "Queued",
+		icon: <Clock className="h-3 w-3" />,
+		variant: "secondary",
+	},
+	processing_image: {
+		label: "Converting",
 		icon: <Loader2 className="h-3 w-3 animate-spin" />,
 		variant: "default",
 	},
-	ready: {
+	analyzing: {
+		label: "Analyzing",
+		icon: <Loader2 className="h-3 w-3 animate-spin" />,
+		variant: "default",
+	},
+	completed: {
 		label: "Ready",
 		icon: <CheckCircle className="h-3 w-3" />,
 		variant: "outline",
@@ -51,14 +61,17 @@ const STATUS_CONFIG: Record<
 
 export function ItemCard({
 	imageUrl,
+	thumbnailUrl,
 	status,
 	category,
 	colors,
 	tags,
 	onClick,
 }: ItemCardProps) {
+	// Use thumbnail if available, otherwise fall back to full image
+	const displayUrl = thumbnailUrl || imageUrl;
 	const statusConfig = STATUS_CONFIG[status];
-	const isReady = status === "ready";
+	const isReady = status === "completed";
 
 	return (
 		<Card
@@ -74,8 +87,10 @@ export function ItemCard({
 					alt={category || "Clothing item"}
 					className="object-cover transition-transform group-hover:scale-105"
 					fill
+					loading="lazy"
 					sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-					src={imageUrl}
+					src={displayUrl}
+					width={100}
 				/>
 
 				{/* Status Badge */}
@@ -89,7 +104,13 @@ export function ItemCard({
 				{/* Overlay for processing/failed states */}
 				{!isReady && (
 					<div className="absolute inset-0 flex items-center justify-center bg-background/80">
-						{status === "processing" && (
+						{status === "processing_image" && (
+							<div className="text-center">
+								<Loader2 className="mx-auto mb-2 h-8 w-8 animate-spin" />
+								<p className="font-medium text-sm">Converting...</p>
+							</div>
+						)}
+						{status === "analyzing" && (
 							<div className="text-center">
 								<Loader2 className="mx-auto mb-2 h-8 w-8 animate-spin" />
 								<p className="font-medium text-sm">Analyzing...</p>

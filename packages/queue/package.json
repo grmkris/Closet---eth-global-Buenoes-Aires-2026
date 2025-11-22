@@ -4,7 +4,8 @@
   "type": "module",
   "exports": {
     ".": "./src/queue-client.ts",
-    "./jobs/process-image-job": "./src/jobs/process-image-job.ts"
+    "./jobs/process-image-job": "./src/jobs/process-image-job.ts",
+    "./jobs/analyze-image-job": "./src/jobs/analyze-image-job.ts"
   },
   "scripts": {
     "build": "tsdown",

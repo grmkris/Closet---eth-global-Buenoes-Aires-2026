@@ -28,7 +28,11 @@ export function useWardrobePolling() {
 
 		// Check if there are any items being processed
 		const hasActiveItems = data?.items.some(
-			(item) => item.status === "pending" || item.status === "processing"
+			(item) =>
+				item.status === "awaiting_upload" ||
+				item.status === "queued" ||
+				item.status === "processing_image" ||
+				item.status === "analyzing"
 		);
 
 		if (!hasActiveItems) {
@@ -63,7 +67,11 @@ export function useWardrobePolling() {
 		items: data?.items || [],
 		isLoading,
 		hasActiveItems: data?.items.some(
-			(item) => item.status === "pending" || item.status === "processing"
+			(item) =>
+				item.status === "awaiting_upload" ||
+				item.status === "queued" ||
+				item.status === "processing_image" ||
+				item.status === "analyzing"
 		),
 	};
 }

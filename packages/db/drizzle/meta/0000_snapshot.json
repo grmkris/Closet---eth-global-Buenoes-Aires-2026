@@ -1,5 +1,5 @@
 {
-  "id": "375fdd4e-1e02-4c2c-97f7-0b64a4e2399e",
+  "id": "ef63aef6-44c5-4352-9a47-cb2caaa9dba6",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -793,13 +793,44 @@
           "primaryKey": false,
           "notNull": true
         },
+        "processed_image_key": {
+          "name": "processed_image_key",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "thumbnail_key": {
+          "name": "thumbnail_key",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
         "status": {
           "name": "status",
           "type": "clothing_item_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true,
-          "default": "'pending'"
+          "default": "'awaiting_upload'"
+        },
+        "error_details": {
+          "name": "error_details",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "attempt_count": {
+          "name": "attempt_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "last_attempt_at": {
+          "name": "last_attempt_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
         },
         "created_at": {
           "name": "created_at",
@@ -1124,7 +1155,14 @@
     "public.clothing_item_status": {
       "name": "clothing_item_status",
       "schema": "public",
-      "values": ["pending", "processing", "ready", "failed"]
+      "values": [
+        "awaiting_upload",
+        "queued",
+        "processing_image",
+        "analyzing",
+        "completed",
+        "failed"
+      ]
     },
     "public.tag_source": {
       "name": "tag_source",

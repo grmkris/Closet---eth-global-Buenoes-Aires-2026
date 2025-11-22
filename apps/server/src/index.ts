@@ -10,6 +10,7 @@ import { createStorageClient } from "@ai-stilist/storage";
 import { S3Client } from "bun";
 import { createApp } from "@/app";
 import { env } from "@/env";
+import { createImageAnalyzerWorker } from "@/workers/image-analyzer.worker";
 import { createImageProcessorWorker } from "@/workers/image-processor.worker";
 
 const logger = createLogger({
@@ -59,20 +60,32 @@ const aiClient = createAiClient({
 	environment: env.APP_ENV,
 });
 
-// Start background worker
-logger.info({ msg: "Starting image processor worker" });
-let worker: ReturnType<typeof createImageProcessorWorker>;
+// Start background workers
+logger.info({ msg: "Starting background workers" });
+let imageProcessorWorker: { close: () => Promise<void> };
+let imageAnalyzerWorker: { close: () => Promise<void> };
+
 try {
-	worker = createImageProcessorWorker({
+	// Start image processor worker (Sharp conversion)
+	imageProcessorWorker = createImageProcessorWorker({
+		queue,
+		db,
+		storage,
+		logger,
+	});
+	logger.info({ msg: "Image processor worker started successfully" });
+
+	// Start image analyzer worker (AI analysis)
+	imageAnalyzerWorker = createImageAnalyzerWorker({
 		queue,
 		db,
 		storage,
 		aiClient,
 		logger,
 	});
-	logger.info({ msg: "Image processor worker started successfully" });
+	logger.info({ msg: "Image analyzer worker started successfully" });
 } catch (error) {
-	logger.error({ msg: "Failed to start worker", error });
+	logger.error({ msg: "Failed to start workers", error });
 	throw error;
 }
 
@@ -95,7 +108,10 @@ export default {
 
 process.on("SIGTERM", async () => {
 	logger.info({ msg: "SIGTERM received, shutting down gracefully" });
-	await worker.close();
+	await Promise.all([
+		imageProcessorWorker.close(),
+		imageAnalyzerWorker.close(),
+	]);
 	await queue.close();
 	redis.close();
 	process.exit(0);
@@ -103,7 +119,10 @@ process.on("SIGTERM", async () => {
 
 process.on("SIGINT", async () => {
 	logger.info({ msg: "SIGINT received, shutting down gracefully" });
-	await worker.close();
+	await Promise.all([
+		imageProcessorWorker.close(),
+		imageAnalyzerWorker.close(),
+	]);
 	await queue.close();
 	redis.close();
 	process.exit(0);

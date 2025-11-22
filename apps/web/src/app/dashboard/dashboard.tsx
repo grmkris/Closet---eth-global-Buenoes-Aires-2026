@@ -6,6 +6,7 @@ import { Camera, Loader2, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import type { authClient } from "@/lib/auth-client";
 import { orpc } from "@/utils/orpc";
 
@@ -15,7 +16,7 @@ export default function Dashboard({
 	session: typeof authClient.$Infer.Session;
 }) {
 	// Fetch wardrobe stats to show processing queue
-	const { data: stats } = useQuery(
+	const { data: stats, isLoading } = useQuery(
 		orpc.wardrobe.getTags.queryOptions({
 			refetchInterval: (query) => {
 				// Poll if there might be processing items
@@ -25,6 +26,31 @@ export default function Dashboard({
 	);
 
 	const processingCount = 0; // We could track this in getTags if needed
+
+	if (isLoading) {
+		return (
+			<div className="mx-auto max-w-2xl space-y-6 px-4 py-8 sm:px-6">
+				{/* Welcome Header Skeleton */}
+				<div className="space-y-2 text-center">
+					<Skeleton className="mx-auto h-10 w-64 sm:h-12" />
+					<Skeleton className="mx-auto h-5 w-48" />
+				</div>
+
+				{/* Stats Skeleton */}
+				<div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+					<Skeleton className="h-24" />
+					<Skeleton className="h-24" />
+					<Skeleton className="col-span-2 h-24 sm:col-span-1" />
+				</div>
+
+				{/* Buttons Skeleton */}
+				<div className="space-y-3">
+					<Skeleton className="h-14 w-full sm:h-16" />
+					<Skeleton className="h-14 w-full sm:h-16" />
+				</div>
+			</div>
+		);
+	}
 
 	return (
 		<div className="mx-auto max-w-2xl space-y-6 px-4 py-8 sm:px-6">
@@ -76,7 +102,7 @@ export default function Dashboard({
 
 			{/* Primary Actions */}
 			<div className="space-y-3">
-				<Link className="block" href="/wardrobe">
+				<Link className="block" href={"/wardrobe"}>
 					<Button
 						className="h-14 w-full text-base sm:h-16 sm:text-lg"
 						size="lg"
@@ -85,7 +111,7 @@ export default function Dashboard({
 						Browse Wardrobe
 					</Button>
 				</Link>
-				<Link className="block" href="/wardrobe">
+				<Link className="block" href={"/wardrobe"}>
 					<Button
 						className="h-14 w-full text-base sm:h-16 sm:text-lg"
 						size="lg"

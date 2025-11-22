@@ -1,9 +1,11 @@
 import type { AppRouterClient } from "@ai-stilist/api/routers/index";
+import { SERVICE_URLS } from "@ai-stilist/shared/services";
 import { createORPCClient } from "@orpc/client";
 import { RPCLink } from "@orpc/client/fetch";
 import { createTanstackQueryUtils } from "@orpc/tanstack-query";
 import { QueryCache, QueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { env } from "@/env";
 
 export const queryClient = new QueryClient({
 	queryCache: new QueryCache({
@@ -21,7 +23,7 @@ export const queryClient = new QueryClient({
 });
 
 export const link = new RPCLink({
-	url: `${process.env.NEXT_PUBLIC_SERVER_URL}/rpc`,
+	url: `${SERVICE_URLS[env.NEXT_PUBLIC_APP_ENV].api}/rpc`,
 	fetch(url, options) {
 		return fetch(url, {
 			...options,

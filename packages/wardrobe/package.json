@@ -5,7 +5,8 @@
   "exports": {
     "./clothing-analyzer": "./src/clothing-analyzer.ts",
     "./metadata-schemas": "./src/metadata-schemas.ts",
-    "./process-clothing-image": "./src/process-clothing-image.ts",
+    "./process-image": "./src/process-image.ts",
+    "./analyze-clothing-image": "./src/analyze-clothing-image.ts",
     "./wardrobe-repository": "./src/wardrobe-repository.ts"
   },
   "scripts": {
@@ -33,6 +34,7 @@
     "@ai-stilist/storage": "workspace:*",
     "@ai-stilist/queue": "workspace:*",
     "ai": "^5.0.98",
+    "sharp": "^0.33.5",
     "zod": "catalog:"
   }
 }

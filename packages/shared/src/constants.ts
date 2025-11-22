@@ -25,7 +25,7 @@ export const HTTP_STATUS = {
 // Server Configuration
 export const SERVER_CONFIG = {
 	IDLE_TIMEOUT_SECONDS: 60,
-	DEFAULT_PORT: 8000,
+	DEFAULT_PORT: 3000,
 } as const;
 
 // API Limits

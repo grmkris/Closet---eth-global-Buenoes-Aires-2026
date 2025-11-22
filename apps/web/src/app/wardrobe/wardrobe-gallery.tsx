@@ -52,7 +52,11 @@ export function WardrobeGallery() {
 			refetchInterval: (query) => {
 				const hasProcessing = query.state.data?.pages.some((page) =>
 					page.items.some(
-						(item) => item.status === "processing" || item.status === "pending"
+						(item) =>
+							item.status === "awaiting_upload" ||
+							item.status === "queued" ||
+							item.status === "processing_image" ||
+							item.status === "analyzing"
 					)
 				);
 				return hasProcessing ? POLLING_CONFIG.PROCESSING_INTERVAL_MS : false;
@@ -92,13 +96,23 @@ export function WardrobeGallery() {
 	// Count items by status
 	const statusCounts = {
 		all: allItems.length,
-		pending: allItems.filter((item) => item.status === "pending").length,
-		processing: allItems.filter((item) => item.status === "processing").length,
-		ready: allItems.filter((item) => item.status === "ready").length,
+		awaiting_upload: allItems.filter(
+			(item) => item.status === "awaiting_upload"
+		).length,
+		queued: allItems.filter((item) => item.status === "queued").length,
+		processing_image: allItems.filter(
+			(item) => item.status === "processing_image"
+		).length,
+		analyzing: allItems.filter((item) => item.status === "analyzing").length,
+		completed: allItems.filter((item) => item.status === "completed").length,
 		failed: allItems.filter((item) => item.status === "failed").length,
 	};
 
-	const processingCount = statusCounts.processing + statusCounts.pending;
+	const processingCount =
+		statusCounts.awaiting_upload +
+		statusCounts.queued +
+		statusCounts.processing_image +
+		statusCounts.analyzing;
 
 	// Loading state
 	if (isLoading) {
@@ -151,7 +165,11 @@ export function WardrobeGallery() {
 				onTap={() => {
 					// Scroll to first processing item or show them in filters
 					const firstProcessing = allItems.find(
-						(item) => item.status === "processing" || item.status === "pending"
+						(item) =>
+							item.status === "awaiting_upload" ||
+							item.status === "queued" ||
+							item.status === "processing_image" ||
+							item.status === "analyzing"
 					);
 					if (firstProcessing) {
 						// In the future, we could filter by status
@@ -208,7 +226,7 @@ export function WardrobeGallery() {
 			{/* Items Grid */}
 			{allItems.length > 0 && (
 				<>
-					<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+					<div className="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:grid-cols-4 min-[375px]:grid-cols-2">
 						{allItems.map((item) => {
 							// Extract first category
 							const category = item.categories[0]?.category?.displayName;
@@ -233,6 +251,7 @@ export function WardrobeGallery() {
 									}}
 									status={item.status}
 									tags={tags}
+									thumbnailUrl={item.thumbnailUrl}
 								/>
 							);
 						})}

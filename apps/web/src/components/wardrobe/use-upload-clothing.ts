@@ -38,7 +38,12 @@ export function useUploadClothing() {
 				throw new Error(`Upload failed: ${uploadResponse.statusText}`);
 			}
 
-			// Step 3: Invalidate wardrobe items to trigger refresh
+			// Step 3: Confirm upload to trigger background processing
+			await client.wardrobe.confirmUpload({
+				itemId: result.itemId,
+			});
+
+			// Step 4: Invalidate wardrobe items to trigger refresh
 			await queryClient.invalidateQueries({
 				queryKey: orpc.wardrobe.getItems.queryKey({ input: {} }),
 			});
@@ -87,6 +92,11 @@ export function useUploadClothing() {
 							`Upload failed for ${file.name}: ${uploadResponse.statusText}`
 						);
 					}
+
+					// Confirm upload to trigger background processing
+					await client.wardrobe.confirmUpload({
+						itemId: item.itemId,
+					});
 				})
 			);
 
