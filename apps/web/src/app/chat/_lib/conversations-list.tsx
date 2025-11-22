@@ -82,6 +82,7 @@ function ConversationItem({
 			</div>
 			<div className="flex items-center gap-1 opacity-0 group-hover:opacity-100">
 				<Button
+					aria-label="Rename conversation"
 					onClick={(e) => {
 						e.preventDefault();
 						onRename(conversation.id, conversation.title);
@@ -93,6 +94,7 @@ function ConversationItem({
 					<Pencil className="h-3 w-3" />
 				</Button>
 				<Button
+					aria-label="Delete conversation"
 					onClick={(e) => {
 						e.preventDefault();
 						onDelete(conversation.id);

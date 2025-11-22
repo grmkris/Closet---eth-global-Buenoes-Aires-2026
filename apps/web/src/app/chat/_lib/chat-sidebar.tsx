@@ -15,12 +15,12 @@ import { useSidebarState } from "@/hooks/use-sidebar-state";
 import { ConversationsList } from "./conversations-list";
 
 export function ChatSidebar() {
-	const { isOpen, toggle, close, isMobile } = useSidebarState();
+	const { isOpen, setIsOpen, close, isMobile } = useSidebarState();
 
 	// Mobile: Drawer overlay
 	if (isMobile) {
 		return (
-			<Drawer direction="left" onOpenChange={toggle} open={isOpen}>
+			<Drawer direction="left" onOpenChange={setIsOpen} open={isOpen}>
 				<DrawerContent className="h-full w-80">
 					<DrawerHeader className="p-4">
 						<DrawerTitle className="sr-only">Conversations</DrawerTitle>

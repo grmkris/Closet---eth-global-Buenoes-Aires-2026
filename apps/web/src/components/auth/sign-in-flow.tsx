@@ -3,12 +3,15 @@
 import { UI_CONFIG } from "@ai-stilist/shared/constants";
 import { SignIn } from "@coinbase/cdp-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { useSiweAuthentication } from "@/hooks/use-siwe-authentication";
-import { authClient } from "@/lib/auth-client";
 
 type Step = "wallet" | "otp" | "complete";
+
+type SignInFlowProps = {
+	session: { user: unknown } | null;
+};
 
 type OtpStepContentProps = {
 	isPending: boolean;
@@ -16,7 +19,6 @@ type OtpStepContentProps = {
 	address: `0x${string}` | undefined;
 	error: Error | null;
 	authenticate: (params: { address: string; chainId: number }) => void;
-	hasAutoSiwedRef: React.MutableRefObject<boolean>;
 };
 
 function OtpStepContent({
@@ -25,7 +27,6 @@ function OtpStepContent({
 	address,
 	error,
 	authenticate,
-	hasAutoSiwedRef,
 }: OtpStepContentProps) {
 	// Show pending state while authentication is in progress
 	if (isPending) {
@@ -52,7 +53,6 @@ function OtpStepContent({
 						className="w-full rounded bg-blue-600 py-2 text-white hover:bg-blue-700"
 						onClick={() => {
 							if (address && isConnected) {
-								hasAutoSiwedRef.current = false;
 								authenticate({ address, chainId: 8453 });
 							}
 						}}
@@ -76,19 +76,16 @@ function OtpStepContent({
 	);
 }
 
-export function SignInFlow() {
+export function SignInFlow({ session }: SignInFlowProps) {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const urlStep = (searchParams.get("step") as Step) || "wallet";
 
 	const [step, setStep] = useState<Step>(urlStep);
+	console.log("step", step);
 	const [isInitializing, setIsInitializing] = useState(true);
 
 	const { address, isConnected } = useAccount();
-	const { data: session, isPending: isSessionLoading } =
-		authClient.useSession();
-
-	const hasAutoSiwedRef = useRef(false);
 
 	// Sync URL changes to component state
 	useEffect(() => {
@@ -121,11 +118,6 @@ export function SignInFlow() {
 
 	// Smart initialization: check auth state and auto-progress
 	useEffect(() => {
-		// Wait for session check to complete
-		if (isSessionLoading) {
-			return;
-		}
-
 		// If already authenticated, redirect to dashboard
 		if (session?.user) {
 			router.push("/dashboard");
@@ -133,19 +125,31 @@ export function SignInFlow() {
 		}
 
 		setIsInitializing(false);
-	}, [session, isSessionLoading, router]);
+	}, [session, router]);
+
+	// Detect pre-existing wallet connection and auto-advance to OTP step
+	// useEffect(() => {
+	// 	// Skip if still initializing or already authenticated
+	// 	if (isInitializing || session?.user) {
+	// 		return;
+	// 	}
+	//
+	// 	// If wallet already connected and we're on wallet step, skip to OTP
+	// 	if (isConnected && address && step === "wallet") {
+	// 		setStep("otp");
+	// 		router.replace("/login?step=otp");
+	// 	}
+	// }, [isInitializing, session, isConnected, address, step, router]);
 
 	// Auto-trigger SIWE when on OTP step and wallet is connected
 	useEffect(() => {
-		if (step === "otp" && isConnected && address && !hasAutoSiwedRef.current) {
-			hasAutoSiwedRef.current = true;
-			// Automatically trigger SIWE flow
+		if (isConnected && address && !isPending && !error && !session?.user) {
 			authenticate({ address, chainId: 8453 });
 		}
-	}, [step, isConnected, address, authenticate]);
+	}, [step, isConnected, address, isPending, error, authenticate]);
 
-	// Show loading state while checking authentication
-	if (isInitializing || isSessionLoading) {
+	// Show loading state only during initial auth check, not on refetches
+	if (isInitializing) {
 		return (
 			<div className="mx-auto max-w-md p-6 text-center">
 				<div className="mb-4 text-4xl">⏳</div>
@@ -158,7 +162,7 @@ export function SignInFlow() {
 		<div className="mx-auto max-w-md p-6">
 			{step === "wallet" && (
 				<div>
-					{isPending ? (
+					{address ? (
 						<div className="text-center">
 							<div className="mb-4 text-4xl">⏳</div>
 							<p className="text-gray-600">Connecting your wallet...</p>
@@ -197,7 +201,6 @@ export function SignInFlow() {
 						address={address}
 						authenticate={authenticate}
 						error={error}
-						hasAutoSiwedRef={hasAutoSiwedRef}
 						isConnected={isConnected}
 						isPending={isPending}
 					/>

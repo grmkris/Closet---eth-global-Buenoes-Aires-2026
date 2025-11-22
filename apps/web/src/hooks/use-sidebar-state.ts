@@ -49,6 +49,7 @@ export function useSidebarState() {
 
 	return {
 		isOpen,
+		setIsOpen,
 		toggle,
 		open,
 		close,

@@ -3,13 +3,14 @@
 import type { Config } from "@coinbase/cdp-core";
 import { CDPReactProvider } from "@coinbase/cdp-react";
 import { createCDPEmbeddedWalletConnector } from "@coinbase/cdp-wagmi";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import type { ReactNode } from "react";
 import { http } from "viem";
 import { base, baseSepolia } from "viem/chains";
 import { createConfig, WagmiProvider } from "wagmi";
 import { env } from "@/env";
 import { useWalletDisconnectHandler } from "@/hooks/use-wallet-disconnect-handler";
+import { queryClient } from "@/utils/orpc";
 
 const cdpConfig: Config = {
 	projectId: env.NEXT_PUBLIC_CDP_PROJECT_ID,
@@ -34,8 +35,6 @@ const wagmiConfig = createConfig({
 		[baseSepolia.id]: http(),
 	},
 });
-
-const queryClient = new QueryClient();
 
 /**
  * Internal component that handles wallet disconnect events.

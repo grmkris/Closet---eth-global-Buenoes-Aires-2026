@@ -8,6 +8,11 @@ import { toast } from "sonner";
 import { env } from "@/env";
 
 export const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: {
+			refetchOnWindowFocus: false, // Don't refetch on tab switch
+		},
+	},
 	queryCache: new QueryCache({
 		onError: (error) => {
 			toast.error(`Error: ${error.message}`, {
