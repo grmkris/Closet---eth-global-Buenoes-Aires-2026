@@ -82,7 +82,6 @@ export function SignInFlow({ session }: SignInFlowProps) {
 	const urlStep = (searchParams.get("step") as Step) || "wallet";
 
 	const [step, setStep] = useState<Step>(urlStep);
-	console.log("step", step);
 	const [isInitializing, setIsInitializing] = useState(true);
 
 	const { address, isConnected } = useAccount();
@@ -146,7 +145,7 @@ export function SignInFlow({ session }: SignInFlowProps) {
 		if (isConnected && address && !isPending && !error && !session?.user) {
 			authenticate({ address, chainId: 8453 });
 		}
-	}, [step, isConnected, address, isPending, error, authenticate]);
+	}, [isConnected, address, isPending, error, authenticate, session?.user]);
 
 	// Show loading state only during initial auth check, not on refetches
 	if (isInitializing) {
