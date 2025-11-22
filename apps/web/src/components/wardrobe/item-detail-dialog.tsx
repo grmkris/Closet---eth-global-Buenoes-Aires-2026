@@ -171,7 +171,9 @@ export function ItemDetailDialog({
 						</DialogHeader>
 					)}
 
-					<div className={isMobile ? "space-y-6 overflow-y-auto p-4" : "space-y-6"}>
+					<div
+						className={isMobile ? "space-y-6 overflow-y-auto p-4" : "space-y-6"}
+					>
 						{/* Image Preview */}
 						<div className="relative aspect-square w-full overflow-hidden rounded-lg bg-muted">
 							<Image

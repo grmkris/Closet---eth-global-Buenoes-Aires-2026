@@ -1,14 +1,13 @@
 "use client";
 
+import type { ClothingItemStatus } from "@ai-stilist/shared/wardrobe-types";
 import { AlertCircle, Check, Clock, Loader2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
-type ClothingStatus = "pending" | "processing" | "ready" | "failed";
-
-interface StatusFilterChipsProps {
-	selected: ClothingStatus | "all";
-	onSelect: (status: ClothingStatus | "all") => void;
+type StatusFilterChipsProps = {
+	selected: ClothingItemStatus | "all";
+	onSelect: (status: ClothingItemStatus | "all") => void;
 	counts?: {
 		all: number;
 		pending: number;
@@ -16,7 +15,7 @@ interface StatusFilterChipsProps {
 		ready: number;
 		failed: number;
 	};
-}
+};
 
 const STATUS_OPTIONS = [
 	{ value: "all" as const, label: "All", icon: null },
@@ -32,7 +31,7 @@ export function StatusFilterChips({
 	counts,
 }: StatusFilterChipsProps) {
 	return (
-		<div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+		<div className="scrollbar-hide flex gap-2 overflow-x-auto pb-2">
 			{STATUS_OPTIONS.map(({ value, label, icon: Icon }) => {
 				const isSelected = selected === value;
 				const count = counts?.[value] || 0;
@@ -45,7 +44,7 @@ export function StatusFilterChips({
 				return (
 					<button
 						className={cn(
-							"flex h-9 shrink-0 items-center gap-1.5 rounded-full border px-4 text-sm font-medium transition-all",
+							"flex h-9 shrink-0 items-center gap-1.5 rounded-full border px-4 font-medium text-sm transition-all",
 							isSelected
 								? "border-primary bg-primary text-primary-foreground"
 								: "border-border bg-background hover:bg-muted"

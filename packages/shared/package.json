@@ -4,10 +4,10 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/index.ts",
     "./services": "./src/services.schema.ts",
     "./typeid": "./src/typeid.schema.ts",
-    "./constants": "./src/constants.ts"
+    "./constants": "./src/constants.ts",
+    "./wardrobe-types": "./src/wardrobe-types.ts"
   },
   "scripts": {
     "build": "tsdown",

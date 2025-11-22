@@ -29,12 +29,8 @@ export function createImageProcessorWorker(
 	// Create worker - delegates to pure business logic
 	const worker = queue.createWorker<"process-image">(
 		"process-image",
-		async (job: ProcessImageJob) => {
-			return processClothingImage(
-				{ db, storage, aiClient, logger },
-				job
-			);
-		},
+		async (job: ProcessImageJob) =>
+			processClothingImage({ db, storage, aiClient, logger }, job),
 		{
 			concurrency: WORKER_CONFIG.MAX_CONCURRENT_JOBS, // Process images concurrently
 		}

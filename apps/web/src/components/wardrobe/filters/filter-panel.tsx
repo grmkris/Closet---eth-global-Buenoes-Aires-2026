@@ -131,7 +131,7 @@ export function FilterPanel({
 					)}
 
 					{/* Colors */}
-					{tagData && tagData.colors && tagData.colors.length > 0 && (
+					{tagData?.colors && tagData.colors.length > 0 && (
 						<ColorFilter
 							colors={tagData.colors}
 							onChange={handleColorChange}

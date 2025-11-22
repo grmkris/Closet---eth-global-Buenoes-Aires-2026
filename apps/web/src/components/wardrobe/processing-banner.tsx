@@ -2,10 +2,10 @@
 
 import { Loader2 } from "lucide-react";
 
-interface ProcessingBannerProps {
+type ProcessingBannerProps = {
 	processingCount: number;
 	onTap?: () => void;
-}
+};
 
 export function ProcessingBanner({
 	processingCount,
@@ -23,7 +23,7 @@ export function ProcessingBanner({
 		>
 			<div className="flex items-center gap-3">
 				<Loader2 className="h-4 w-4 flex-shrink-0 animate-spin text-blue-600 dark:text-blue-400" />
-				<span className="text-blue-900 text-sm font-medium dark:text-blue-100">
+				<span className="font-medium text-blue-900 text-sm dark:text-blue-100">
 					{processingCount} {processingCount === 1 ? "item" : "items"}{" "}
 					processing...
 				</span>

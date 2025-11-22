@@ -1,5 +1,6 @@
 "use client";
 
+import type { ClothingItemStatus } from "@ai-stilist/shared/wardrobe-types";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 
@@ -8,7 +9,7 @@ export type FilterParams = {
 	categories?: string[];
 	tags?: string[];
 	colors?: string[];
-	status?: "pending" | "processing" | "ready" | "failed";
+	status?: ClothingItemStatus;
 };
 
 // Helper to parse array params from URL
@@ -30,7 +31,12 @@ export function useFilterParams() {
 
 	// Parse current filters from URL
 	const statusParam = searchParams.get("status");
-	const validStatuses = ["pending", "processing", "ready", "failed"];
+	const validStatuses: ClothingItemStatus[] = [
+		"pending",
+		"processing",
+		"ready",
+		"failed",
+	];
 
 	const filters: FilterParams = {
 		search: searchParams.get("search") || undefined,
@@ -38,8 +44,8 @@ export function useFilterParams() {
 		tags: parseArrayParam(searchParams.get("tags")),
 		colors: parseArrayParam(searchParams.get("colors")),
 		status:
-			statusParam && validStatuses.includes(statusParam)
-				? (statusParam as FilterParams["status"])
+			statusParam && validStatuses.includes(statusParam as ClothingItemStatus)
+				? (statusParam as ClothingItemStatus)
 				: undefined,
 	};
 

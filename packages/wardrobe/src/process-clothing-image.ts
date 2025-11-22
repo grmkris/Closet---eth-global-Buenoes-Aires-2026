@@ -86,13 +86,15 @@ export async function processClothingImage(
 		const extension = imageKey.split(".").pop()?.toLowerCase() || "";
 		const mimeType = getMimeTypeFromExtension(extension);
 
+		// Convert to base64 data URL
+		const dataUrl = `data:${mimeType};base64,${imageBuffer.toString("base64")}`;
+
 		// 3. Get existing tags for consistency
 		const existingTags = await getExistingTags(db, userId);
 
 		// 4. Analyze image with AI
 		const result = await analyzeClothingImage({
-			imageData: imageBuffer,
-			mimeType,
+			imageUrl: dataUrl,
 			aiClient,
 			logger,
 			existingTags: existingTags.length > 0 ? existingTags : undefined,

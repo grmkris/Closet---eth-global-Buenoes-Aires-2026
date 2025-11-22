@@ -8,8 +8,7 @@ import {
 } from "./metadata-schemas";
 
 export type AnalyzeClothingImageInput = {
-	imageData: Buffer | Uint8Array;
-	mimeType: string;
+	imageUrl: string;
 	aiClient: AiClient;
 	logger?: Logger;
 	existingTags?: string[]; // Optional: pass existing tags for consistency
@@ -29,7 +28,7 @@ export type AnalyzeClothingImageResult = {
 export async function analyzeClothingImage(
 	input: AnalyzeClothingImageInput
 ): Promise<AnalyzeClothingImageResult> {
-	const { imageData, mimeType, aiClient, logger, existingTags } = input;
+	const { imageUrl, aiClient, logger, existingTags } = input;
 
 	const startTime = Date.now();
 
@@ -57,8 +56,7 @@ export async function analyzeClothingImage(
 						{ type: "text", text: prompt },
 						{
 							type: "image",
-							image: imageData,
-							mimeType,
+							image: imageUrl,
 						},
 					],
 				},

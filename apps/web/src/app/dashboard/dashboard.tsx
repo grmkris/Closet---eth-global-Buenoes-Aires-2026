@@ -44,8 +44,8 @@ export default function Dashboard({
 					<div className="flex items-center gap-3">
 						<Loader2 className="h-5 w-5 flex-shrink-0 animate-spin text-blue-600 dark:text-blue-400" />
 						<div className="flex-1">
-							<p className="font-medium text-sm text-blue-900 dark:text-blue-100">
-								{processingCount} {processingCount === 1 ? "item" : "items"}{" "}
+							<p className="font-medium text-blue-900 text-sm dark:text-blue-100">
+								{processingCount} {processingCount > 1 ? "items" : "item"}{" "}
 								processing
 							</p>
 							<p className="text-blue-700 text-xs dark:text-blue-300">
@@ -77,7 +77,10 @@ export default function Dashboard({
 			{/* Primary Actions */}
 			<div className="space-y-3">
 				<Link className="block" href="/wardrobe">
-					<Button className="h-14 w-full text-base sm:h-16 sm:text-lg" size="lg">
+					<Button
+						className="h-14 w-full text-base sm:h-16 sm:text-lg"
+						size="lg"
+					>
 						<Sparkles className="mr-2 h-5 w-5 sm:h-6 sm:w-6" />
 						Browse Wardrobe
 					</Button>

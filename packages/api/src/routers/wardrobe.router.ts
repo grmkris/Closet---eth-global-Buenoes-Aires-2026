@@ -7,7 +7,6 @@ import {
 	clothingItemTagsTable,
 	colorsTable,
 	tagsTable,
-	tagTypesTable,
 } from "@ai-stilist/db/schema/wardrobe";
 import { API_LIMITS } from "@ai-stilist/shared/constants";
 import {
@@ -15,6 +14,7 @@ import {
 	typeIdGenerator,
 	UserId,
 } from "@ai-stilist/shared/typeid";
+import { ClothingItemStatus } from "@ai-stilist/shared/wardrobe-types";
 import {
 	getAllCategories,
 	getAllColors,
@@ -50,7 +50,7 @@ const GetItemsInput = z.object({
 	categories: z.array(z.string()).optional(),
 	tags: z.array(z.string()).optional(),
 	colors: z.array(z.string()).optional(),
-	status: z.enum(["pending", "processing", "ready", "failed"]).optional(),
+	status: ClothingItemStatus.optional(),
 });
 
 const DeleteItemInput = z.object({
@@ -456,7 +456,7 @@ export const wardrobeRouter = {
 				const key = tag.id;
 				const existing = tagCountMap.get(key);
 				if (existing) {
-					existing.count++;
+					existing.count += 1;
 				} else {
 					tagCountMap.set(key, {
 						tag: tag.name,
@@ -499,7 +499,7 @@ export const wardrobeRouter = {
 				const key = color.id;
 				const existing = colorCountMap.get(key);
 				if (existing) {
-					existing.count++;
+					existing.count += 1;
 				} else {
 					colorCountMap.set(key, {
 						name: color.name,
