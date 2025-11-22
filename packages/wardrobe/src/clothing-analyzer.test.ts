@@ -26,7 +26,6 @@ function imageToDataUrl(filePath: string): string {
 		".jpg": "image/jpeg",
 		".jpeg": "image/jpeg",
 		".png": "image/png",
-		".heic": "image/heic",
 	};
 
 	const mimeType = mimeTypes[ext] || "image/jpeg";
@@ -54,7 +53,7 @@ function loadTestImages(): Array<{
 			[];
 		for (const file of files) {
 			const ext = path.extname(file).toLowerCase();
-			if ([".jpg", ".jpeg", ".png", ".heic"].includes(ext)) {
+			if ([".jpg", ".jpeg", ".png"].includes(ext)) {
 				folderImages.push({
 					path: path.join(folderPath, file),
 					name: file,

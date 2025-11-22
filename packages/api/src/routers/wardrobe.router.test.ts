@@ -34,8 +34,8 @@ import { wardrobeRouter } from "./wardrobe.router";
 // Test data directory with real images (relative from repo root)
 const TEST_DATA_DIR = path.join(process.cwd(), "_data");
 const TEST_IMAGES = {
-	shirt: path.join(TEST_DATA_DIR, "ANDRAŽ OMARA", "IMG_4055.HEIC"),
-	pants: path.join(TEST_DATA_DIR, "ANDRAŽ OMARA", "IMG_4056.HEIC"),
+	shirt: path.join(TEST_DATA_DIR, "ANDRAŽ OMARA", "IMG_4055.jpg"),
+	pants: path.join(TEST_DATA_DIR, "ANDRAŽ OMARA", "IMG_4056.jpg"),
 	dress: path.join(TEST_DATA_DIR, "IVONA OMARA", "IMG_9315.JPG"),
 };
 
@@ -109,12 +109,12 @@ async function uploadAndProcessImage(
 	const fileName = path.basename(imagePath);
 
 	let contentType: string;
-	if (fileName.endsWith(".HEIC")) {
-		contentType = "image/heic";
-	} else if (fileName.endsWith(".JPG") || fileName.endsWith(".jpg")) {
+	if (fileName.endsWith(".JPG") || fileName.endsWith(".jpg")) {
 		contentType = "image/jpeg";
-	} else {
+	} else if (fileName.endsWith(".png")) {
 		contentType = "image/png";
+	} else {
+		contentType = "image/jpeg"; // default
 	}
 
 	// Step 1: Get presigned upload URL

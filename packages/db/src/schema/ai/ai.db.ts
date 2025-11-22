@@ -14,78 +14,74 @@ import {
 	timestamp,
 	varchar,
 } from "drizzle-orm/pg-core";
-
+import { typeId } from "../../utils/db-utils";
 import { user } from "../auth/auth.db";
 // AI Conversations
 export const aiConversationsTable = pgTable(
 	"ai_conversations",
 	{
-		id: varchar("id", { length: 30 })
+		id: typeId("conversation", "id")
 			.$type<ConversationId>()
 			.primaryKey()
 			.$defaultFn(() => typeIdGenerator("conversation")),
-		userId: varchar("user_id", { length: 30 })
+		userId: typeId("user", "user_id")
 			.$type<UserId>()
 			.notNull()
-			.references(() => user.id, { onDelete: "cascade" }),
+			.references(() => user.id),
 		title: text("title"),
 		model: varchar("model", { length: 100 }).notNull(),
 		systemPrompt: text("system_prompt"),
 		createdAt: timestamp("created_at").notNull().defaultNow(),
 		updatedAt: timestamp("updated_at").notNull().defaultNow(),
 	},
-	(table) => ({
-		userIdIdx: index("ai_conversations_user_id_idx").on(table.userId),
-		updatedAtIdx: index("ai_conversations_updated_at_idx").on(table.updatedAt),
-	})
+	(table) => [
+		index("ai_conversations_user_id_idx").on(table.userId),
+		index("ai_conversations_updated_at_idx").on(table.updatedAt),
+	]
 );
 
 // AI Messages
 export const aiMessagesTable = pgTable(
 	"ai_messages",
 	{
-		id: varchar("id", { length: 30 })
+		id: typeId("message", "id")
 			.$type<MessageId>()
 			.primaryKey()
 			.$defaultFn(() => typeIdGenerator("message")),
-		conversationId: varchar("conversation_id", { length: 30 })
+		conversationId: typeId("conversation", "conversation_id")
 			.$type<ConversationId>()
 			.notNull()
 			.references(() => aiConversationsTable.id, { onDelete: "cascade" }),
-		userId: varchar("user_id", { length: 30 })
+		userId: typeId("user", "user_id")
 			.$type<UserId>()
 			.notNull()
-			.references(() => user.id, { onDelete: "cascade" }),
+			.references(() => user.id),
 		role: varchar("role", { length: 20 })
 			.notNull()
 			.$type<"user" | "assistant">(),
 		createdAt: timestamp("created_at").notNull().defaultNow(),
 	},
-	(table) => ({
-		conversationIdIdx: index("ai_messages_conversation_id_idx").on(
-			table.conversationId
-		),
-		createdAtIdx: index("ai_messages_created_at_idx").on(table.createdAt),
-	})
+	(table) => [
+		index("ai_messages_conversation_id_idx").on(table.conversationId),
+		index("ai_messages_created_at_idx").on(table.createdAt),
+	]
 );
 
 // AI Message Parts (stores text, tool calls, tool results)
 export const aiMessagePartsTable = pgTable(
 	"ai_message_parts",
 	{
-		id: varchar("id", { length: 30 })
+		id: typeId("messagePart", "id")
 			.$type<MessagePartId>()
 			.primaryKey()
 			.$defaultFn(() => typeIdGenerator("messagePart")),
-		messageId: varchar("message_id", { length: 30 })
+		messageId: typeId("message", "message_id")
 			.$type<MessageId>()
 			.notNull()
 			.references(() => aiMessagesTable.id, { onDelete: "cascade" }),
 		content: jsonb("content").notNull(),
 	},
-	(table) => ({
-		messageIdIdx: index("ai_message_parts_message_id_idx").on(table.messageId),
-	})
+	(table) => [index("ai_message_parts_message_id_idx").on(table.messageId)]
 );
 
 // Relations

@@ -16,10 +16,6 @@ export const envSchema = z.object({
 		.enum(["debug", "info", "warn", "error", "fatal"])
 		.default("info"),
 
-	// CDP Configuration
-	NEXT_PUBLIC_CDP_PROJECT_ID: z.string(),
-	NEXT_PUBLIC_AUTH_URL: z.string().url(),
-
 	// MinIO / S3 (credentials only, URLs come from SERVICE_URLS)
 	// Optional in test environment (uses mock S3)
 	MINIO_ACCESS_KEY: z.string().optional(),

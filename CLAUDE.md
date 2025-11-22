@@ -180,20 +180,6 @@ Run `bun run fix` before committing to auto-fix most issues.
 
 ## Environment Setup
 
-### System Dependencies
-
-**macOS** (required for HEIC/HEIF image processing):
-```bash
-brew install libheif
-```
-
-This provides HEIC/HEIF codec support for Sharp. After installing, clear Sharp's cache and reinstall:
-```bash
-rm -rf node_modules/.bun/sharp* && bun install
-```
-
-**Note**: For production Docker deployments, ensure libheif and libde265 are installed in the container.
-
 ### Application Setup
 
 1. Copy `apps/server/.env.example` to `apps/server/.env` and configure:

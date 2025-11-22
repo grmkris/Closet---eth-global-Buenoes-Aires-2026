@@ -1,5 +1,5 @@
 {
-  "id": "ef63aef6-44c5-4352-9a47-cb2caaa9dba6",
+  "id": "ac996101-513a-42a6-aa88-d28d59bb0710",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -95,8 +95,12 @@
           "name": "account_user_id_user_id_fk",
           "tableFrom": "account",
           "tableTo": "user",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -168,8 +172,12 @@
           "name": "session_user_id_user_id_fk",
           "tableFrom": "session",
           "tableTo": "user",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -179,7 +187,9 @@
         "session_token_unique": {
           "name": "session_token_unique",
           "nullsNotDistinct": false,
-          "columns": ["token"]
+          "columns": [
+            "token"
+          ]
         }
       },
       "policies": {},
@@ -254,12 +264,16 @@
         "user_email_unique": {
           "name": "user_email_unique",
           "nullsNotDistinct": false,
-          "columns": ["email"]
+          "columns": [
+            "email"
+          ]
         },
         "user_username_unique": {
           "name": "user_username_unique",
           "nullsNotDistinct": false,
-          "columns": ["username"]
+          "columns": [
+            "username"
+          ]
         }
       },
       "policies": {},
@@ -311,6 +325,85 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.wallet_address": {
+      "name": "wallet_address",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "address": {
+          "name": "address",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "chain_id": {
+          "name": "chain_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "is_primary": {
+          "name": "is_primary",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "wallet_address_user_id_user_id_fk": {
+          "name": "wallet_address_user_id_user_id_fk",
+          "tableFrom": "wallet_address",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "wallet_address_address_unique": {
+          "name": "wallet_address_address_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "address"
+          ]
+        }
+      },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -375,7 +468,9 @@
         "category_name_unique": {
           "name": "category_name_unique",
           "nullsNotDistinct": false,
-          "columns": ["name"]
+          "columns": [
+            "name"
+          ]
         }
       },
       "policies": {},
@@ -441,8 +536,12 @@
           "name": "clothing_analysis_item_id_clothing_item_id_fk",
           "tableFrom": "clothing_analysis",
           "tableTo": "clothing_item",
-          "columnsFrom": ["item_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "item_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -452,7 +551,9 @@
         "clothing_analysis_item_id_unique": {
           "name": "clothing_analysis_item_id_unique",
           "nullsNotDistinct": false,
-          "columns": ["item_id"]
+          "columns": [
+            "item_id"
+          ]
         }
       },
       "policies": {},
@@ -527,8 +628,12 @@
           "name": "clothing_item_category_item_id_clothing_item_id_fk",
           "tableFrom": "clothing_item_category",
           "tableTo": "clothing_item",
-          "columnsFrom": ["item_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "item_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -536,8 +641,12 @@
           "name": "clothing_item_category_category_id_category_id_fk",
           "tableFrom": "clothing_item_category",
           "tableTo": "category",
-          "columnsFrom": ["category_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "category_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -545,7 +654,10 @@
       "compositePrimaryKeys": {
         "clothing_item_category_item_id_category_id_pk": {
           "name": "clothing_item_category_item_id_category_id_pk",
-          "columns": ["item_id", "category_id"]
+          "columns": [
+            "item_id",
+            "category_id"
+          ]
         }
       },
       "uniqueConstraints": {},
@@ -628,8 +740,12 @@
           "name": "clothing_item_color_item_id_clothing_item_id_fk",
           "tableFrom": "clothing_item_color",
           "tableTo": "clothing_item",
-          "columnsFrom": ["item_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "item_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -637,8 +753,12 @@
           "name": "clothing_item_color_color_id_color_id_fk",
           "tableFrom": "clothing_item_color",
           "tableTo": "color",
-          "columnsFrom": ["color_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "color_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -646,7 +766,10 @@
       "compositePrimaryKeys": {
         "clothing_item_color_item_id_color_id_pk": {
           "name": "clothing_item_color_item_id_color_id_pk",
-          "columns": ["item_id", "color_id"]
+          "columns": [
+            "item_id",
+            "color_id"
+          ]
         }
       },
       "uniqueConstraints": {},
@@ -745,8 +868,12 @@
           "name": "clothing_item_tag_item_id_clothing_item_id_fk",
           "tableFrom": "clothing_item_tag",
           "tableTo": "clothing_item",
-          "columnsFrom": ["item_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "item_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -754,8 +881,12 @@
           "name": "clothing_item_tag_tag_id_tag_id_fk",
           "tableFrom": "clothing_item_tag",
           "tableTo": "tag",
-          "columnsFrom": ["tag_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "tag_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -763,7 +894,10 @@
       "compositePrimaryKeys": {
         "clothing_item_tag_item_id_tag_id_pk": {
           "name": "clothing_item_tag_item_id_tag_id_pk",
-          "columns": ["item_id", "tag_id"]
+          "columns": [
+            "item_id",
+            "tag_id"
+          ]
         }
       },
       "uniqueConstraints": {},
@@ -905,8 +1039,12 @@
           "name": "clothing_item_user_id_user_id_fk",
           "tableFrom": "clothing_item",
           "tableTo": "user",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -977,7 +1115,9 @@
         "color_name_unique": {
           "name": "color_name_unique",
           "nullsNotDistinct": false,
-          "columns": ["name"]
+          "columns": [
+            "name"
+          ]
         }
       },
       "policies": {},
@@ -1044,7 +1184,9 @@
         "tag_type_name_unique": {
           "name": "tag_type_name_unique",
           "nullsNotDistinct": false,
-          "columns": ["name"]
+          "columns": [
+            "name"
+          ]
         }
       },
       "policies": {},
@@ -1132,8 +1274,12 @@
           "name": "tag_type_id_tag_type_id_fk",
           "tableFrom": "tag",
           "tableTo": "tag_type",
-          "columnsFrom": ["type_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "type_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -1143,9 +1289,277 @@
         "tag_type_id_name_unique": {
           "name": "tag_type_id_name_unique",
           "nullsNotDistinct": false,
-          "columns": ["type_id", "name"]
+          "columns": [
+            "type_id",
+            "name"
+          ]
         }
       },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.ai_conversations": {
+      "name": "ai_conversations",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "model": {
+          "name": "model",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "system_prompt": {
+          "name": "system_prompt",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "ai_conversations_user_id_idx": {
+          "name": "ai_conversations_user_id_idx",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "ai_conversations_updated_at_idx": {
+          "name": "ai_conversations_updated_at_idx",
+          "columns": [
+            {
+              "expression": "updated_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "ai_conversations_user_id_user_id_fk": {
+          "name": "ai_conversations_user_id_user_id_fk",
+          "tableFrom": "ai_conversations",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.ai_message_parts": {
+      "name": "ai_message_parts",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "message_id": {
+          "name": "message_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "content": {
+          "name": "content",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "ai_message_parts_message_id_idx": {
+          "name": "ai_message_parts_message_id_idx",
+          "columns": [
+            {
+              "expression": "message_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "ai_message_parts_message_id_ai_messages_id_fk": {
+          "name": "ai_message_parts_message_id_ai_messages_id_fk",
+          "tableFrom": "ai_message_parts",
+          "tableTo": "ai_messages",
+          "columnsFrom": [
+            "message_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.ai_messages": {
+      "name": "ai_messages",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "conversation_id": {
+          "name": "conversation_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "role": {
+          "name": "role",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "ai_messages_conversation_id_idx": {
+          "name": "ai_messages_conversation_id_idx",
+          "columns": [
+            {
+              "expression": "conversation_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "ai_messages_created_at_idx": {
+          "name": "ai_messages_created_at_idx",
+          "columns": [
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "ai_messages_conversation_id_ai_conversations_id_fk": {
+          "name": "ai_messages_conversation_id_ai_conversations_id_fk",
+          "tableFrom": "ai_messages",
+          "tableTo": "ai_conversations",
+          "columnsFrom": [
+            "conversation_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "ai_messages_user_id_user_id_fk": {
+          "name": "ai_messages_user_id_user_id_fk",
+          "tableFrom": "ai_messages",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -1167,7 +1581,10 @@
     "public.tag_source": {
       "name": "tag_source",
       "schema": "public",
-      "values": ["ai", "user"]
+      "values": [
+        "ai",
+        "user"
+      ]
     }
   },
   "schemas": {},

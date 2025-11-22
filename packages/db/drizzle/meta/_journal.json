@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1763815973207,
-      "tag": "0000_same_wolfsbane",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1763819508783,
-      "tag": "0001_cooing_blue_blade",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1763819844488,
-      "tag": "0002_ambiguous_ultimatum",
+      "when": 1763824725357,
+      "tag": "0000_silly_zaran",
       "breakpoints": true
     }
   ]

@@ -1,154 +1,236 @@
-import { convertToCoreMessages } from "@ai-stilist/ai";
-import {
-	ConversationId,
-	typeIdGenerator,
-	UserId,
-} from "@ai-stilist/shared/typeid";
+import { ORPCError } from "@orpc/server";
+import { ConversationId, UserId } from "@ai-stilist/shared/typeid";
 import { z } from "zod";
-import {
-	createConversation,
-	loadConversation,
-	upsertMessages,
-} from "../features/ai/ai-store";
-import { createAiTools } from "../features/ai/ai-tools";
+import { createAiService } from "../features/ai/ai-service";
 import type { MyUIMessage } from "../features/ai/message-type";
 import { protectedProcedure } from "../index";
 
-// Chat input schema
-const ChatInputSchema = z.object({
-	message: z.custom<MyUIMessage>().optional(),
-	messages: z.array(z.custom<MyUIMessage>()).optional(),
-	conversationId: ConversationId.optional(),
-	modelConfig: z
-		.object({
-			provider: z.enum(["google", "anthropic", "groq", "xai"]),
-			modelId: z.string(),
-		})
-		.optional(),
-	systemPrompt: z.string().optional(),
+// Chat input schema - accepts either single message or array of messages
+const ChatInputSchema = z
+	.object({
+		message: z.custom<MyUIMessage>().optional(),
+		messages: z.array(z.custom<MyUIMessage>()).optional(),
+		conversationId: ConversationId.optional(),
+		modelConfig: z
+			.object({
+				provider: z.enum(["google", "anthropic", "groq", "xai"]),
+				modelId: z.string(),
+			})
+			.optional(),
+		systemPrompt: z.string().optional(),
+	})
+	.refine(
+		(data) =>
+			(data.message && !data.messages) || (!data.message && data.messages),
+		{
+			message: "Either 'message' or 'messages' must be provided, but not both",
+		}
+	);
+
+// List conversations input schema
+const ListConversationsSchema = z.object({
+	page: z.number().min(1).optional(),
+	limit: z.number().min(1).max(100).optional(),
 });
-
-const DEFAULT_SYSTEM_PROMPT = `You are a personal style AI assistant with access to the user's digital wardrobe.
-
-You can:
-- Search their clothing items by category, color, and tags
-- Suggest outfit combinations for specific occasions
-- Provide style advice based on their wardrobe
-- Help them understand what they own
-
-When making suggestions:
-1. Be specific and reference actual items from their wardrobe
-2. Consider color harmony and style coherence
-3. Be conversational and friendly
-4. Ask clarifying questions when needed
-
-Always base your recommendations on their actual wardrobe items.`;
 
 export const aiRouter = {
 	chat: protectedProcedure
 		.input(ChatInputSchema)
 		.handler(async ({ input, context }) => {
-			const userId = UserId.parse(context.session.user.id);
+			try {
+				const session = context.session;
 
-			// Normalize to array of messages
-			const newMessages =
-				input.messages || (input.message ? [input.message] : []);
+				if (!session) {
+					throw new ORPCError("UNAUTHORIZED", {
+						message: "Authentication required",
+					});
+				}
 
-			// Create or load conversation
-			const conversationId =
-				input.conversationId || typeIdGenerator("conversation");
+				const userId = UserId.parse(session.user.id);
 
-			// Load existing conversation history
-			let history: MyUIMessage[] = [];
-			if (input.conversationId) {
-				history = await loadConversation({
+				// Normalize to array of messages
+				const messages =
+					input.messages || (input.message ? [input.message] : []);
+
+				context.logger.info({
+					msg: "AI chat request",
 					conversationId: input.conversationId,
-					db: context.db,
-				});
-			} else {
-				// Create new conversation
-				await createConversation({
+					messageCount: messages.length,
 					userId,
-					model: input.modelConfig?.modelId || "gemini-2.0-flash-exp",
-					systemPrompt: input.systemPrompt,
-					id: conversationId,
-					db: context.db,
 				});
-			}
 
-			// Merge history with new messages
-			const allMessages = [...history, ...newMessages];
-
-			// Create AI tools with user context
-			const tools = createAiTools({
-				userId,
-				db: context.db,
-				logger: context.logger,
-				storage: context.storage,
-			});
-
-			context.logger.info({
-				msg: "AI chat request",
-				conversationId,
-				userId,
-				messageCount: allMessages.length,
-				newMessageCount: newMessages.length,
-			});
-
-			// Get AI model
-			const modelConfig = input.modelConfig || {
-				provider: "google" as const,
-				modelId: "gemini-2.0-flash-exp",
-			};
-			const model = context.aiClient.getModel(modelConfig);
-
-			// Stream response
-			const result = context.aiClient.streamText({
-				model,
-				system: input.systemPrompt || DEFAULT_SYSTEM_PROMPT,
-				messages: convertToCoreMessages(allMessages),
-				tools,
-				onFinish: async (event) => {
-					// Save all messages (including AI response)
-					const finalMessages = [
-						...allMessages,
-						{
-							id: typeIdGenerator("message"),
-							role: "assistant" as const,
-							parts: event.text
-								? [{ type: "text" as const, text: event.text }]
-								: [],
-						},
-					];
-
-					await upsertMessages({
-						conversationId,
-						userId,
-						messages: finalMessages as MyUIMessage[],
+				// Create AI service
+				const aiService = await createAiService({
+					userId,
+					deps: {
 						db: context.db,
 						logger: context.logger,
-					});
+						aiClient: context.aiClient,
+						storage: context.storage,
+					},
+				});
 
-					context.logger.info({
-						msg: "AI chat completed",
-						conversationId,
-						userId,
-					});
-				},
-			});
+				// Stream chat (returns event iterator)
+				const result = await aiService.streamChat({
+					conversationId: input.conversationId,
+					messages,
+					modelConfig: input.modelConfig,
+					systemPrompt: input.systemPrompt,
+				});
 
-			// Return text stream response for ORPC
-			return result.toTextStreamResponse();
+				return result;
+			} catch (error) {
+				context.logger.error({
+					msg: "AI chat error",
+					error: error instanceof Error ? error.message : String(error),
+					conversationId: input.conversationId,
+					userId: context.session?.user.id,
+					stack: error instanceof Error ? error.stack : undefined,
+				});
+
+				if (error instanceof ORPCError) {
+					throw error;
+				}
+
+				throw new ORPCError("INTERNAL_SERVER_ERROR", {
+					message:
+						error instanceof Error
+							? error.message
+							: "An unexpected error occurred during chat processing",
+				});
+			}
 		}),
 
 	loadConversation: protectedProcedure
 		.input(z.object({ conversationId: ConversationId }))
 		.handler(async ({ input, context }) => {
-			const messages = await loadConversation({
-				conversationId: input.conversationId,
-				db: context.db,
-			});
+			try {
+				const session = context.session;
 
-			return { messages };
+				if (!session) {
+					throw new ORPCError("UNAUTHORIZED", {
+						message: "Authentication required",
+					});
+				}
+
+				const userId = UserId.parse(session.user.id);
+
+				const aiService = await createAiService({
+					userId,
+					deps: {
+						db: context.db,
+						logger: context.logger,
+						aiClient: context.aiClient,
+						storage: context.storage,
+					},
+				});
+
+				return await aiService.loadConversation(input.conversationId);
+			} catch (error) {
+				if (error instanceof ORPCError) {
+					throw error;
+				}
+
+				context.logger.error({
+					msg: "Failed to load conversation",
+					conversationId: input.conversationId,
+					error: error instanceof Error ? error.message : String(error),
+				});
+
+				throw new ORPCError("INTERNAL_SERVER_ERROR", {
+					message: "Failed to load conversation",
+				});
+			}
+		}),
+
+	listConversations: protectedProcedure
+		.input(ListConversationsSchema)
+		.handler(async ({ input, context }) => {
+			try {
+				const session = context.session;
+
+				if (!session) {
+					throw new ORPCError("UNAUTHORIZED", {
+						message: "Authentication required",
+					});
+				}
+
+				const userId = UserId.parse(session.user.id);
+
+				const aiService = await createAiService({
+					userId,
+					deps: {
+						db: context.db,
+						logger: context.logger,
+						aiClient: context.aiClient,
+						storage: context.storage,
+					},
+				});
+
+				return await aiService.listConversations({
+					page: input.page ?? 1,
+					limit: input.limit ?? 20,
+				});
+			} catch (error) {
+				context.logger.error({
+					msg: "Failed to list conversations",
+					error: error instanceof Error ? error.message : String(error),
+					userId: context.session?.user.id,
+				});
+
+				throw new ORPCError("INTERNAL_SERVER_ERROR", {
+					message: "Failed to list conversations",
+				});
+			}
+		}),
+
+	deleteConversation: protectedProcedure
+		.input(z.object({ conversationId: ConversationId }))
+		.handler(async ({ input, context }) => {
+			try {
+				const session = context.session;
+
+				if (!session) {
+					throw new ORPCError("UNAUTHORIZED", {
+						message: "Authentication required",
+					});
+				}
+
+				const userId = UserId.parse(session.user.id);
+
+				const aiService = await createAiService({
+					userId,
+					deps: {
+						db: context.db,
+						logger: context.logger,
+						aiClient: context.aiClient,
+						storage: context.storage,
+					},
+				});
+
+				await aiService.deleteConversation(input.conversationId);
+
+				context.logger.info({
+					msg: "Deleted conversation",
+					conversationId: input.conversationId,
+					userId,
+				});
+
+				return { success: true };
+			} catch (error) {
+				if (error instanceof ORPCError) {
+					throw error;
+				}
+
+				context.logger.error({
+					msg: "Failed to delete conversation",
+					conversationId: input.conversationId,
+					error: error instanceof Error ? error.message : String(error),
+				});
+
+				throw new ORPCError("INTERNAL_SERVER_ERROR", {
+					message: "Failed to delete conversation",
+				});
+			}
 		}),
 };

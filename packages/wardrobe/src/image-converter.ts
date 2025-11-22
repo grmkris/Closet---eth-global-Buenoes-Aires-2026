@@ -25,9 +25,8 @@ export type ConvertImageResult = {
 
 /**
  * Convert image to WebP format and generate thumbnail using Sharp
- * Supports HEIC, JPEG, PNG, and other formats
+ * Supports JPEG, PNG, and other common formats
  * Sharp automatically handles:
- * - HEIC/HEIF decoding
  * - EXIF rotation
  * - Color space conversion
  * - Optimization
@@ -54,11 +53,6 @@ export async function convertImage(
 				`Image file appears to be corrupt or incomplete (bad seek errors). Original error: ${message}`
 			);
 		}
-		if (message.includes("heif") || message.includes("compression format")) {
-			throw new Error(
-				`HEIC/HEIF file uses unsupported compression format. Try re-saving the image or converting to JPEG/PNG first. Original error: ${message}`
-			);
-		}
 		throw new Error(`Failed to read image metadata: ${message}`);
 	}
 
@@ -77,7 +71,6 @@ export async function convertImage(
 		"tiff",
 		"gif",
 		"svg",
-		"heif",
 	];
 	if (metadata.format && !supportedFormats.includes(metadata.format)) {
 		throw new Error(
