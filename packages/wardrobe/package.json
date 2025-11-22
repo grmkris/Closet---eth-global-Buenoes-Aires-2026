@@ -16,9 +16,9 @@
     "test": "bun test"
   },
   "devDependencies": {
+    "@types/bun": "catalog:",
     "tsdown": "catalog:",
-    "typescript": "catalog:",
-    "@types/bun": "catalog:"
+    "typescript": "catalog:"
   },
   "peerDependencies": {
     "typescript": "^5"
@@ -30,7 +30,7 @@
     "@ai-stilist/redis": "workspace:*",
     "@ai-stilist/shared": "workspace:*",
     "@ai-stilist/storage": "workspace:*",
-    "ai": "^5.0.93",
+    "ai": "^5.0.98",
     "zod": "catalog:"
   }
 }

@@ -10,7 +10,7 @@
       "devDependencies": {
         "@biomejs/biome": "2.3.2",
         "@types/bun": "catalog:",
-        "tsdown": "^0.16.5",
+        "tsdown": "^0.16.6",
         "turbo": "^2.6.1",
         "ultracite": "6.2.0",
       },
@@ -115,7 +115,7 @@
         "@ai-sdk/xai": "2.0.26",
         "@ai-stilist/logger": "workspace:*",
         "@ai-stilist/shared": "workspace:*",
-        "@posthog/ai": "^7.1.0",
+        "@posthog/ai": "^7.1.1",
         "ai": "5.0.76",
         "posthog-node": "catalog:",
         "zod": "catalog:",
@@ -208,7 +208,7 @@
       "dependencies": {
         "@ai-stilist/logger": "workspace:*",
         "@ai-stilist/shared": "workspace:*",
-        "bullmq": "^5.63.2",
+        "bullmq": "^5.64.1",
         "ioredis": "^5.8.2",
         "zod": "catalog:",
       },
@@ -298,7 +298,7 @@
         "@ai-stilist/redis": "workspace:*",
         "@ai-stilist/shared": "workspace:*",
         "@ai-stilist/storage": "workspace:*",
-        "ai": "^5.0.93",
+        "ai": "^5.0.98",
         "zod": "catalog:",
       },
       "devDependencies": {

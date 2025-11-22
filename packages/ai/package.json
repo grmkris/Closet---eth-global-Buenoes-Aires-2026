@@ -31,7 +31,7 @@
     "@ai-sdk/xai": "2.0.26",
     "@ai-stilist/logger": "workspace:*",
     "@ai-stilist/shared": "workspace:*",
-    "@posthog/ai": "^7.1.0",
+    "@posthog/ai": "^7.1.1",
     "ai": "5.0.76",
     "posthog-node": "catalog:",
     "zod": "catalog:"
