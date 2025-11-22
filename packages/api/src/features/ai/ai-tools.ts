@@ -603,6 +603,9 @@ export const createAiTools = ({
 					storageClient: storage,
 					logger,
 					userId,
+					aspectRatio: "1:1",
+					quality: "standard",
+					imageStyle: "natural",
 				});
 
 				logger.info({

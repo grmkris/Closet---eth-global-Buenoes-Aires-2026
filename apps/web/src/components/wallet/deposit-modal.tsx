@@ -32,7 +32,10 @@ export function DepositModal({ open, onClose }: DepositModalProps) {
 			await navigator.clipboard.writeText(address);
 			setCopied(true);
 			toast.success("Address copied to clipboard!");
-			setTimeout(() => setCopied(false), WALLET_UI_CONFIG.TOAST_COPY_TIMEOUT_MS);
+			setTimeout(
+				() => setCopied(false),
+				WALLET_UI_CONFIG.TOAST_COPY_TIMEOUT_MS
+			);
 		} catch (_error) {
 			toast.error("Failed to copy address");
 		}

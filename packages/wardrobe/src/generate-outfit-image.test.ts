@@ -48,6 +48,9 @@ describe("generateOutfitImage", () => {
 				storageClient: testEnv.deps.storage,
 				logger: testEnv.deps.logger,
 				userId: testEnv.users.authenticated.id,
+				aspectRatio: "1:1",
+				quality: "standard",
+				imageStyle: "natural",
 			})
 		).rejects.toThrow("At least one clothing item is required");
 	});
@@ -106,6 +109,9 @@ describe("generateOutfitImage", () => {
 				storageClient: testEnv.deps.storage,
 				logger: testEnv.deps.logger,
 				userId: testEnv.users.authenticated.id,
+				aspectRatio: "1:1",
+				quality: "standard",
+				imageStyle: "natural",
 			});
 
 			// 5. Verify result

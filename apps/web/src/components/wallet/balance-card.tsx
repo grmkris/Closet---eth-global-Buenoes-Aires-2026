@@ -69,7 +69,9 @@ export function WalletBalanceCard() {
 					<p className="text-gray-600 text-sm">USDC Balance</p>
 					<p className="font-bold text-3xl">
 						{(() => {
-							if (isLoadingUsdc) return "...";
+							if (isLoadingUsdc) {
+								return "...";
+							}
 							if (usdcBalance) {
 								return Number.parseFloat(usdcBalance.formatted).toFixed(
 									WALLET_UI_CONFIG.USDC_DECIMALS
