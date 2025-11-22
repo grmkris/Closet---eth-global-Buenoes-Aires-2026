@@ -1,24 +1,35 @@
 "use client";
 
-import { CHAIN_IDS } from "@ai-stilist/shared/constants";
+import {
+	CHAIN_IDS,
+	USDC_ADDRESSES,
+	WALLET_UI_CONFIG,
+} from "@ai-stilist/shared/constants";
 import { useState } from "react";
-import { useAccount, useChainId } from "wagmi";
+import { erc20Abi, formatUnits } from "viem";
+import { useAccount, useChainId, useReadContract } from "wagmi";
 import { Button } from "@/components/ui/button";
 import { DepositModal } from "./deposit-modal";
 
 export function WalletBalanceCard() {
-	const { isConnected } = useAccount();
+	const { address, isConnected } = useAccount();
 	const chainId = useChainId();
 	const [isDepositModalOpen, setIsDepositModalOpen] = useState(false);
 
-	// Get native POL balance (for gas)
-	//	const { data: polBalance, isLoading: isLoadingPol } = useBalance({
-	//		address,
-	//		chainId,
-	//		query: {
-	//			enabled: !!address && isConnected,
-	//		},
-	//	});
+	// Get USDC balance
+	const {
+		data: usdcBalance,
+		isLoading: isLoadingUsdc,
+		refetch: refetchUsdc,
+	} = useReadContract({
+		abi: erc20Abi,
+		address: USDC_ADDRESSES[chainId as keyof typeof USDC_ADDRESSES],
+		functionName: "balanceOf",
+		args: address ? [address] : undefined,
+		query: {
+			enabled: !!address && isConnected,
+		},
+	});
 
 	if (!isConnected) {
 		return (
@@ -31,16 +42,39 @@ export function WalletBalanceCard() {
 		);
 	}
 
+	// Format USDC balance for display
+	const formattedUsdcBalance = usdcBalance
+		? Number.parseFloat(formatUnits(usdcBalance, 6)).toFixed(
+				WALLET_UI_CONFIG.USDC_DECIMALS,
+			)
+		: "0.00";
+
 	return (
 		<>
 			<div className="rounded-lg border p-6">
 				<div className="flex items-center justify-between">
 					<h3 className="font-semibold text-lg">Wallet Balance</h3>
+					<Button
+						variant="ghost"
+						size="sm"
+						onClick={() => refetchUsdc()}
+						disabled={isLoadingUsdc}
+					>
+						{isLoadingUsdc ? "..." : "Refresh"}
+					</Button>
+				</div>
+
+				{/* USDC Balance */}
+				<div className="mt-4">
+					<div className="flex items-baseline justify-center gap-2">
+						<span className="font-bold text-4xl">{formattedUsdcBalance}</span>
+						<span className="text-muted-foreground text-xl">USDC</span>
+					</div>
 				</div>
 
 				{/* Add Funds Button */}
 				<Button
-					className="mt-4 w-full"
+					className="mt-6 w-full"
 					onClick={() => setIsDepositModalOpen(true)}
 				>
 					Add Funds
