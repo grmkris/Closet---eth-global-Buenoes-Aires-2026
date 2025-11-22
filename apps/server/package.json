@@ -11,7 +11,8 @@
     "lint": "ultracite check",
     "fix": "ultracite fix",
     "fix:unsafe": "ultracite fix --unsafe",
-    "test": "bun test"
+    "test": "bun test --preload ./test/test.setup.ts",
+    "test:watch": "bun test --watch --preload ./test/test.setup.ts"
   },
   "dependencies": {
     "hono": "catalog:",
@@ -21,15 +22,20 @@
     "better-auth": "catalog:",
     "dotenv": "catalog:",
     "zod": "catalog:",
-    "drizzle-orm": "^0.44.2",
     "@ai-stilist/api": "workspace:*",
     "@ai-stilist/auth": "workspace:*",
     "@ai-stilist/db": "workspace:*",
+    "@ai-stilist/logger": "workspace:*",
+    "@ai-stilist/shared": "workspace:*",
+    "@ai-stilist/storage": "workspace:*",
     "@ai-stilist/test-utils": "workspace:*"
   },
   "devDependencies": {
     "typescript": "catalog:",
     "@types/bun": "^1.2.6",
-    "tsdown": "catalog:"
+    "tsdown": "catalog:",
+    "drizzle-orm": "^0.44.2",
+    "drizzle-zod": "^0.7.0",
+    "@faker-js/faker": "^10.0.0"
   }
 }

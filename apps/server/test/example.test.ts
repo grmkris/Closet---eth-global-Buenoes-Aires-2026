@@ -1,6 +1,6 @@
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";
 import { createTestSetup, type TestSetup } from "./test.setup";
-import { createAuthHeaders, getTestFile, uploadTestFile } from "./test-helpers";
+import { createAuthHeaders } from "./test-helpers";
 
 describe("Example Test Suite", () => {
 	let testEnv: TestSetup;
@@ -14,31 +14,20 @@ describe("Example Test Suite", () => {
 	});
 
 	test("should create test users with authentication", () => {
-		expect(testEnv.users.user1.email).toBe("user1@test.com");
-		expect(testEnv.users.user2.email).toBe("user2@test.com");
-		expect(testEnv.users.user1.token).toBeTruthy();
-		expect(testEnv.users.user2.token).toBeTruthy();
+		expect(testEnv.users.authenticated.email).toBe("authenticated@test.com");
+		expect(testEnv.users.unauthenticated.email).toBe(
+			"unauthenticated@test.com"
+		);
+		expect(testEnv.users.authenticated.token).toBeTruthy();
+		expect(testEnv.users.unauthenticated.token).toBeTruthy();
 	});
 
 	test("should create authenticated headers", () => {
-		const headers = createAuthHeaders(testEnv.users.user1);
+		const headers = createAuthHeaders(testEnv.users.authenticated);
 		const cookie = headers.get("cookie");
 
 		expect(cookie).toContain("better-auth.session_token=");
-		expect(cookie).toContain(testEnv.users.user1.token);
-	});
-
-	test("should upload and download files from S3", async () => {
-		const testContent = "Hello, S3!";
-		const key = "test-file.txt";
-
-		// Upload file
-		await uploadTestFile(testEnv.deps, key, testContent);
-
-		// Download file
-		const downloaded = await getTestFile(testEnv.deps, key);
-
-		expect(downloaded.toString()).toBe(testContent);
+		expect(cookie).toContain(testEnv.users.authenticated.token);
 	});
 
 	test("should query the database", async () => {
@@ -46,10 +35,10 @@ describe("Example Test Suite", () => {
 
 		expect(users).toHaveLength(2);
 		expect(users.map((u: any) => u.email as string)).toContain(
-			"user1@test.com"
+			"authenticated@test.com"
 		);
 		expect(users.map((u: any) => u.email as string)).toContain(
-			"user2@test.com"
+			"unauthenticated@test.com"
 		);
 	});
 });

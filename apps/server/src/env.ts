@@ -1,4 +1,4 @@
-import { Environment } from "@ai-stilist/shared";
+import { Environment } from "@ai-stilist/shared/services";
 import { z } from "zod";
 
 export const envSchema = z.object({

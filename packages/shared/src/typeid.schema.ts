@@ -20,7 +20,7 @@ type IdTypesMapPrefixToName = {
 };
 
 const idTypesMapPrefixToName = Object.fromEntries(
-	Object.entries(idTypesMapNameToPrefix).map(([x, y]) => [y, x]),
+	Object.entries(idTypesMapNameToPrefix).map(([x, y]) => [y, x])
 ) as IdTypesMapPrefixToName;
 
 export type IdTypePrefixNames = keyof typeof idTypesMapNameToPrefix;
@@ -28,9 +28,7 @@ export type IdTypePrefixNames = keyof typeof idTypesMapNameToPrefix;
 export type TypeId<T extends IdTypePrefixNames> =
 	`${(typeof idTypesMapNameToPrefix)[T]}_${string}`;
 
-export const typeIdValidator = <const T extends IdTypePrefixNames>(
-	prefix: T,
-) =>
+export const typeIdValidator = <const T extends IdTypePrefixNames>(prefix: T) =>
 	z
 		.string()
 		.startsWith(`${idTypesMapNameToPrefix[prefix]}_`)
@@ -46,23 +44,22 @@ export const typeIdValidator = <const T extends IdTypePrefixNames>(
 			},
 			{
 				message: `Invalid ${prefix} TypeID format`,
-			},
+			}
 		) as z.ZodType<TypeId<T>, TypeId<T>>;
 
-export const typeIdGenerator = <const T extends IdTypePrefixNames>(
-	prefix: T,
-) => typeid(idTypesMapNameToPrefix[prefix]).toString() as TypeId<T>;
+export const typeIdGenerator = <const T extends IdTypePrefixNames>(prefix: T) =>
+	typeid(idTypesMapNameToPrefix[prefix]).toString() as TypeId<T>;
 
 export const typeIdFromUuid = <const T extends IdTypePrefixNames>(
 	prefix: T,
-	uuid: string,
+	uuid: string
 ) => {
 	const actualPrefix = idTypesMapNameToPrefix[prefix];
 	return TypeID.fromUUID(actualPrefix, uuid).toString() as TypeId<T>;
 };
 
 export const typeIdToUuid = <const T extends IdTypePrefixNames>(
-	input: TypeId<T>,
+	input: TypeId<T>
 ) => {
 	const id = fromString(input);
 	return {
@@ -73,11 +70,11 @@ export const typeIdToUuid = <const T extends IdTypePrefixNames>(
 
 export const validateTypeId = <const T extends IdTypePrefixNames>(
 	prefix: T,
-	data: unknown,
+	data: unknown
 ): data is TypeId<T> => typeIdValidator(prefix).safeParse(data).success;
 
 export const inferTypeId = <T extends keyof IdTypesMapPrefixToName>(
-	input: `${T}_${string}`,
+	input: `${T}_${string}`
 ) =>
 	idTypesMapPrefixToName[
 		TypeID.fromString(input).getType() as T

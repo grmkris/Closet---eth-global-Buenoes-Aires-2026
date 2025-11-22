@@ -1,4 +1,47 @@
-import type { TestDeps, TestUser } from "./test.setup";
+import type { Context } from "@ai-stilist/api/context";
+import { NUMERIC_CONSTANTS } from "@ai-stilist/shared/constants";
+import type { TestSetup, TestUser } from "./test.setup";
+
+const SEVEN_DAYS_MS =
+	NUMERIC_CONSTANTS.MAX_DELAY * 60 * 60 * 24 * NUMERIC_CONSTANTS.SEVEN_DAYS; // 7 days
+
+/**
+ * Creates an orpc context for authenticated user
+ */
+export function createAuthenticatedContext(testEnv: TestSetup): Context {
+	return {
+		session: {
+			session: {
+				id: crypto.randomUUID(),
+				token: testEnv.users.authenticated.token,
+				userId: testEnv.users.authenticated.id,
+				expiresAt: new Date(Date.now() + SEVEN_DAYS_MS),
+				createdAt: new Date(),
+				updatedAt: new Date(),
+				ipAddress: null,
+				userAgent: null,
+			},
+			user: {
+				id: testEnv.users.authenticated.id,
+				email: testEnv.users.authenticated.email,
+				name: "Test User",
+				emailVerified: true,
+				image: null,
+				createdAt: new Date(),
+				updatedAt: new Date(),
+			},
+		},
+	};
+}
+
+/**
+ * Creates an orpc context without authentication
+ */
+export function createUnauthenticatedContext(): Context {
+	return {
+		session: null,
+	};
+}
 
 /**
  * Creates authenticated headers with a session token
@@ -36,57 +79,13 @@ export function createAuthRequest(
  * Uploads a test file to S3
  */
 export async function uploadTestFile(
-	deps: TestDeps,
+	deps: TestSetup["deps"],
 	key: string,
 	content: string | Buffer
 ): Promise<void> {
-	await deps.s3.minioClient.putObject(
-		deps.s3.bucketName,
+	// Using storage client upload method
+	await deps.storage.upload({
 		key,
-		typeof content === "string" ? Buffer.from(content) : content
-	);
-}
-
-/**
- * Gets a file from S3
- */
-export async function getTestFile(
-	deps: TestDeps,
-	key: string
-): Promise<Buffer> {
-	const stream = await deps.s3.minioClient.getObject(deps.s3.bucketName, key);
-
-	const chunks: Buffer[] = [];
-	return new Promise((resolve, reject) => {
-		stream.on("data", (chunk: Buffer | string) => {
-			const buffer = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk);
-			chunks.push(buffer);
-		});
-		stream.on("end", () => resolve(Buffer.concat(chunks)));
-		stream.on("error", reject);
-	});
-}
-
-/**
- * Deletes a file from S3
- */
-export async function deleteTestFile(
-	deps: TestDeps,
-	key: string
-): Promise<void> {
-	await deps.s3.minioClient.removeObject(deps.s3.bucketName, key);
-}
-
-/**
- * Lists all objects in the test S3 bucket
- */
-export function listTestFiles(deps: TestDeps): Promise<string[]> {
-	const stream = deps.s3.minioClient.listObjects(deps.s3.bucketName, "", true);
-
-	const objects: string[] = [];
-	return new Promise((resolve, reject) => {
-		stream.on("data", (obj: { name: string }) => objects.push(obj.name));
-		stream.on("end", () => resolve(objects));
-		stream.on("error", reject);
+		data: typeof content === "string" ? Buffer.from(content) : content,
 	});
 }

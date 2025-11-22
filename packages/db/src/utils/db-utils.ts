@@ -12,7 +12,7 @@ import { customType, timestamp } from "drizzle-orm/pg-core";
  */
 export const typeId = <const T extends IdTypePrefixNames>(
 	prefix: T,
-	columnName: string,
+	columnName: string
 ) =>
 	customType<{
 		data: TypeId<T>;

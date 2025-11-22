@@ -1,52 +1,57 @@
 import { type AuthClient, createAuth } from "@ai-stilist/auth";
-// biome-ignore lint/performance/noNamespaceImport: Schema needs to be imported as namespace for drizzle
-import * as schema from "@ai-stilist/db/schema/auth";
-import { createTestS3Setup } from "@ai-stilist/test-utils";
+import { createDb, type Database, runMigrations } from "@ai-stilist/db";
+import {
+	createLogger,
+	type Logger,
+	type LoggerConfig,
+} from "@ai-stilist/logger";
+import type { Environment } from "@ai-stilist/shared/services";
+import { createStorageClient } from "@ai-stilist/storage";
 import { createPgLite, type PGlite } from "@ai-stilist/test-utils/pg-lite";
-import { sql } from "drizzle-orm";
-import { drizzle } from "drizzle-orm/pglite";
+import { createTestRedisSetup } from "@ai-stilist/test-utils/redis-test-server";
+import { createTestS3Setup } from "@ai-stilist/test-utils/s3-test-server";
+import type { User } from "better-auth";
+import type { Logger as DrizzleLogger } from "drizzle-orm";
 
-// Simple types for test data
+const SessionTokenRegex = /better-auth\.session_token=([^;]+)/;
+
 export type TestUser = {
 	id: string;
 	email: string;
 	name: string;
-	password: string;
-	token: string; // session token for auth
-};
-
-export type TestDeps = {
-	pgLite: PGlite;
-	// biome-ignore lint/suspicious/noExplicitAny: PGlite drizzle type inference issue, type safety maintained by drizzle internally
-	db: any; // TODO: Fix drizzle type inference for PGlite
-	auth: AuthClient;
-	s3: Awaited<ReturnType<typeof createTestS3Setup>>;
+	token: string; // session token for cookies
+	user: User;
 };
 
 export type TestSetup = {
-	deps: TestDeps;
+	deps: {
+		db: Database;
+		pgLite: PGlite;
+		authClient: AuthClient;
+		logger: Logger;
+		storage: ReturnType<typeof createStorageClient>;
+		redis: Awaited<ReturnType<typeof createTestRedisSetup>>;
+	};
 	users: {
-		user1: TestUser;
-		user2: TestUser;
+		authenticated: TestUser;
+		unauthenticated: TestUser;
 	};
 	cleanup: () => Promise<void>;
 	close: () => Promise<void>;
 };
 
-const SessionTokenRegex = /better-auth\.session_token=([^;]+)/;
-
 /**
- * Creates a test user and returns their session token
+ * Creates a test user with better-auth API
  */
 async function createTestUser(
-	auth: AuthClient,
+	authClient: AuthClient,
 	email: string,
 	name: string
 ): Promise<TestUser> {
-	const password = "test1234";
+	const password = "testtesttesttest";
 
 	// Sign up
-	const signUpResult = await auth.api.signUpEmail({
+	const signUpResult = await authClient.api.signUpEmail({
 		body: { email, name, password },
 	});
 
@@ -54,8 +59,8 @@ async function createTestUser(
 		throw new Error(`Failed to sign up user ${email}`);
 	}
 
-	// Sign in to get session token
-	const signInResponse = await auth.api.signInEmail({
+	// Sign in to get session cookie
+	const signInResponse = await authClient.api.signInEmail({
 		body: { email, password },
 		asResponse: true,
 	});
@@ -64,127 +69,141 @@ async function createTestUser(
 		throw new Error(`Failed to sign in user ${email}`);
 	}
 
-	// Extract session token from Set-Cookie header
+	// Extract session cookie from headers
 	const setCookieHeader = signInResponse.headers.get("set-cookie") || "";
-	const sessionTokenMatch = setCookieHeader.match(SessionTokenRegex);
 
-	if (!sessionTokenMatch?.[1]) {
+	// Parse the session token from the cookie header
+	const sessionTokenMatch = setCookieHeader.match(SessionTokenRegex);
+	if (!sessionTokenMatch) {
 		throw new Error(`Failed to extract session token for user ${email}`);
+	}
+	const sessionToken = sessionTokenMatch[1];
+	if (!sessionToken) {
+		throw new Error(`Failed to extract session token value for user ${email}`);
 	}
 
 	return {
 		id: signUpResult.user.id,
 		email,
 		name,
-		password,
-		token: sessionTokenMatch[1],
+		token: sessionToken,
+		user: signUpResult.user,
 	};
 }
 
 /**
- * Creates a complete test environment with database, auth, and mocked services
+ * Creates a complete test environment with in-memory database and all services
  */
 export async function createTestSetup(): Promise<TestSetup> {
+	// Create logger
+	const testLogLevel =
+		(process.env.TEST_LOG_LEVEL as LoggerConfig["level"]) ?? "error";
+	const logger = createLogger({
+		appName: "test.setup",
+		level: testLogLevel,
+		nodeEnv: "test",
+	});
+
 	// Create in-memory PGlite database
 	const pgLite = createPgLite();
-	await pgLite.waitReady;
 
-	// Create Drizzle instance with schema for full type inference
-	const db = drizzle(pgLite, { schema });
-
-	// Create database schema
-	// Since PGlite doesn't have migrations yet, we'll create the schema directly
-	await pgLite.exec(`
-    CREATE TABLE IF NOT EXISTS "user" (
-      "id" text PRIMARY KEY,
-      "name" text NOT NULL,
-      "email" text NOT NULL UNIQUE,
-      "email_verified" boolean NOT NULL,
-      "image" text,
-      "created_at" timestamp NOT NULL,
-      "updated_at" timestamp NOT NULL
-    );
-
-    CREATE TABLE IF NOT EXISTS "session" (
-      "id" text PRIMARY KEY,
-      "expires_at" timestamp NOT NULL,
-      "token" text NOT NULL UNIQUE,
-      "created_at" timestamp NOT NULL,
-      "updated_at" timestamp NOT NULL,
-      "ip_address" text,
-      "user_agent" text,
-      "user_id" text NOT NULL REFERENCES "user"("id") ON DELETE CASCADE
-    );
-
-    CREATE TABLE IF NOT EXISTS "account" (
-      "id" text PRIMARY KEY,
-      "account_id" text NOT NULL,
-      "provider_id" text NOT NULL,
-      "user_id" text NOT NULL REFERENCES "user"("id") ON DELETE CASCADE,
-      "access_token" text,
-      "refresh_token" text,
-      "id_token" text,
-      "access_token_expires_at" timestamp,
-      "refresh_token_expires_at" timestamp,
-      "scope" text,
-      "password" text,
-      "created_at" timestamp NOT NULL,
-      "updated_at" timestamp NOT NULL
-    );
-
-    CREATE TABLE IF NOT EXISTS "verification" (
-      "id" text PRIMARY KEY,
-      "identifier" text NOT NULL,
-      "value" text NOT NULL,
-      "expires_at" timestamp NOT NULL,
-      "created_at" timestamp,
-      "updated_at" timestamp
-    );
-  `);
-
-	// Create auth instance using factory pattern
-	const auth = createAuth(db);
-
-	// Create test users
-	const user1 = await createTestUser(auth, "user1@test.com", "Test User 1");
-	const user2 = await createTestUser(auth, "user2@test.com", "Test User 2");
-
-	// Set up S3 mock
-	const s3 = await createTestS3Setup("test-bucket");
-
-	// Optional: Set up Redis mock (uncomment if needed)
-	// const redis = await createTestRedisSetup();
-
-	const cleanup = async () => {
-		// Use TRUNCATE CASCADE for faster, cleaner reset
-		await db.execute(sql`
-			TRUNCATE TABLE "session", "account", "verification", "user"
-			RESTART IDENTITY CASCADE
-		`);
+	// Only log SQL queries in debug mode to reduce test noise
+	const drizzleLogger: DrizzleLogger = {
+		logQuery: (query, params) => {
+			if (testLogLevel === "debug" || testLogLevel === "trace") {
+				logger.debug({ msg: "SQL Query", query, params });
+			}
+		},
 	};
 
+	// Create Drizzle instance
+	const db = createDb({
+		logger: drizzleLogger,
+		dbData: {
+			type: "pglite",
+			db: pgLite,
+		},
+	});
+
+	// Run migrations
+	try {
+		await runMigrations(db, logger);
+		logger.debug("Migrations applied successfully");
+	} catch (error) {
+		logger.error({ msg: "Migration failed", error });
+		throw error;
+	}
+
+	// Create auth client
+	const authClient = createAuth({
+		db,
+		appEnv: (process.env.APP_ENV as Environment) || "dev",
+		secret: process.env.BETTER_AUTH_SECRET || "test-secret-key",
+	});
+
+	logger.debug("Creating test users...");
+
+	// Create test users using real auth API
+	const authenticatedUser = await createTestUser(
+		authClient,
+		"authenticated@test.com",
+		"Authenticated User"
+	);
+
+	const unauthenticatedUser = await createTestUser(
+		authClient,
+		"unauthenticated@test.com",
+		"Unauthenticated User"
+	);
+
+	// Create S3 test server and storage client
+	const s3Setup = await createTestS3Setup("test-s3-bucket");
+	const storage = createStorageClient({
+		s3Client: s3Setup.client,
+		env: (process.env.APP_ENV as Environment) || "dev",
+		logger,
+	});
+
+	// Create Redis test server
+	const redis = await createTestRedisSetup();
+
+	logger.info({
+		msg: "Test environment setup complete",
+		users: 2,
+		services: ["db", "auth", "storage", "redis"],
+	});
+
+	// Cleanup function to reset data between tests
+	const cleanup = async () => {
+		await Promise.resolve(); // TODO
+
+		logger.debug("Test data cleaned up");
+	};
+
+	// Close function to shut down all services
 	const close = async () => {
-		// Shutdown S3 mock
-		await s3.shutdown();
-
-		// Optional: Shutdown Redis mock
-		// if (redis) await redis.shutdown();
-
-		// Close PGlite
-		await pgLite.close();
+		try {
+			await s3Setup.shutdown();
+			await redis.shutdown();
+			await pgLite.close();
+			logger.info("Test environment closed");
+		} catch (error) {
+			logger.error({ msg: "Error closing test environment", error });
+		}
 	};
 
 	return {
 		deps: {
-			pgLite,
 			db,
-			auth,
-			s3,
-			// redis,
+			pgLite,
+			authClient,
+			logger,
+			storage,
+			redis,
 		},
 		users: {
-			user1,
-			user2,
+			authenticated: authenticatedUser,
+			unauthenticated: unauthenticatedUser,
 		},
 		cleanup,
 		close,

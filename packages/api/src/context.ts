@@ -1,9 +1,9 @@
-import type { Auth } from "@ai-stilist/auth";
+import type { AuthClient } from "@ai-stilist/auth";
 import type { Context as HonoContext } from "hono";
 
 export type CreateContextOptions = {
 	context: HonoContext;
-	auth: Auth;
+	auth: AuthClient;
 };
 
 export async function createContext({ context, auth }: CreateContextOptions) {

@@ -149,7 +149,7 @@ export function createStorageClient(config: StorageConfig) {
 	 * Get a presigned URL for uploading a file
 	 */
 	function getUploadUrl(
-		options: SignedUrlOptions & { contentType: string },
+		options: SignedUrlOptions & { contentType: string }
 	): string {
 		const { key, expiresIn = 3600, contentType } = options;
 

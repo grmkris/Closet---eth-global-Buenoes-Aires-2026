@@ -3,7 +3,6 @@ import type { AddressInfo } from "node:net";
 import os from "node:os";
 import path from "node:path";
 import { S3Client as BunS3Client } from "bun";
-import { Client } from "minio";
 import S3rver from "s3rver";
 
 /**
@@ -29,7 +28,6 @@ const getRandomPort = (min = 10_000, max = 50_000) =>
 export type S3TestSetup = {
 	client: BunS3Client;
 	bunClient: BunS3Client;
-	minioClient: Client;
 	s3rver: S3rver;
 	server: AddressInfo;
 	port: number;
@@ -39,7 +37,7 @@ export type S3TestSetup = {
 };
 
 /**
- * Initializes an S3rver server and returns a Minio client connected to it
+ * Initializes an S3rver server and returns a Bun S3 client connected to it
  */
 export async function createTestS3Setup(
 	bucketName: string
@@ -49,33 +47,18 @@ export async function createTestS3Setup(
 	const hostname = "localhost";
 	const directory = createTempDir();
 
-	// Create the S3rver instance
+	// Create the S3rver instance with the bucket pre-configured
 	const s3rver = new S3rver({
 		port,
 		directory,
 		silent: true,
-		configureBuckets: [], // We'll create buckets through the API
+		configureBuckets: [{ name: bucketName, configs: [] }],
 	});
 
 	// Start the server
 	const server = await s3rver.run();
 
-	// Create a MinIO client that points to our S3rver instance
-	const minioClient = new Client({
-		endPoint: hostname,
-		port,
-		useSSL: false,
-		accessKey: "S3RVER",
-		secretKey: "S3RVER",
-	});
-
-	// Create our test bucket if it doesn't exist
-	const bucketExists = await minioClient.bucketExists(bucketName);
-	if (!bucketExists) {
-		await minioClient.makeBucket(bucketName);
-	}
-
-	// Also create a Bun S3 client configured for the same endpoint & bucket
+	// Create a Bun S3 client configured for the S3rver endpoint & bucket
 	const endpoint = `http://${hostname}:${port}`;
 	const bunClient = new BunS3Client({
 		accessKeyId: "S3RVER",
@@ -93,7 +76,6 @@ export async function createTestS3Setup(
 	return {
 		client: bunClient,
 		bunClient,
-		minioClient,
 		s3rver,
 		server,
 		port,

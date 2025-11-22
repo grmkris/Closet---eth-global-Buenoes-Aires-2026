@@ -10,7 +10,7 @@ import {
 	baseEntityFields,
 	createTimestampField,
 	typeId,
-} from "@/utils/db-utils";
+} from "../../utils/db-utils";
 
 export const user = pgTable("user", {
 	id: typeId("user", "id")
