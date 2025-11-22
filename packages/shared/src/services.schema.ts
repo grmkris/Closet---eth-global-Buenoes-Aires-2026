@@ -18,6 +18,7 @@ export const SERVICE_URLS: Record<
 			id: number;
 			name: string;
 			rpcUrl: string;
+			usdc: string;
 		};
 	}
 > = {
@@ -31,7 +32,8 @@ export const SERVICE_URLS: Record<
 		chain: {
 			id: 80_002, // Polygon Amoy testnet
 			name: "polygon-amoy",
-			rpcUrl: "https://polygon-amoy.gateway.tatum.io",
+			rpcUrl: "https://rpc-amoy.polygon.technology",
+			usdc: "0x41E94Eb019C0762f9Bfcf9Fb1E58725BfB0e7582",
 		},
 	},
 	prod: {
@@ -45,6 +47,7 @@ export const SERVICE_URLS: Record<
 			id: 137, // Polygon mainnet
 			name: "polygon",
 			rpcUrl: "https://polygon-rpc.com",
+			usdc: "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359",
 		},
 	},
 } as const;

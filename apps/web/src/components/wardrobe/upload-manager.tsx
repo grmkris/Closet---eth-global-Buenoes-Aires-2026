@@ -214,7 +214,7 @@ export function UploadManager() {
 										<Loader2 className="h-4 w-4 animate-spin text-primary" />
 									)}
 									{upload.status === "success" && (
-										<CheckCircle className="h-4 w-4 text-green-500" />
+										<CheckCircle className="h-4 w-4 text-primary" />
 									)}
 									{upload.status === "error" && (
 										<XCircle className="h-4 w-4 text-destructive" />

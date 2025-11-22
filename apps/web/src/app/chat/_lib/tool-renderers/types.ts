@@ -1,6 +1,16 @@
 import type {
+	GenerateOutfitPreviewInput,
+	GenerateOutfitPreviewOutput,
+	GetItemDetailsInput,
+	GetItemDetailsOutput,
+	GetWardrobeSummaryInput,
+	GetWardrobeSummaryOutput,
 	MyToolSet,
 	MyUIMessagePart,
+	SearchWardrobeInput,
+	SearchWardrobeOutput,
+	ShowItemsInput,
+	ShowItemsOutput,
 } from "@ai-stilist/api/features/ai/message-type";
 import type { MessageId } from "@ai-stilist/shared/typeid";
 import {
@@ -157,4 +167,74 @@ export function getToolStatus(part: MyUIMessagePart): ToolStatus {
 		default:
 			return "pending";
 	}
+}
+
+/**
+ * Union type of all tool names
+ */
+export type ToolName =
+	| "searchWardrobe"
+	| "getWardrobeSummary"
+	| "getItemDetails"
+	| "showItems"
+	| "generateOutfitPreview";
+
+/**
+ * Type map for tool inputs
+ */
+export type ToolInputMap = {
+	searchWardrobe: SearchWardrobeInput;
+	getWardrobeSummary: GetWardrobeSummaryInput;
+	getItemDetails: GetItemDetailsInput;
+	showItems: ShowItemsInput;
+	generateOutfitPreview: GenerateOutfitPreviewInput;
+};
+
+/**
+ * Type map for tool outputs
+ */
+export type ToolOutputMap = {
+	searchWardrobe: SearchWardrobeOutput;
+	getWardrobeSummary: GetWardrobeSummaryOutput;
+	getItemDetails: GetItemDetailsOutput;
+	showItems: ShowItemsOutput;
+	generateOutfitPreview: GenerateOutfitPreviewOutput;
+};
+
+/**
+ * Type-safe helper to get tool input with correct type based on tool name
+ */
+export function getTypedToolInput<T extends ToolName>(
+	part: MyUIMessagePart,
+	toolName: T
+): ToolInputMap[T] | undefined {
+	const actualToolName = getToolName(part);
+	if (actualToolName !== toolName) {
+		return;
+	}
+	return getToolInput(part) as ToolInputMap[T] | undefined;
+}
+
+/**
+ * Type-safe helper to get tool output with correct type based on tool name
+ */
+export function getTypedToolOutput<T extends ToolName>(
+	part: MyUIMessagePart,
+	toolName: T
+): ToolOutputMap[T] | undefined {
+	const actualToolName = getToolName(part);
+	if (actualToolName !== toolName) {
+		return;
+	}
+	return getToolOutput(part) as ToolOutputMap[T] | undefined;
+}
+
+/**
+ * Type guard to check if a part is a specific tool type
+ */
+export function isToolOfType<T extends ToolName>(
+	part: MyUIMessagePart,
+	toolName: T
+): boolean {
+	return getToolName(part) === toolName;
 }

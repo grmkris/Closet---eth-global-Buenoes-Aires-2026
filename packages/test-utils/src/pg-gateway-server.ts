@@ -42,7 +42,6 @@ const defaultLogger: Logger = {
 	debug: () => {},
 	// biome-ignore lint/suspicious/noEmptyBlockStatements: Silent logger for tests
 	info: () => {},
-	// biome-ignore lint/suspicious/noConsole: Intentional console use for error logging in tests
 	error: (msg) => console.error(msg.msg, msg.error),
 };
 

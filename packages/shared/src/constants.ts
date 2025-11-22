@@ -88,11 +88,14 @@ export const SCREEN_SIZE = {
 export const OUTFIT_IMAGE_CONFIG = {
 	SUPPORTED_ASPECT_RATIOS: [
 		"1:1",
+		"2:3",
+		"3:2",
 		"3:4",
 		"4:3",
+		"4:5",
+		"5:4",
 		"9:16",
 		"16:9",
-		"9:21",
 		"21:9",
 	] as const,
 	OUTPUT_EXPIRY_SECONDS: 86_400, // 24 hours

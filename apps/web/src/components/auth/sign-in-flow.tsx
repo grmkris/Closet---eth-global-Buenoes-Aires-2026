@@ -36,7 +36,7 @@ function OtpStepContent({
 		return (
 			<div className="text-center">
 				<div className="mb-4 text-4xl">⏳</div>
-				<p className="text-gray-600">
+				<p className="text-muted-foreground">
 					Securely linking your wallet to your account...
 				</p>
 			</div>
@@ -49,11 +49,11 @@ function OtpStepContent({
 		if (error) {
 			return (
 				<div className="text-center">
-					<p className="mb-4 text-gray-600">
+					<p className="mb-4 text-muted-foreground">
 						Failed to link your wallet. Please try again.
 					</p>
 					<button
-						className="w-full rounded bg-blue-600 py-2 text-white hover:bg-blue-700"
+						className="w-full rounded bg-primary py-2 text-primary-foreground hover:bg-primary/90"
 						onClick={() => {
 							if (address && isConnected) {
 								authenticate({ address, chainId });
@@ -74,7 +74,7 @@ function OtpStepContent({
 	return (
 		<div className="text-center">
 			<div className="mb-4 text-4xl">⏳</div>
-			<p className="text-gray-600">Waiting for wallet connection...</p>
+			<p className="text-muted-foreground">Waiting for wallet connection...</p>
 		</div>
 	);
 }
@@ -144,12 +144,12 @@ export function SignInFlow({ session }: SignInFlowProps) {
 					{address ? (
 						<div className="text-center">
 							<div className="mb-4 text-4xl">⏳</div>
-							<p className="text-gray-600">Connecting your wallet...</p>
+							<p className="text-muted-foreground">Connecting your wallet...</p>
 						</div>
 					) : (
 						<>
 							<h2 className="mb-4 font-bold text-2xl">Sign in to AI Stilist</h2>
-							<p className="mb-4 text-gray-600">
+							<p className="mb-4 text-muted-foreground">
 								Create your wallet to get started. No seed phrase needed!
 							</p>
 							<SignIn onSuccess={handleWalletCreated} />
@@ -167,8 +167,8 @@ export function SignInFlow({ session }: SignInFlowProps) {
 					</h2>
 
 					{address && isConnected && (
-						<div className="mb-4 rounded bg-gray-100 p-4">
-							<p className="text-gray-600 text-sm">Wallet Address:</p>
+						<div className="mb-4 rounded bg-muted p-4">
+							<p className="text-muted-foreground text-sm">Wallet Address:</p>
 							<p className="font-mono text-sm">
 								{address.slice(0, UI_CONFIG.ADDRESS_PREFIX_LENGTH)}...
 								{address.slice(-UI_CONFIG.ADDRESS_SUFFIX_LENGTH)}
@@ -191,16 +191,18 @@ export function SignInFlow({ session }: SignInFlowProps) {
 				<div className="text-center">
 					<div className="mb-4 text-6xl">✅</div>
 					<h2 className="mb-2 font-bold text-2xl">You're All Set!</h2>
-					<p className="mb-4 text-gray-600">
+					<p className="mb-4 text-muted-foreground">
 						Your wallet has been linked to your account.
 					</p>
-					<p className="text-gray-500 text-sm">Redirecting to dashboard...</p>
+					<p className="text-muted-foreground text-sm">
+						Redirecting to dashboard...
+					</p>
 				</div>
 			)}
 
 			{error && step !== "otp" && (
-				<div className="mt-4 rounded border border-red-200 bg-red-50 p-4">
-					<p className="text-red-600 text-sm">{error.message}</p>
+				<div className="mt-4 rounded border border-destructive bg-destructive/10 p-4">
+					<p className="text-destructive text-sm">{error.message}</p>
 				</div>
 			)}
 		</div>

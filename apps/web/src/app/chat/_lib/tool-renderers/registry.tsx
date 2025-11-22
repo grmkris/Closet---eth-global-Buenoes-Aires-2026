@@ -5,6 +5,7 @@ import type { MessageId } from "@ai-stilist/shared/typeid";
 import { DefaultToolRenderer } from "./default-tool-renderer";
 import { ItemDetailsRenderer } from "./item-details-renderer";
 import { OutfitPreviewRenderer } from "./outfit-preview-renderer";
+import { ShowItemsRenderer } from "./show-items-renderer";
 import type { ToolRendererEntry } from "./types";
 import { getToolName, isToolPart } from "./types";
 import { WardrobeSearchRenderer } from "./wardrobe-search-renderer";
@@ -26,6 +27,10 @@ const toolRenderers: Record<string, ToolRendererEntry> = {
 	getItemDetails: {
 		renderer: ItemDetailsRenderer,
 		displayName: "Item Details",
+	},
+	showItems: {
+		renderer: ShowItemsRenderer,
+		displayName: "Show Items",
 	},
 
 	// Default fallback - handles all other tools

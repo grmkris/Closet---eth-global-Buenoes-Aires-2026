@@ -49,8 +49,7 @@ describe("generateOutfitImage", () => {
 				logger: testEnv.deps.logger,
 				userId: testEnv.users.authenticated.id,
 				aspectRatio: "1:1",
-				quality: "standard",
-				imageStyle: "natural",
+				imageSize: "1K",
 			})
 		).rejects.toThrow("At least one clothing item is required");
 	});
@@ -110,8 +109,7 @@ describe("generateOutfitImage", () => {
 				logger: testEnv.deps.logger,
 				userId: testEnv.users.authenticated.id,
 				aspectRatio: "1:1",
-				quality: "standard",
-				imageStyle: "natural",
+				imageSize: "1K",
 			});
 
 			// 5. Verify result

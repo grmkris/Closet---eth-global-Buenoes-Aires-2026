@@ -22,7 +22,9 @@ export default function LoginPage() {
 			<div className="flex min-h-screen items-center justify-center">
 				<div className="text-center">
 					<div className="mb-4 text-4xl">✅</div>
-					<p className="text-gray-600">Already authenticated. Redirecting...</p>
+					<p className="text-muted-foreground">
+						Already authenticated. Redirecting...
+					</p>
 				</div>
 			</div>
 		);

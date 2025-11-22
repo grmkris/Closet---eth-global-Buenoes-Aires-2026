@@ -29,8 +29,8 @@ export const queryClient = new QueryClient({
 
 export const link = new RPCLink({
 	url: `${SERVICE_URLS[env.NEXT_PUBLIC_APP_ENV].api}/rpc`,
-	fetch(url, options) {
-		return fetch(url, {
+	fetch(_url, options) {
+		return fetch(_url, {
 			...options,
 			credentials: "include",
 		});

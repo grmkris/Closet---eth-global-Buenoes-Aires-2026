@@ -8,11 +8,8 @@ import {
 import type { ClothingItemId, UserId } from "@ai-stilist/shared/typeid";
 import type { StorageClient } from "@ai-stilist/storage";
 
-// Image quality options
-export type ImageQuality = "standard" | "hd";
-
-// Image style options
-export type ImageStyle = "natural" | "vivid";
+// Image size options for Gemini 3 Pro Image
+export type ImageSize = "1K" | "2K" | "4K";
 
 export type ClothingItemWithMetadata = {
 	id: ClothingItemId;
@@ -32,8 +29,7 @@ export type GenerateOutfitImageInput = {
 	occasion?: string;
 	style?: string;
 	aspectRatio: AspectRatio;
-	quality: ImageQuality;
-	imageStyle: ImageStyle;
+	imageSize?: ImageSize;
 	aiClient: AiClient;
 	storageClient: StorageClient;
 	logger: Logger;
@@ -47,7 +43,7 @@ export type GenerateOutfitImageResult = {
 };
 
 /**
- * Generate an outfit preview image using Google Gemini 3 Pro Image (Nano Banana Pro)
+ * Generate an outfit preview image using Gemini 2.5 Flash Image
  * Uses Gemini multimodal model with image inputs and image outputs
  */
 export async function generateOutfitImage(
@@ -58,8 +54,7 @@ export async function generateOutfitImage(
 		occasion,
 		style,
 		aspectRatio,
-		quality,
-		imageStyle,
+		imageSize,
 		aiClient,
 		storageClient,
 		logger,
@@ -71,13 +66,12 @@ export async function generateOutfitImage(
 	}
 
 	logger.info({
-		msg: "Generating outfit image with Gemini 3 Pro Image",
+		msg: "Generating outfit image with Gemini 2.5 Flash Image",
 		itemCount: items.length,
 		occasion,
 		style,
 		aspectRatio,
-		quality,
-		imageStyle,
+		imageSize,
 		userId,
 	});
 
@@ -129,12 +123,12 @@ export async function generateOutfitImage(
 		});
 	}
 
-	// 4. Generate image using Gemini 3 Pro Image with multimodal input
+	// 4. Generate image using Gemini 2.5 Flash Image with multimodal input
 	try {
 		const result = await aiClient.generateText({
 			model: aiClient.getModel({
 				provider: "google",
-				modelId: "google/gemini-3-pro-image",
+				modelId: "gemini-2.5-flash-image-preview",
 			}),
 			messages: [
 				{
@@ -145,8 +139,7 @@ export async function generateOutfitImage(
 			providerOptions: {
 				google: {
 					aspectRatio,
-					quality,
-					style: imageStyle,
+					...(imageSize && { imageSize }),
 				},
 			},
 		});
@@ -210,8 +203,7 @@ export async function generateOutfitImage(
 			error: error instanceof Error ? error.message : String(error),
 			stack: error instanceof Error ? error.stack : undefined,
 			aspectRatio,
-			quality,
-			imageStyle,
+			imageSize,
 			itemCount: items.length,
 		});
 		throw error;

@@ -6,19 +6,7 @@ import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import type { ToolRendererProps } from "./types";
-import { getToolOutput, getToolStatus } from "./types";
-
-type ItemDetailsOutput = {
-	id: string;
-	categories: string[];
-	colors: Array<{ name: string; hex: string }>;
-	tagsByType: Record<string, string[]>;
-	imageUrl: string;
-	processedImageUrl: string | null;
-	thumbnailUrl: string | null;
-	createdAt: Date | string;
-	updatedAt: Date | string;
-};
+import { getToolStatus, getTypedToolOutput } from "./types";
 
 /**
  * Custom renderer for getItemDetails tool
@@ -27,7 +15,7 @@ type ItemDetailsOutput = {
 export function ItemDetailsRenderer({ part }: ToolRendererProps) {
 	const [imageLoaded, setImageLoaded] = useState(false);
 	const status = getToolStatus(part);
-	const output = getToolOutput(part) as ItemDetailsOutput | undefined;
+	const output = getTypedToolOutput(part, "getItemDetails");
 
 	// Only render for successful results
 	if (status !== "success" || !output) {
@@ -45,7 +33,7 @@ export function ItemDetailsRenderer({ part }: ToolRendererProps) {
 				<Info className="h-4 w-4 text-muted-foreground" />
 				<span className="font-medium text-sm">Item Details</span>
 				<Badge className="ml-auto" variant="secondary">
-					<CheckCircle className="mr-1 h-3 w-3 text-green-600" />
+					<CheckCircle className="mr-1 h-3 w-3 text-primary" />
 					Found
 				</Badge>
 			</div>
@@ -106,10 +94,13 @@ export function ItemDetailsRenderer({ part }: ToolRendererProps) {
 										className="flex items-center gap-2 rounded-md border bg-background px-2 py-1"
 										key={`${color.name}-${idx}`}
 									>
-										<div
-											className="h-4 w-4 rounded-full border"
-											style={{ backgroundColor: color.hex }}
-										/>
+										{color.hex && (
+											<div
+												className="h-4 w-4 rounded-full border"
+												style={{ backgroundColor: color.hex }}
+												title={color.name}
+											/>
+										)}
 										<span className="text-sm">{color.name}</span>
 									</div>
 								))}

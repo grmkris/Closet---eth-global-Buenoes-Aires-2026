@@ -6,15 +6,7 @@ import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import type { ToolRendererProps } from "./types";
-import { getToolOutput, getToolStatus } from "./types";
-
-type OutfitPreviewOutput = {
-	success: boolean;
-	imageUrl?: string;
-	storageKey?: string;
-	itemCount?: number;
-	message?: string;
-};
+import { getToolStatus, getTypedToolOutput } from "./types";
 
 /**
  * Custom renderer for generateOutfitPreview tool
@@ -24,7 +16,7 @@ export function OutfitPreviewRenderer({ part }: ToolRendererProps) {
 	const [imageLoaded, setImageLoaded] = useState(false);
 	const [imageError, setImageError] = useState(false);
 	const status = getToolStatus(part);
-	const output = getToolOutput(part) as OutfitPreviewOutput | undefined;
+	const output = getTypedToolOutput(part, "generateOutfitPreview");
 
 	// Only render for successful results with image URL
 	if (status !== "success" || !output?.success || !output?.imageUrl) {
@@ -38,7 +30,7 @@ export function OutfitPreviewRenderer({ part }: ToolRendererProps) {
 				<ImageIcon className="h-4 w-4 text-muted-foreground" />
 				<span className="font-medium text-sm">Outfit Preview</span>
 				<Badge className="ml-auto" variant="secondary">
-					<CheckCircle className="mr-1 h-3 w-3 text-green-600" />
+					<CheckCircle className="mr-1 h-3 w-3 text-primary" />
 					Generated
 				</Badge>
 			</div>
@@ -55,7 +47,7 @@ export function OutfitPreviewRenderer({ part }: ToolRendererProps) {
 				{imageError && (
 					<div className="absolute inset-0 flex items-center justify-center">
 						<div className="flex flex-col items-center gap-2 text-muted-foreground">
-							<XCircle className="h-8 w-8 text-red-500" />
+							<XCircle className="h-8 w-8 text-destructive" />
 							<span className="text-sm">Failed to load image</span>
 						</div>
 					</div>

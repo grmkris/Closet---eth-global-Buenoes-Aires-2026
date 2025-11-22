@@ -1,7 +1,5 @@
 import type { Logger } from "@ai-stilist/logger";
 import type { Environment } from "@ai-stilist/shared/services";
-import { typeIdGenerator } from "@ai-stilist/shared/typeid";
-import { withTracing } from "@posthog/ai/vercel";
 import type { LanguageModel as LanguageModelRetardio } from "ai";
 
 import {
@@ -86,14 +84,7 @@ export const createAiClient = (config: AiClientConfig): AiClient => ({
 		});
 
 		// Return wrapped or unwrapped model
-		return config.posthog
-			? withTracing(baseModel, config.posthog, {
-					posthogTraceId: typeIdGenerator("aiGeneration"),
-					posthogProperties: {
-						environment: config.environment,
-					},
-				})
-			: baseModel;
+		return baseModel;
 	},
 	generateObject,
 	streamObject,

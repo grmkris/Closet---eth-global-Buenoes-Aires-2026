@@ -502,6 +502,123 @@ export const createAiTools = ({
 		},
 	}),
 
+	showItems: tool({
+		description:
+			"Display clothing items to the user in a visual format. Use this tool to show specific items when making outfit recommendations, responding to wardrobe queries, or any time you reference specific clothing items. NEVER include item IDs in your text responses - always use this tool to display items visually instead.",
+		inputSchema: z.object({
+			itemIds: z
+				.array(z.string())
+				.min(1)
+				.max(20)
+				.describe("Array of clothing item IDs to display to the user"),
+		}),
+		execute: async ({ itemIds }: { itemIds: string[] }) => {
+			logger.debug({
+				msg: "AI tool: showItems",
+				userId,
+				itemIds,
+			});
+
+			// Fetch items with all relations
+			const items = await db.query.clothingItemsTable.findMany({
+				where: and(
+					eq(clothingItemsTable.userId, userId),
+					eq(clothingItemsTable.status, "completed"),
+					inArray(clothingItemsTable.id, itemIds as ClothingItemId[])
+				),
+				with: {
+					categories: {
+						with: {
+							category: true,
+						},
+					},
+					colors: {
+						with: {
+							color: true,
+						},
+						orderBy: (colorItems, { asc }) => [asc(colorItems.order)],
+					},
+					tags: {
+						with: {
+							tag: {
+								with: {
+									type: true,
+								},
+							},
+						},
+					},
+				},
+			});
+
+			// Transform items to display format
+			const displayItems = items.map((item) => {
+				// Group tags by type
+				const tagsByType: Record<string, string[]> = {};
+				for (const tagItem of item.tags) {
+					const typeName = tagItem.tag.type.name;
+					if (!tagsByType[typeName]) {
+						tagsByType[typeName] = [];
+					}
+					tagsByType[typeName].push(tagItem.tag.name);
+				}
+
+				return {
+					id: item.id,
+					categories: item.categories.map((c) => c.category.displayName),
+					colors: item.colors.map((c) => ({
+						name: c.color.name,
+						hex: c.color.hexCode,
+					})),
+					tagsByType,
+					imageUrl: storage.getSignedUrl({
+						key: item.imageKey,
+						expiresIn: 3600,
+					}),
+					processedImageUrl: item.processedImageKey
+						? storage.getSignedUrl({
+								key: item.processedImageKey,
+								expiresIn: 3600,
+							})
+						: null,
+					thumbnailUrl: item.thumbnailKey
+						? storage.getSignedUrl({
+								key: item.thumbnailKey,
+								expiresIn: 3600,
+							})
+						: null,
+				};
+			});
+
+			// Validate all requested items were found
+			const foundIds = new Set(items.map((item) => item.id));
+			const missingIds = itemIds.filter(
+				(id) => !foundIds.has(id as ClothingItemId)
+			);
+
+			if (missingIds.length > 0) {
+				logger.warn({
+					msg: "AI tool: showItems - some items not found",
+					userId,
+					missingIds,
+				});
+			}
+
+			logger.info({
+				msg: "AI tool: showItems result",
+				userId,
+				itemCount: displayItems.length,
+				requestedCount: itemIds.length,
+			});
+
+			return {
+				items: displayItems,
+				displayedCount: displayItems.length,
+				requestedCount: itemIds.length,
+				notFound: missingIds.length > 0 ? missingIds : undefined,
+			};
+		},
+	}),
+
 	generateOutfitPreview: tool({
 		description:
 			"Generate a visual preview image of an outfit combination using AI. Takes a list of clothing item IDs and creates a photorealistic visualization showing how the items look together. Useful when suggesting outfits to show the user what the combination would look like.",
@@ -604,8 +721,7 @@ export const createAiTools = ({
 					logger,
 					userId,
 					aspectRatio: "1:1",
-					quality: "standard",
-					imageStyle: "natural",
+					imageSize: "1K",
 				});
 
 				logger.info({

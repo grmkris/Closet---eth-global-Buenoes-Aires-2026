@@ -56,12 +56,12 @@ export function DepositModal({ open, onClose }: DepositModalProps) {
 					{/* Manual Deposit Section */}
 					<div className="rounded-lg border p-4">
 						<h3 className="font-semibold">Transfer USDC</h3>
-						<p className="mt-2 text-gray-600 text-sm">
+						<p className="mt-2 text-muted-foreground text-sm">
 							Send USDC on Polygon network to your wallet address:
 						</p>
 
 						{/* Wallet Address */}
-						<div className="mt-3 flex items-center gap-2 rounded bg-gray-100 p-3">
+						<div className="mt-3 flex items-center gap-2 rounded bg-muted p-3">
 							<code className="flex-1 break-all font-mono text-xs">
 								{address}
 							</code>
@@ -77,13 +77,13 @@ export function DepositModal({ open, onClose }: DepositModalProps) {
 						</div>
 
 						{/* QR Code */}
-						<div className="mt-4 flex justify-center rounded bg-white p-4">
+						<div className="mt-4 flex justify-center rounded bg-card p-4 dark:invert">
 							<QRCodeSVG size={180} value={address} />
 						</div>
 
 						{/* Warning */}
-						<div className="mt-3 rounded bg-yellow-50 p-3">
-							<p className="text-xs text-yellow-800">
+						<div className="mt-3 rounded border border-accent bg-accent/10 p-3">
+							<p className="text-accent-foreground text-xs">
 								⚠️ Only send USDC on Polygon network to this address. Sending
 								other tokens or using a different network may result in loss of
 								funds.
@@ -92,11 +92,9 @@ export function DepositModal({ open, onClose }: DepositModalProps) {
 					</div>
 
 					{/* Instructions */}
-					<div className="rounded-lg bg-blue-50 p-4">
-						<h4 className="font-semibold text-blue-900 text-sm">
-							How to get testnet USDC:
-						</h4>
-						<ol className="mt-2 list-decimal space-y-1 pl-4 text-blue-800 text-xs">
+					<div className="rounded-lg bg-muted p-4">
+						<h4 className="font-semibold text-sm">How to get testnet USDC:</h4>
+						<ol className="mt-2 list-decimal space-y-1 pl-4 text-muted-foreground text-xs">
 							<li>Get POL tokens from Polygon Amoy faucet</li>
 							<li>Swap POL to USDC on a testnet DEX</li>
 							<li>Or ask in Discord for testnet USDC</li>

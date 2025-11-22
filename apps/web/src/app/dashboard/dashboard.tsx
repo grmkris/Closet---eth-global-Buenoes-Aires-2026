@@ -67,15 +67,15 @@ export default function Dashboard({
 
 			{/* Processing Status (if active) */}
 			{processingCount > 0 && (
-				<Card className="bg-blue-50 p-4 dark:bg-blue-950/20">
+				<Card className="bg-primary/10 p-4">
 					<div className="flex items-center gap-3">
-						<Loader2 className="h-5 w-5 flex-shrink-0 animate-spin text-blue-600 dark:text-blue-400" />
+						<Loader2 className="h-5 w-5 flex-shrink-0 animate-spin text-primary" />
 						<div className="flex-1">
-							<p className="font-medium text-blue-900 text-sm dark:text-blue-100">
+							<p className="font-medium text-sm">
 								{processingCount} {processingCount > 1 ? "items" : "item"}{" "}
 								processing
 							</p>
-							<p className="text-blue-700 text-xs dark:text-blue-300">
+							<p className="text-muted-foreground text-xs">
 								Your photos are being analyzed with AI
 							</p>
 						</div>

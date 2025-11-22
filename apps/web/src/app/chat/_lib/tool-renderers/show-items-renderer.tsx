@@ -1,38 +1,40 @@
 "use client";
 
-import { CheckCircle, Search, ShirtIcon } from "lucide-react";
+import { CheckCircle, ShirtIcon, Sparkles } from "lucide-react";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import type { ToolRendererProps } from "./types";
 import { getToolStatus, getTypedToolOutput } from "./types";
 
 /**
- * Custom renderer for searchWardrobe tool
- * Displays clothing items as a thumbnail grid instead of JSON
+ * Custom renderer for showItems tool
+ * Displays selected clothing items in a clean grid layout
  */
-export function WardrobeSearchRenderer({ part }: ToolRendererProps) {
+export function ShowItemsRenderer({ part }: ToolRendererProps) {
 	const status = getToolStatus(part);
-	const output = getTypedToolOutput(part, "searchWardrobe");
+	const output = getTypedToolOutput(part, "showItems");
 
 	// Only render for successful results
 	if (status !== "success" || !output?.items) {
 		return null;
 	}
 
-	const { items, total, hasMore } = output;
+	const { items, displayedCount, notFound } = output;
 
 	if (items.length === 0) {
 		return (
 			<div className="my-3 rounded-lg border bg-card">
 				<div className="flex items-center gap-2 border-b bg-muted/30 px-3 py-2">
-					<Search className="h-4 w-4 text-muted-foreground" />
-					<span className="font-medium text-sm">Wardrobe Search</span>
+					<Sparkles className="h-4 w-4 text-muted-foreground" />
+					<span className="font-medium text-sm">Items</span>
 					<Badge className="ml-auto" variant="secondary">
-						No results
+						Not found
 					</Badge>
 				</div>
 				<div className="p-6 text-center text-muted-foreground text-sm">
-					No items found matching your search criteria
+					{notFound && notFound.length > 0
+						? "Some items could not be found"
+						: "No items to display"}
 				</div>
 			</div>
 		);
@@ -42,12 +44,11 @@ export function WardrobeSearchRenderer({ part }: ToolRendererProps) {
 		<div className="my-3 overflow-hidden rounded-lg border bg-card">
 			{/* Header */}
 			<div className="flex items-center gap-2 border-b bg-muted/30 px-3 py-2">
-				<Search className="h-4 w-4 text-muted-foreground" />
-				<span className="font-medium text-sm">Wardrobe Search</span>
+				<Sparkles className="h-4 w-4 text-muted-foreground" />
+				<span className="font-medium text-sm">Suggested Items</span>
 				<Badge className="ml-auto" variant="secondary">
 					<CheckCircle className="mr-1 h-3 w-3 text-primary" />
-					{total} item{total !== 1 ? "s" : ""}
-					{hasMore && "+"}
+					{displayedCount} item{displayedCount !== 1 ? "s" : ""}
 				</Badge>
 			</div>
 
@@ -129,11 +130,12 @@ export function WardrobeSearchRenderer({ part }: ToolRendererProps) {
 				))}
 			</div>
 
-			{/* Footer note if there are more results */}
-			{hasMore && (
+			{/* Footer note if some items were not found */}
+			{notFound && notFound.length > 0 && (
 				<div className="border-t bg-muted/30 px-3 py-2">
 					<p className="text-muted-foreground text-xs">
-						Showing {total} items. More items available in your wardrobe.
+						Note: {notFound.length} item
+						{notFound.length !== 1 ? "s were" : " was"} not found
 					</p>
 				</div>
 			)}
