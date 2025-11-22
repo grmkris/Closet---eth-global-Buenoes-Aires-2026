@@ -90,7 +90,6 @@ export function ItemCard({
 					loading="lazy"
 					sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
 					src={displayUrl}
-					width={100}
 				/>
 
 				{/* Status Badge */}

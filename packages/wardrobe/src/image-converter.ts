@@ -64,14 +64,7 @@ export async function convertImage(
 	}
 
 	// Check for supported formats
-	const supportedFormats = [
-		"jpeg",
-		"png",
-		"webp",
-		"tiff",
-		"gif",
-		"svg",
-	];
+	const supportedFormats = ["jpeg", "png", "webp", "tiff", "gif", "svg"];
 	if (metadata.format && !supportedFormats.includes(metadata.format)) {
 		throw new Error(
 			`Unsupported image format: ${metadata.format}. Supported formats: ${supportedFormats.join(", ")}`

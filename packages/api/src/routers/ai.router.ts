@@ -1,5 +1,6 @@
-import { ORPCError } from "@orpc/server";
+import { API_LIMITS } from "@ai-stilist/shared/constants";
 import { ConversationId, UserId } from "@ai-stilist/shared/typeid";
+import { ORPCError } from "@orpc/server";
 import { z } from "zod";
 import { createAiService } from "../features/ai/ai-service";
 import type { MyUIMessage } from "../features/ai/message-type";
@@ -30,7 +31,7 @@ const ChatInputSchema = z
 // List conversations input schema
 const ListConversationsSchema = z.object({
 	page: z.number().min(1).optional(),
-	limit: z.number().min(1).max(100).optional(),
+	limit: z.number().min(1).max(API_LIMITS.MAX_ITEMS_PER_PAGE).optional(),
 });
 
 export const aiRouter = {
@@ -169,7 +170,7 @@ export const aiRouter = {
 
 				return await aiService.listConversations({
 					page: input.page ?? 1,
-					limit: input.limit ?? 20,
+					limit: input.limit ?? API_LIMITS.DEFAULT_ITEMS_PER_PAGE,
 				});
 			} catch (error) {
 				context.logger.error({

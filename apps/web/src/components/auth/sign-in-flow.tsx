@@ -1,11 +1,13 @@
 "use client";
 
 import { UI_CONFIG } from "@ai-stilist/shared/constants";
+import { SERVICE_URLS } from "@ai-stilist/shared/services";
 import { SignIn } from "@coinbase/cdp-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SiweMessage } from "siwe";
 import { useAccount, useSignMessage } from "wagmi";
+import { env } from "@/env";
 import { authClient } from "@/lib/auth-client";
 
 type Step = "wallet" | "siwe" | "complete";
@@ -45,7 +47,7 @@ export function SignInFlow() {
 			}
 
 			const siweMessage = new SiweMessage({
-				domain: window.location.host,
+				domain: new URL(SERVICE_URLS[env.NEXT_PUBLIC_APP_ENV].auth).hostname,
 				address,
 				statement: "Sign in to AI Stilist with your wallet",
 				uri: window.location.origin,

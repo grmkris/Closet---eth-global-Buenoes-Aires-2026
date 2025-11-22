@@ -8,7 +8,8 @@
     "./process-image": "./src/process-image.ts",
     "./analyze-clothing-image": "./src/analyze-clothing-image.ts",
     "./wardrobe-repository": "./src/wardrobe-repository.ts",
-    "./orchestrators": "./src/orchestrators/index.ts"
+    "./orchestrators": "./src/orchestrators/index.ts",
+    "./generate-outfit-image": "./src/generate-outfit-image.ts"
   },
   "scripts": {
     "build": "tsdown",
@@ -19,6 +20,7 @@
     "test": "bun test"
   },
   "devDependencies": {
+    "@ai-stilist/test-utils": "workspace:*",
     "@types/bun": "catalog:",
     "tsdown": "catalog:",
     "typescript": "catalog:"

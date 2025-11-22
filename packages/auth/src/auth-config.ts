@@ -42,7 +42,7 @@ export const createAuth = (config: AuthConfig) => {
 			siwe({
 				domain: authDomain,
 				emailDomainName: authDomain,
-				anonymous: false,
+				anonymous: true,
 
 				getNonce: async () =>
 					generateRandomString(NUMERIC_CONSTANTS.NONCE_LENGTH),

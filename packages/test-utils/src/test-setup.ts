@@ -13,8 +13,11 @@ import {
 import { createLogger, type Logger } from "@ai-stilist/logger";
 import type { QueueClient } from "@ai-stilist/queue";
 import { createQueueClient } from "@ai-stilist/queue";
-import type { RequestId } from "@ai-stilist/shared/typeid";
-import { typeIdGenerator } from "@ai-stilist/shared/typeid";
+import {
+	type RequestId,
+	typeIdGenerator,
+	UserId,
+} from "@ai-stilist/shared/typeid";
 import type { StorageClient } from "@ai-stilist/storage";
 import { createStorageClient } from "@ai-stilist/storage";
 import type { User } from "better-auth";
@@ -59,7 +62,7 @@ const validatedEnv = envSchema.parse({
 });
 
 export type TestUser = {
-	id: string;
+	id: UserId;
 	email: string;
 	name: string;
 	token: string; // session token for cookies
@@ -128,7 +131,7 @@ async function createTestUser(
 	}
 
 	return {
-		id: signUpResult.user.id,
+		id: UserId.parse(signUpResult.user.id),
 		email,
 		name,
 		token: sessionToken,

@@ -1,6 +1,7 @@
 "use client";
 
 import type { Config } from "@coinbase/cdp-core";
+import { CDPReactProvider } from "@coinbase/cdp-react";
 import { createCDPEmbeddedWalletConnector } from "@coinbase/cdp-wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { ReactNode } from "react";
@@ -38,7 +39,9 @@ const queryClient = new QueryClient();
 export function WagmiProviderWrapper({ children }: { children: ReactNode }) {
 	return (
 		<WagmiProvider config={wagmiConfig}>
-			<QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+			<QueryClientProvider client={queryClient}>
+				<CDPReactProvider config={cdpConfig}>{children}</CDPReactProvider>
+			</QueryClientProvider>
 		</WagmiProvider>
 	);
 }

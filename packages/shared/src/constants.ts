@@ -4,7 +4,6 @@ export const NUMERIC_CONSTANTS = {
 	SEVEN_DAYS: 7,
 	validationLimits: {
 		minStringLength: 1,
-		passwordMinLength: 8,
 	},
 };
 
@@ -57,4 +56,20 @@ export const UI_CONFIG = {
 	REDIRECT_DELAY_MS: 2000, // Delay before redirecting after successful action
 	ADDRESS_PREFIX_LENGTH: 6, // Number of characters to show at start of wallet address
 	ADDRESS_SUFFIX_LENGTH: 4, // Number of characters to show at end of wallet address
+} as const;
+
+// Wardrobe AI Context Constants
+export const WARDROBE_AI_CONSTANTS = {
+	// Season detection month boundaries (Northern Hemisphere, 0-indexed)
+	SPRING_MONTH_START: 2, // March
+	SPRING_MONTH_END: 4, // May
+	SUMMER_MONTH_START: 5, // June
+	SUMMER_MONTH_END: 7, // August
+	FALL_MONTH_START: 8, // September
+	FALL_MONTH_END: 10, // November
+
+	// Query result limits for wardrobe context
+	TOP_TAGS_LIMIT: 30, // Max tags to include in wardrobe context
+	TOP_COLORS_LIMIT: 5, // Colors to include in summary
+	TOP_TAGS_IN_SUMMARY: 15, // Tags to include in summary
 } as const;

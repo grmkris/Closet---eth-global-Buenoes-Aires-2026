@@ -23,7 +23,7 @@ export const envSchema = z.object({
 	MINIO_BUCKET_NAME: z.string().optional(),
 
 	// AI Providers
-	GOOGLE_GEMINI_API_KEY: z.string().optional(),
+	GOOGLE_GEMINI_API_KEY: z.string(),
 	ANTHROPIC_API_KEY: z.string().optional(),
 	GROQ_API_KEY: z.string().optional(),
 	XAI_API_KEY: z.string().optional(),

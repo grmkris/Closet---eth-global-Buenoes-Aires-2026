@@ -1,10 +1,14 @@
 import { beforeEach, describe, expect, test } from "bun:test";
-import { call, eventIteratorToStream } from "@orpc/server";
 import { readUIMessageStream } from "@ai-stilist/ai";
 import { typeIdGenerator, UserId } from "@ai-stilist/shared/typeid";
-import { createTestContext, createTestSetup, type TestSetup } from "@ai-stilist/test-utils/test-setup";
-import { aiRouter } from "./ai.router";
+import {
+	createTestContext,
+	createTestSetup,
+	type TestSetup,
+} from "@ai-stilist/test-utils/test-setup";
+import { call, eventIteratorToStream } from "@orpc/server";
 import type { MyUIMessage } from "../features/ai/message-type";
+import { aiRouter } from "./ai.router";
 
 const TIMEOUT = 90_000;
 
@@ -200,7 +204,8 @@ describe("AI Router - Chat Interactions", () => {
 				orderBy: (table, { asc }) => [asc(table.createdAt)],
 			});
 
-			expect(dbMessages.length).toBeGreaterThanOrEqual(4); // 2 user + 2 assistant
+			const twoUserAndAssistant = 4;
+			expect(dbMessages.length).toBeGreaterThanOrEqual(twoUserAndAssistant); // 2 user + 2 assistant
 			expect(dbMessages[0]?.role).toBe("user");
 			expect(dbMessages[1]?.role).toBe("assistant");
 			expect(dbMessages[2]?.role).toBe("user");
@@ -302,7 +307,9 @@ describe("AI Router - Chat Interactions", () => {
 					where: (table, { eq }) => eq(table.id, conversationId),
 				});
 			expect(dbConversation).toBeDefined();
-			expect(dbConversation?.userId).toBe(UserId.parse(testEnv.users.authenticated.id));
+			expect(dbConversation?.userId).toBe(
+				UserId.parse(testEnv.users.authenticated.id)
+			);
 		},
 		TIMEOUT
 	);
