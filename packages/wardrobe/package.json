@@ -4,7 +4,8 @@
   "type": "module",
   "exports": {
     "./clothing-analyzer": "./src/clothing-analyzer.ts",
-    "./metadata-schemas": "./src/metadata-schemas.ts"
+    "./metadata-schemas": "./src/metadata-schemas.ts",
+    "./wardrobe-repository": "./src/wardrobe-repository.ts"
   },
   "scripts": {
     "build": "tsdown",
@@ -16,7 +17,8 @@
   },
   "devDependencies": {
     "tsdown": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "@types/bun": "catalog:"
   },
   "peerDependencies": {
     "typescript": "^5"

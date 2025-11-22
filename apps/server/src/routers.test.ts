@@ -1,11 +1,11 @@
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";
 import { appRouter } from "@ai-stilist/api/routers/index";
-import { call, ORPCError } from "@orpc/server";
-import { createTestSetup, type TestSetup } from "test/test.setup";
 import {
-	createAuthenticatedContext,
-	createUnauthenticatedContext,
-} from "test/test-helpers";
+	createTestContext,
+	createTestSetup,
+	type TestSetup,
+} from "@ai-stilist/test-utils/test-setup";
+import { call, ORPCError } from "@orpc/server";
 
 describe("App Router (oRPC)", () => {
 	let testEnv: TestSetup;
@@ -20,7 +20,7 @@ describe("App Router (oRPC)", () => {
 
 	describe("Health Check", () => {
 		test("returns OK for public endpoint", async () => {
-			const context = createUnauthenticatedContext(testEnv);
+			const context = await createTestContext({ testSetup: testEnv });
 
 			const result = await call(appRouter.healthCheck, undefined, {
 				context,
@@ -32,7 +32,10 @@ describe("App Router (oRPC)", () => {
 
 	describe("Private Data", () => {
 		test("returns user data when authenticated", async () => {
-			const context = createAuthenticatedContext(testEnv);
+			const context = await createTestContext({
+				token: testEnv.users.authenticated.token,
+				testSetup: testEnv,
+			});
 
 			const result = await call(appRouter.privateData, undefined, {
 				context,
@@ -45,7 +48,7 @@ describe("App Router (oRPC)", () => {
 		});
 
 		test("throws UNAUTHORIZED when not authenticated", async () => {
-			const context = createUnauthenticatedContext(testEnv);
+			const context = await createTestContext({ testSetup: testEnv });
 
 			await expect(() =>
 				call(appRouter.privateData, undefined, { context })

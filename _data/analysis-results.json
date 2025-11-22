@@ -1,0 +1,283 @@
+[
+  {
+    "filename": "IMG_9319.JPG",
+    "folder": "IVONA OMARA",
+    "path": "/Users/kristjangrm/Code/github-com/ai-stilist/packages/wardrobe/_data/IVONA OMARA/IMG_9319.JPG",
+    "analysis": {
+      "category": "top",
+      "colors": ["taupe"],
+      "tags": [
+        "sweater",
+        "crew-neck",
+        "long-sleeve",
+        "knit",
+        "ribbed",
+        "casual",
+        "all-season",
+        "relaxed-fit",
+        "solid",
+        "weekend",
+        "transitional",
+        "balloon-sleeve",
+        "drop shoulder",
+        "exposed seam"
+      ],
+      "confidence": 0.95
+    },
+    "modelVersion": "gemini-2.0-flash-exp-v1",
+    "tokensUsed": 4137,
+    "durationMs": 5480
+  },
+  {
+    "filename": "IMG_9318.JPG",
+    "folder": "IVONA OMARA",
+    "path": "/Users/kristjangrm/Code/github-com/ai-stilist/packages/wardrobe/_data/IVONA OMARA/IMG_9318.JPG",
+    "analysis": {
+      "category": "top",
+      "colors": ["white", "burgundy"],
+      "tags": [
+        "polo-shirt",
+        "short-sleeve",
+        "knit",
+        "cable-knit",
+        "button-front",
+        "casual",
+        "all-season",
+        "ribbed",
+        "striped-trim",
+        "vintage-inspired",
+        "California 1986"
+      ],
+      "confidence": 0.95
+    },
+    "modelVersion": "gemini-2.0-flash-exp-v1",
+    "tokensUsed": 4132,
+    "durationMs": 4345
+  },
+  {
+    "filename": "IMG_9320.JPG",
+    "folder": "IVONA OMARA",
+    "path": "/Users/kristjangrm/Code/github-com/ai-stilist/packages/wardrobe/_data/IVONA OMARA/IMG_9320.JPG",
+    "analysis": {
+      "category": "bottom",
+      "colors": ["blue"],
+      "tags": [
+        "jeans",
+        "denim",
+        "button-side",
+        "straight-leg",
+        "casual",
+        "all-season",
+        "blue jeans",
+        "side-button",
+        "button-accent",
+        "dark wash",
+        "classic",
+        "cotton",
+        "button-closure",
+        "standard-fit"
+      ],
+      "confidence": 0.95
+    },
+    "modelVersion": "gemini-2.0-flash-exp-v1",
+    "tokensUsed": 4138,
+    "durationMs": 4351
+  },
+  {
+    "filename": "IMG_9321.JPG",
+    "folder": "IVONA OMARA",
+    "path": "/Users/kristjangrm/Code/github-com/ai-stilist/packages/wardrobe/_data/IVONA OMARA/IMG_9321.JPG",
+    "analysis": {
+      "category": "bottom",
+      "colors": ["blue"],
+      "tags": [
+        "jeans",
+        "denim",
+        "casual",
+        "all-season",
+        "wide-leg",
+        "blue jeans",
+        "button-fly",
+        "belt loops",
+        "five-pocket",
+        "vintage wash",
+        "cotton",
+        "straight leg",
+        "workwear"
+      ],
+      "confidence": 0.95
+    },
+    "modelVersion": "gemini-2.0-flash-exp-v1",
+    "tokensUsed": 4130,
+    "durationMs": 4647
+  },
+  {
+    "filename": "IMG_9316.JPG",
+    "folder": "IVONA OMARA",
+    "path": "/Users/kristjangrm/Code/github-com/ai-stilist/packages/wardrobe/_data/IVONA OMARA/IMG_9316.JPG",
+    "analysis": {
+      "category": "outerwear",
+      "colors": ["white", "ivory"],
+      "tags": [
+        "jacket",
+        "bomber-jacket",
+        "casual",
+        "all-season",
+        "knit",
+        "zara",
+        "ribbed-trim",
+        "textured",
+        "lightweight",
+        "daytime",
+        "ribbed-collar",
+        "ribbed-cuffs",
+        "ribbed-hem"
+      ],
+      "confidence": 0.95
+    },
+    "modelVersion": "gemini-2.0-flash-exp-v1",
+    "tokensUsed": 4143,
+    "durationMs": 3552
+  },
+  {
+    "filename": "IMG_4069.HEIC",
+    "folder": "ANDRAŽ OMARA",
+    "path": "/Users/kristjangrm/Code/github-com/ai-stilist/packages/wardrobe/_data/ANDRAŽ OMARA/IMG_4069.HEIC",
+    "analysis": {
+      "category": "bottom",
+      "colors": ["khaki"],
+      "tags": [
+        "pants",
+        "khaki pants",
+        "casual",
+        "all-season",
+        "cotton",
+        "solid",
+        "cuffed hem",
+        "relaxed fit",
+        "weekend",
+        "button-front",
+        "belt loops",
+        "side pockets",
+        "back pockets"
+      ],
+      "confidence": 0.95
+    },
+    "modelVersion": "gemini-2.0-flash-exp-v1",
+    "tokensUsed": 4128,
+    "durationMs": 3791
+  },
+  {
+    "filename": "IMG_4086.HEIC",
+    "folder": "ANDRAŽ OMARA",
+    "path": "/Users/kristjangrm/Code/github-com/ai-stilist/packages/wardrobe/_data/ANDRAŽ OMARA/IMG_4086.HEIC",
+    "analysis": {
+      "category": "outerwear",
+      "colors": ["beige"],
+      "tags": [
+        "puffer-jacket",
+        "lightweight",
+        "quilted",
+        "casual",
+        "transitional",
+        "all-season",
+        "nylon",
+        "zara",
+        "slim-fit",
+        "solid",
+        "zipper-closure",
+        "weekend",
+        "everyday",
+        "lightweight-jacket",
+        "padded",
+        "down-jacket"
+      ],
+      "confidence": 0.95
+    },
+    "modelVersion": "gemini-2.0-flash-exp-v1",
+    "tokensUsed": 4152,
+    "durationMs": 3749
+  },
+  {
+    "filename": "IMG_4090.HEIC",
+    "folder": "ANDRAŽ OMARA",
+    "path": "/Users/kristjangrm/Code/github-com/ai-stilist/packages/wardrobe/_data/ANDRAŽ OMARA/IMG_4090.HEIC",
+    "analysis": {
+      "category": "top",
+      "colors": ["white", "black"],
+      "tags": [
+        "long-sleeve-shirt",
+        "button-down-shirt",
+        "floral-print",
+        "slim-fit",
+        "casual",
+        "business-casual",
+        "all-season",
+        "cotton",
+        "H&M",
+        "button-front",
+        "office",
+        "weekend"
+      ],
+      "confidence": 0.95
+    },
+    "modelVersion": "gemini-2.0-flash-exp-v1",
+    "tokensUsed": 4136,
+    "durationMs": 3837
+  },
+  {
+    "filename": "IMG_4065.HEIC",
+    "folder": "ANDRAŽ OMARA",
+    "path": "/Users/kristjangrm/Code/github-com/ai-stilist/packages/wardrobe/_data/ANDRAŽ OMARA/IMG_4065.HEIC",
+    "analysis": {
+      "category": "bottom",
+      "colors": ["blue", "navy"],
+      "tags": [
+        "jeans",
+        "denim",
+        "casual",
+        "all-season",
+        "button-fly",
+        "five-pocket",
+        "dark-wash",
+        "slim-fit",
+        "stretch",
+        "weekend",
+        "mid-rise",
+        "Diesel",
+        "Tepphar"
+      ],
+      "confidence": 0.95
+    },
+    "modelVersion": "gemini-2.0-flash-exp-v1",
+    "tokensUsed": 4136,
+    "durationMs": 3895
+  },
+  {
+    "filename": "IMG_4064.HEIC",
+    "folder": "ANDRAŽ OMARA",
+    "path": "/Users/kristjangrm/Code/github-com/ai-stilist/packages/wardrobe/_data/ANDRAŽ OMARA/IMG_4064.HEIC",
+    "analysis": {
+      "category": "bottom",
+      "colors": ["black"],
+      "tags": [
+        "jeans",
+        "denim",
+        "black-jeans",
+        "distressed",
+        "ripped",
+        "casual",
+        "all-season",
+        "zara",
+        "slim-fit",
+        "paint-splatter",
+        "weekend",
+        "streetwear"
+      ],
+      "confidence": 0.95
+    },
+    "modelVersion": "gemini-2.0-flash-exp-v1",
+    "tokensUsed": 4126,
+    "durationMs": 4261
+  }
+]

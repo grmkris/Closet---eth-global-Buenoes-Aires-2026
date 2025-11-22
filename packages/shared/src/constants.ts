@@ -32,10 +32,21 @@ export const SERVER_CONFIG = {
 export const API_LIMITS = {
 	MIN_BATCH_UPLOAD: 1,
 	MAX_BATCH_UPLOAD: 50,
+	MAX_ITEMS_PER_PAGE: 100,
+	DEFAULT_ITEMS_PER_PAGE: 20,
+	MAX_SEARCH_LENGTH: 100,
 } as const;
 
 // Worker Configuration
 export const WORKER_CONFIG = {
 	MAX_CONCURRENT_JOBS: 5,
 	SIGNED_URL_EXPIRY_SECONDS: 3600, // 1 hour
+} as const;
+
+// Polling Configuration
+export const POLLING_CONFIG = {
+	BASE_INTERVAL_MS: 2000, // Base polling interval (2s)
+	PROCESSING_INTERVAL_MS: 5000, // Poll every 5s when items are processing
+	BACKOFF_MULTIPLIER: 1.5, // Exponential backoff multiplier
+	MAX_INTERVAL_MS: 30_000, // Maximum polling interval (30s)
 } as const;

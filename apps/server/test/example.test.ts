@@ -1,6 +1,9 @@
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";
-import { createTestSetup, type TestSetup } from "./test.setup";
-import { createAuthHeaders } from "./test-helpers";
+import { createAuthHeaders } from "@ai-stilist/test-utils/test-helpers";
+import {
+	createTestSetup,
+	type TestSetup,
+} from "@ai-stilist/test-utils/test-setup";
 
 describe("Example Test Suite", () => {
 	let testEnv: TestSetup;

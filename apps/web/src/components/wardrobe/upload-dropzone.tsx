@@ -1,8 +1,9 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { Upload } from "lucide-react";
 import { useCallback, useState } from "react";
+import { MAX_UPLOAD_SIZE_BYTES } from "@/lib/constants";
+import { cn } from "@/lib/utils";
 import { Card } from "../ui/card";
 
 type UploadDropzoneProps = {
@@ -22,16 +23,15 @@ export function UploadDropzone({
 
 	const validateFiles = (files: FileList): File[] => {
 		const validFiles: File[] = [];
-		const maxSize = 10 * 1024 * 1024; // 10MB
 
-		for (let i = 0; i < files.length && validFiles.length < maxFiles; i++) {
+		for (let i = 0; i < files.length && validFiles.length < maxFiles; i += 1) {
 			const file = files[i];
 
 			if (!file.type.startsWith("image/")) {
 				continue;
 			}
 
-			if (file.size > maxSize) {
+			if (file.size > MAX_UPLOAD_SIZE_BYTES) {
 				continue;
 			}
 
@@ -47,14 +47,16 @@ export function UploadDropzone({
 			e.stopPropagation();
 			setIsDragging(false);
 
-			if (disabled) return;
+			if (disabled) {
+				return;
+			}
 
 			const files = validateFiles(e.dataTransfer.files);
 			if (files.length > 0) {
 				onFilesSelect(files);
 			}
 		},
-		[disabled, onFilesSelect, maxFiles]
+		[disabled, onFilesSelect, validateFiles]
 	);
 
 	const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
@@ -101,27 +103,27 @@ export function UploadDropzone({
 				"relative flex flex-col items-center justify-center border-2 border-dashed p-12 transition-colors",
 				isDragging && "border-primary bg-primary/5",
 				disabled && "cursor-not-allowed opacity-50",
-				!disabled && !isDragging && "cursor-pointer hover:border-primary/50"
+				!(disabled || isDragging) && "cursor-pointer hover:border-primary/50"
 			)}
-			onDrop={handleDrop}
-			onDragOver={handleDragOver}
-			onDragEnter={handleDragEnter}
-			onDragLeave={handleDragLeave}
 			onClick={() => {
 				if (!disabled) {
 					document.getElementById("file-input-dropzone")?.click();
 				}
 			}}
+			onDragEnter={handleDragEnter}
+			onDragLeave={handleDragLeave}
+			onDragOver={handleDragOver}
+			onDrop={handleDrop}
 		>
 			<input
-				id="file-input-dropzone"
-				type="file"
 				accept={accept}
-				multiple
-				onChange={handleFileInput}
+				aria-label="Upload clothing images"
 				className="hidden"
 				disabled={disabled}
-				aria-label="Upload clothing images"
+				id="file-input-dropzone"
+				multiple
+				onChange={handleFileInput}
+				type="file"
 			/>
 
 			<div className="flex flex-col items-center gap-4 text-center">
@@ -130,10 +132,10 @@ export function UploadDropzone({
 				</div>
 
 				<div className="space-y-2">
-					<p className="text-sm font-medium">
+					<p className="font-medium text-sm">
 						{isDragging ? "Drop images here" : "Drag & drop images here"}
 					</p>
-					<p className="text-xs text-muted-foreground">
+					<p className="text-muted-foreground text-xs">
 						or click to browse (max {maxFiles} files, 10MB each)
 					</p>
 				</div>

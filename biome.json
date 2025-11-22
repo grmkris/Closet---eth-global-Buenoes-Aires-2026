@@ -24,7 +24,9 @@
       "!**/.alchemy",
       "!**/.svelte-kit",
       "!**/wrangler.jsonc",
-      "!**/.source"
+      "!**/.source",
+      "!**/apps/web/src/components/ui",
+      "!**/apps/web/src/components/ai-elements"
     ]
   },
   "formatter": {
@@ -50,11 +52,7 @@
           "level": "warn",
           "fix": "safe",
           "options": {
-            "functions": [
-              "clsx",
-              "cva",
-              "cn"
-            ]
+            "functions": ["clsx", "cva", "cn"]
           }
         }
       },
@@ -77,8 +75,5 @@
       "quoteStyle": "double"
     }
   },
-  "extends": [
-    "ultracite/core",
-    "ultracite/next"
-  ]
+  "extends": ["ultracite/core", "ultracite/next"]
 }

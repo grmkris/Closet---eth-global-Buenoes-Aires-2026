@@ -10,7 +10,9 @@ export const envSchema = z.object({
 	PORT: z.coerce.number().default(SERVER_CONFIG.DEFAULT_PORT),
 	DATABASE_URL: z.string(),
 	BETTER_AUTH_SECRET: z.string(),
-	LOG_LEVEL: z.string(),
+	LOG_LEVEL: z
+		.enum(["debug", "info", "warn", "error", "fatal"])
+		.default("info"),
 
 	// MinIO / S3 (credentials only, URLs come from SERVICE_URLS)
 	// Optional in test environment (uses mock S3)

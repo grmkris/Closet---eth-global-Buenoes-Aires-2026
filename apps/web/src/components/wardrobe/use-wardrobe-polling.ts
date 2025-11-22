@@ -1,7 +1,9 @@
 "use client";
 
-import { orpc } from "@/utils/orpc";
+import { POLLING_CONFIG } from "@ai-stilist/shared/constants";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
+import { orpc } from "@/utils/orpc";
 
 /**
  * Hook to poll wardrobe items for status updates
@@ -9,9 +11,13 @@ import { useEffect, useRef } from "react";
  * Uses exponential backoff to reduce server load
  */
 export function useWardrobePolling() {
-	const { data, isLoading } = orpc.wardrobe.getItems.useQuery();
-	const utils = orpc.useUtils();
-	const intervalRef = useRef<ReturnType<typeof setInterval>>();
+	const { data, isLoading } = useQuery(
+		orpc.wardrobe.getItems.queryOptions({ input: {} })
+	);
+	const queryClient = useQueryClient();
+	const intervalRef = useRef<ReturnType<typeof setInterval> | undefined>(
+		undefined
+	);
 	const pollCountRef = useRef(0);
 
 	useEffect(() => {
@@ -32,17 +38,17 @@ export function useWardrobePolling() {
 		}
 
 		// Calculate polling interval with exponential backoff
-		// Start at 2s, max out at 30s
-		const baseInterval = 2000; // 2 seconds
-		const maxInterval = 30000; // 30 seconds
 		const interval = Math.min(
-			baseInterval * Math.pow(1.5, pollCountRef.current),
-			maxInterval
+			POLLING_CONFIG.BASE_INTERVAL_MS *
+				POLLING_CONFIG.BACKOFF_MULTIPLIER ** pollCountRef.current,
+			POLLING_CONFIG.MAX_INTERVAL_MS
 		);
 
 		// Set up polling
 		intervalRef.current = setInterval(() => {
-			utils.wardrobe.getItems.invalidate();
+			queryClient.invalidateQueries({
+				queryKey: orpc.wardrobe.getItems.queryKey({ input: {} }),
+			});
 			pollCountRef.current += 1;
 		}, interval);
 
@@ -51,7 +57,7 @@ export function useWardrobePolling() {
 				clearInterval(intervalRef.current);
 			}
 		};
-	}, [data?.items, utils]);
+	}, [data?.items, queryClient]);
 
 	return {
 		items: data?.items || [],

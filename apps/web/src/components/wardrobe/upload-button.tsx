@@ -2,6 +2,8 @@
 
 import { Upload } from "lucide-react";
 import { useRef } from "react";
+import { toast } from "sonner";
+import { MAX_FILE_SIZE_MB, MAX_UPLOAD_SIZE_BYTES } from "@/lib/constants";
 import { Button } from "../ui/button";
 
 type UploadButtonProps = {
@@ -28,14 +30,13 @@ export function UploadButton({
 		if (file) {
 			// Client-side validation
 			if (!file.type.startsWith("image/")) {
-				alert("Please select an image file");
+				toast.error("Please select an image file");
 				return;
 			}
 
-			// Check file size (max 10MB)
-			const maxSize = 10 * 1024 * 1024; // 10MB
-			if (file.size > maxSize) {
-				alert("File size must be less than 10MB");
+			// Check file size
+			if (file.size > MAX_UPLOAD_SIZE_BYTES) {
+				toast.error(`File size must be less than ${MAX_FILE_SIZE_MB}MB`);
 				return;
 			}
 
@@ -48,21 +49,21 @@ export function UploadButton({
 	return (
 		<>
 			<Button
-				onClick={handleClick}
 				disabled={disabled || loading}
-				variant="default"
+				onClick={handleClick}
 				size="default"
+				variant="default"
 			>
 				<Upload className="mr-2 h-4 w-4" />
 				{loading ? "Uploading..." : "Upload Image"}
 			</Button>
 			<input
+				accept={accept}
+				aria-label="Upload clothing image"
+				className="hidden"
+				onChange={handleChange}
 				ref={inputRef}
 				type="file"
-				accept={accept}
-				onChange={handleChange}
-				className="hidden"
-				aria-label="Upload clothing image"
 			/>
 		</>
 	);

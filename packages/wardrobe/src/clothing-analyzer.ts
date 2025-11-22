@@ -33,7 +33,8 @@ export async function analyzeClothingImage(
 	const startTime = Date.now();
 
 	try {
-		logger?.info({ msg: "Analyzing clothing image", imageUrl });
+		// Note: imageUrl intentionally omitted from logs to avoid logging base64 data
+		logger?.info({ msg: "Analyzing clothing image" });
 
 		// Build prompt with optional existing tags context
 		let prompt = CLOTHING_ANALYSIS_PROMPT;
@@ -66,7 +67,6 @@ export async function analyzeClothingImage(
 		logger?.info({
 			msg: "Clothing analysis complete",
 			durationMs,
-			confidence: result.object.confidence,
 			tagCount: result.object.tags.length,
 			category: result.object.category,
 		});
@@ -80,11 +80,31 @@ export async function analyzeClothingImage(
 	} catch (error) {
 		const durationMs = Date.now() - startTime;
 
+		// Extract only useful error info, excluding base64 image data
+		const errorInfo =
+			error instanceof Error
+				? {
+						errorName: error.name,
+						errorMessage: error.message,
+						...(error.cause instanceof Error && {
+							cause: {
+								name: error.cause.name,
+								message: error.cause.message,
+							},
+						}),
+						// Include AI SDK specific properties if present
+						...("statusCode" in error && { statusCode: error.statusCode }),
+						...("url" in error && { url: error.url }),
+						...("isRetryable" in error && {
+							isRetryable: error.isRetryable,
+						}),
+					}
+				: { errorMessage: String(error) };
+
 		logger?.error({
 			msg: "Clothing analysis failed",
-			imageUrl,
 			durationMs,
-			error,
+			...errorInfo,
 		});
 
 		throw new Error("Failed to analyze clothing image");

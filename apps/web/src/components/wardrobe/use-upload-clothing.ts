@@ -1,8 +1,8 @@
 "use client";
 
-import { orpc } from "@/utils/orpc";
 import { useState } from "react";
 import { toast } from "sonner";
+import { client, orpc, queryClient } from "@/utils/orpc";
 
 type UploadState = {
 	uploading: boolean;
@@ -15,15 +15,12 @@ export function useUploadClothing() {
 		error: null,
 	});
 
-	const uploadMutation = orpc.wardrobe.upload.useMutation();
-	const utils = orpc.useUtils();
-
 	const upload = async (file: File) => {
 		setState({ uploading: true, error: null });
 
 		try {
 			// Step 1: Request upload URL from backend
-			const result = await uploadMutation.mutateAsync({
+			const result = await client.wardrobe.upload({
 				contentType: file.type,
 				fileName: file.name,
 			});
@@ -42,7 +39,9 @@ export function useUploadClothing() {
 			}
 
 			// Step 3: Invalidate wardrobe items to trigger refresh
-			await utils.wardrobe.getItems.invalidate();
+			await queryClient.invalidateQueries({
+				queryKey: orpc.wardrobe.getItems.queryKey({ input: {} }),
+			});
 
 			toast.success("Image uploaded successfully", {
 				description: "Processing will complete in a few seconds",
@@ -64,9 +63,7 @@ export function useUploadClothing() {
 
 		try {
 			// Request upload URLs for all files
-			const batchMutation = orpc.wardrobe.batchUpload.useMutation();
-
-			const result = await batchMutation.mutateAsync({
+			const result = await client.wardrobe.batchUpload({
 				files: files.map((file) => ({
 					contentType: file.type,
 					fileName: file.name,
@@ -94,7 +91,9 @@ export function useUploadClothing() {
 			);
 
 			// Invalidate to refresh list
-			await utils.wardrobe.getItems.invalidate();
+			await queryClient.invalidateQueries({
+				queryKey: orpc.wardrobe.getItems.queryKey({ input: {} }),
+			});
 
 			toast.success(`${files.length} images uploaded successfully`, {
 				description: "Processing will complete in a few seconds",
@@ -104,7 +103,8 @@ export function useUploadClothing() {
 
 			return result.items.map((item) => item.itemId);
 		} catch (error) {
-			const message = error instanceof Error ? error.message : "Batch upload failed";
+			const message =
+				error instanceof Error ? error.message : "Batch upload failed";
 			setState({ uploading: false, error: message });
 			toast.error("Upload failed", { description: message });
 			throw error;

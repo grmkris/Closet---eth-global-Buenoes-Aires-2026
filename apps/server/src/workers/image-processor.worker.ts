@@ -3,7 +3,7 @@ import type { Database } from "@ai-stilist/db";
 import { eq } from "@ai-stilist/db/drizzle";
 import {
 	clothingAnalysesTable,
-	tagsTable,
+	clothingItemsTable,
 } from "@ai-stilist/db/schema/wardrobe";
 import type { Logger } from "@ai-stilist/logger";
 import type { QueueClient } from "@ai-stilist/queue";
@@ -13,10 +13,11 @@ import { typeIdGenerator } from "@ai-stilist/shared/typeid";
 import type { StorageClient } from "@ai-stilist/storage";
 import { analyzeClothingImage } from "@ai-stilist/wardrobe/clothing-analyzer";
 import {
+	getExistingTags,
 	insertClothingCategory,
 	insertClothingColors,
 	insertClothingTags,
-} from "@ai-stilist/wardrobe/wardrobe-lookups";
+} from "@ai-stilist/wardrobe/wardrobe-repository";
 
 export type ImageProcessorConfig = {
 	queue: QueueClient;
@@ -58,21 +59,8 @@ export function createImageProcessorWorker(
 					expiresIn: WORKER_CONFIG.SIGNED_URL_EXPIRY_SECONDS,
 				});
 
-				// 3. Get existing tags for consistency (optional)
-				const existingTagRecords = await db
-					.select({ tagName: tagsTable.name })
-					.from(clothingItemTagsTable)
-					.innerJoin(tagsTable, eq(tagsTable.id, clothingItemTagsTable.tagId))
-					.innerJoin(
-						clothingItemsTable,
-						eq(clothingItemsTable.id, clothingItemTagsTable.itemId)
-					)
-					.where(eq(clothingItemsTable.userId, userId));
-
-				// Deduplicate tag names
-				const existingTags = [
-					...new Set(existingTagRecords.map((t) => t.tagName)),
-				];
+				// 3. Get existing tags for consistency
+				const existingTags = await getExistingTags(db, userId);
 
 				// 4. Analyze image with AI
 				const result = await analyzeClothingImage({
@@ -88,14 +76,13 @@ export function createImageProcessorWorker(
 				await db.transaction(async (tx) => {
 					// Save analysis metadata
 					await tx.insert(clothingAnalysesTable).values({
-						id: typeIdGenerator("clothingAnalysesTable"),
+						id: typeIdGenerator("clothingAnalysis"),
 						itemId,
-						confidence: analysis.confidence,
 						modelVersion,
 					});
 
 					// Insert normalized category, colors, and tags
-					await insertClothingCategory(tx, itemId, analysis.category, true);
+					await insertClothingCategory(tx, itemId, analysis.category);
 					await insertClothingColors(tx, itemId, analysis.colors);
 					await insertClothingTags(tx, itemId, analysis.tags, "ai");
 
@@ -111,7 +98,6 @@ export function createImageProcessorWorker(
 					itemId,
 					durationMs,
 					tokensUsed,
-					confidence: analysis.confidence,
 					tagCount: analysis.tags.length,
 					category: analysis.category,
 				});

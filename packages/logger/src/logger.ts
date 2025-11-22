@@ -5,7 +5,7 @@ import { pino } from "pino";
 import pkg from "pino-std-serializers";
 
 export type LoggerConfig = {
-	level?: string;
+	level?: "debug" | "info" | "warn" | "error" | "fatal";
 	appName?: string;
 	environment?: Environment;
 };
@@ -35,6 +35,17 @@ export function createLogger(config: LoggerConfig = {}) {
 				"*.authorization",
 				"req.headers.authorization",
 				"req.headers.cookie",
+				// Redact image data and large payloads to prevent base64 spam
+				"*.image",
+				"*.imageUrl",
+				"*.imageData",
+				"*.data",
+				"error.request.messages[*].image",
+				"error.request.messages[*].content[*].image",
+				"err.request.messages[*].image",
+				"err.request.messages[*].content[*].image",
+				"error.responseBody",
+				"err.responseBody",
 			],
 			remove: true,
 		},

@@ -1,8 +1,11 @@
-import { and, asc, eq, sql } from "@ai-stilist/db/drizzle";
+import { and, eq, ilike, inArray, or, sql } from "@ai-stilist/db/drizzle";
 import {
-	clothingAnalysesTable,
-	clothingItemsTablesTable,
-	clothingItemsTableTagsTable,
+	categoriesTable,
+	clothingItemCategoriesTable,
+	clothingItemColorsTable,
+	clothingItemsTable,
+	clothingItemTagsTable,
+	colorsTable,
 	tagsTable,
 	tagTypesTable,
 } from "@ai-stilist/db/schema/wardrobe";
@@ -12,9 +15,14 @@ import {
 	typeIdGenerator,
 	UserId,
 } from "@ai-stilist/shared/typeid";
-import { insertClothingTags } from "@ai-stilist/wardrobe/wardrobe-lookups";
+import {
+	getAllCategories,
+	getAllColors,
+	getAllTags,
+	getAllTagTypes,
+} from "@ai-stilist/wardrobe/wardrobe-repository";
 import { z } from "zod";
-import { protectedProcedure } from "../index";
+import { protectedProcedure, publicProcedure } from "../index";
 
 // Input schemas
 const UploadInput = z.object({
@@ -30,10 +38,19 @@ const GetItemInput = z.object({
 	itemId: ClothingItemId,
 });
 
-const UpdateTagsInput = z.object({
-	itemId: ClothingItemId,
-	tags: z.array(z.string()),
-	append: z.boolean().default(false), // false = replace, true = append to existing
+const GetItemsInput = z.object({
+	limit: z
+		.number()
+		.int()
+		.min(1)
+		.max(API_LIMITS.MAX_ITEMS_PER_PAGE)
+		.default(API_LIMITS.DEFAULT_ITEMS_PER_PAGE),
+	offset: z.number().int().min(0).default(0),
+	search: z.string().max(API_LIMITS.MAX_SEARCH_LENGTH).trim().optional(),
+	categories: z.array(z.string()).optional(),
+	tags: z.array(z.string()).optional(),
+	colors: z.array(z.string()).optional(),
+	status: z.enum(["pending", "processing", "ready", "failed"]).optional(),
 });
 
 const DeleteItemInput = z.object({
@@ -51,7 +68,7 @@ export const wardrobeRouter = {
 			const userId = UserId.parse(context.session.user.id);
 
 			// Generate item ID
-			const itemId = typeIdGenerator("clothingItemsTable");
+			const itemId = typeIdGenerator("clothingItem");
 
 			// Generate storage key (use fileName extension)
 			const extension = fileName.split(".").pop() || "jpg";
@@ -105,7 +122,7 @@ export const wardrobeRouter = {
 			const results = await Promise.all(
 				files.map(async (file) => {
 					// Generate item ID
-					const itemId = typeIdGenerator("clothingItemsTable");
+					const itemId = typeIdGenerator("clothingItem");
 
 					// Generate storage key
 					const extension = file.fileName.split(".").pop() || "jpg";
@@ -154,51 +171,157 @@ export const wardrobeRouter = {
 		}),
 
 	/**
-	 * Get user's wardrobe items with analysis
+	 * Get user's wardrobe items with analysis (paginated with filtering)
 	 */
-	getItems: protectedProcedure.handler(async ({ context }) => {
-		const userId = UserId.parse(context.session.user.id);
+	getItems: protectedProcedure
+		.input(GetItemsInput)
+		.handler(async ({ input, context }) => {
+			const { limit, offset, search, categories, tags, colors, status } = input;
+			const userId = UserId.parse(context.session.user.id);
 
-		const items = await context.db.query.clothingItemsTable.findMany({
-			where: eq(clothingItemsTable.userId, userId),
-			with: {
-				analysis: true,
-				categories: {
-					with: {
-						category: true,
+			// Build WHERE conditions
+			const conditions = [eq(clothingItemsTable.userId, userId)];
+
+			// Status filter
+			if (status) {
+				conditions.push(eq(clothingItemsTable.status, status));
+			}
+
+			// Category filter - use subquery
+			if (categories?.length) {
+				const categorySubquery = context.db
+					.select({ itemId: clothingItemCategoriesTable.itemId })
+					.from(clothingItemCategoriesTable)
+					.innerJoin(
+						categoriesTable,
+						eq(categoriesTable.id, clothingItemCategoriesTable.categoryId)
+					)
+					.where(inArray(categoriesTable.name, categories));
+
+				conditions.push(
+					inArray(clothingItemsTable.id, sql`(${categorySubquery})`)
+				);
+			}
+
+			// Tag filter - use subquery
+			if (tags?.length) {
+				const tagSubquery = context.db
+					.select({ itemId: clothingItemTagsTable.itemId })
+					.from(clothingItemTagsTable)
+					.innerJoin(tagsTable, eq(tagsTable.id, clothingItemTagsTable.tagId))
+					.where(inArray(tagsTable.name, tags));
+
+				conditions.push(inArray(clothingItemsTable.id, sql`(${tagSubquery})`));
+			}
+
+			// Color filter - use subquery
+			if (colors?.length) {
+				const colorSubquery = context.db
+					.select({ itemId: clothingItemColorsTable.itemId })
+					.from(clothingItemColorsTable)
+					.innerJoin(
+						colorsTable,
+						eq(colorsTable.id, clothingItemColorsTable.colorId)
+					)
+					.where(inArray(colorsTable.name, colors));
+
+				conditions.push(
+					inArray(clothingItemsTable.id, sql`(${colorSubquery})`)
+				);
+			}
+
+			// Search filter - search in categories and tags
+			if (search) {
+				const searchPattern = `%${search.toLowerCase()}%`;
+
+				const categorySearchSubquery = context.db
+					.select({ itemId: clothingItemCategoriesTable.itemId })
+					.from(clothingItemCategoriesTable)
+					.innerJoin(
+						categoriesTable,
+						eq(categoriesTable.id, clothingItemCategoriesTable.categoryId)
+					)
+					.where(
+						or(
+							ilike(categoriesTable.name, searchPattern),
+							ilike(categoriesTable.displayName, searchPattern)
+						)
+					);
+
+				const tagSearchSubquery = context.db
+					.select({ itemId: clothingItemTagsTable.itemId })
+					.from(clothingItemTagsTable)
+					.innerJoin(tagsTable, eq(tagsTable.id, clothingItemTagsTable.tagId))
+					.where(ilike(tagsTable.name, searchPattern));
+
+				const searchCondition = or(
+					inArray(clothingItemsTable.id, sql`(${categorySearchSubquery})`),
+					inArray(clothingItemsTable.id, sql`(${tagSearchSubquery})`)
+				);
+
+				if (searchCondition) {
+					conditions.push(searchCondition);
+				}
+			}
+
+			// Get items with all relations
+			const itemsDb = await context.db.query.clothingItemsTable.findMany({
+				where: and(...conditions),
+				limit,
+				offset,
+				orderBy: (items, { desc }) => [desc(items.createdAt)],
+				with: {
+					analysis: true,
+					categories: {
+						with: {
+							category: true,
+						},
 					},
-				},
-				colors: {
-					with: {
-						color: true,
+					colors: {
+						with: {
+							color: true,
+						},
+						orderBy: (colorItems, { asc }) => [asc(colorItems.order)],
 					},
-					orderBy: (colors, { asc }) => [asc(colors.order)],
-				},
-				tags: {
-					with: {
-						tag: {
-							with: {
-								type: true,
+					tags: {
+						with: {
+							tag: {
+								with: {
+									type: true,
+								},
 							},
 						},
 					},
 				},
-			},
-		});
+			});
 
-		// Generate signed URLs for images
-		const itemsWithUrls = items.map((item) => ({
-			...item,
-			imageUrl: context.storage.getSignedUrl({
-				key: item.imageKey,
-				expiresIn: 3600,
-			}),
-		}));
+			// Generate signed URLs for images
+			const itemsWithUrls = itemsDb.map((item) => ({
+				...item,
+				imageUrl: context.storage.getSignedUrl({
+					key: item.imageKey,
+					expiresIn: 3600,
+				}),
+			}));
 
-		return {
-			items: itemsWithUrls,
-		};
-	}),
+			// Get total count with same filters
+			const totalResult = await context.db
+				.select({ count: sql<number>`count(*)::int` })
+				.from(clothingItemsTable)
+				.where(and(...conditions));
+
+			const total = totalResult[0]?.count || 0;
+
+			return {
+				items: itemsWithUrls,
+				pagination: {
+					limit,
+					offset,
+					total,
+					hasMore: offset + limit < total,
+				},
+			};
+		}),
 
 	/**
 	 * Get single item with analysis
@@ -225,7 +348,7 @@ export const wardrobeRouter = {
 						with: {
 							color: true,
 						},
-						orderBy: (colors, { asc }) => [asc(colors.order)],
+						orderBy: (colorItems, { asc }) => [asc(colorItems.order)],
 					},
 					tags: {
 						with: {
@@ -274,25 +397,39 @@ export const wardrobeRouter = {
 			.from(clothingItemTagsTable)
 			.innerJoin(tagsTable, eq(tagsTable.id, clothingItemTagsTable.tagId))
 			.innerJoin(tagTypesTable, eq(tagTypesTable.id, tagsTable.typeId))
-			.innerJoin(clothingItemsTable, eq(clothingItemsTable.id, clothingItemTagsTable.itemId))
+			.innerJoin(
+				clothingItemsTable,
+				eq(clothingItemsTable.id, clothingItemTagsTable.itemId)
+			)
 			.where(eq(clothingItemsTable.userId, userId))
-			.groupBy(tagsTable.id, tagsTable.name, tagTypesTable.name, tagTypesTable.displayName)
+			.groupBy(
+				tagsTable.id,
+				tagsTable.name,
+				tagTypesTable.name,
+				tagTypesTable.displayName
+			)
 			.orderBy(sql`count(*) desc`);
 
-		// Get categories
-		const categoryRecords = await context.db.query.clothingItemCategoriesTable.findMany(
-			{
-				where: eq(clothingItemsTable.userId, userId),
-				with: {
-					category: true,
-					item: true,
-				},
-			}
-		);
+		// Get categories with counts using JOIN and GROUP BY
+		const categoryStats = await context.db
+			.select({
+				categoryName: categoriesTable.name,
+				count: sql<number>`count(*)::int`.as("count"),
+			})
+			.from(clothingItemCategoriesTable)
+			.innerJoin(
+				categoriesTable,
+				eq(categoriesTable.id, clothingItemCategoriesTable.categoryId)
+			)
+			.innerJoin(
+				clothingItemsTable,
+				eq(clothingItemsTable.id, clothingItemCategoriesTable.itemId)
+			)
+			.where(eq(clothingItemsTable.userId, userId))
+			.groupBy(categoriesTable.name)
+			.orderBy(sql`count(*) desc`);
 
-		const categories = [
-			...new Set(categoryRecords.map((c) => c.category.name)),
-		].sort();
+		const categories = categoryStats.map((c) => c.categoryName);
 
 		// Get total item count
 		const itemCount = await context.db
@@ -312,63 +449,6 @@ export const wardrobeRouter = {
 			totalItems: itemCount[0]?.count || 0,
 		};
 	}),
-
-	/**
-	 * Update item's tags (user can add/remove tags)
-	 */
-	updateTags: protectedProcedure
-		.input(UpdateTagsInput)
-		.handler(async ({ input, context }) => {
-			const { itemId, tags, append } = input;
-			const userId = UserId.parse(context.session.user.id);
-
-			// Verify item belongs to user and get current analysis
-			const item = await context.db.query.clothingItemsTable.findFirst({
-				where: and(
-					eq(clothingItemsTable.id, itemId),
-					eq(clothingItemsTable.userId, userId)
-				),
-				with: {
-					analysis: true,
-				},
-			});
-
-			if (!item) {
-				throw new Error("Item not found");
-			}
-
-			if (!item.analysis) {
-				throw new Error("Item has not been analyzed yet");
-			}
-
-			// Calculate new tags
-			let newTags = tags;
-			if (append && item.analysis) {
-				// Merge with existing tags, removing duplicates
-				newTags = [...new Set([...item.analysis.tags, ...tags])];
-			}
-
-			// Update analysis
-			await context.db
-				.update(clothingAnalysesTable)
-				.set({
-					tags: newTags,
-					updatedAt: new Date(),
-				})
-				.where(eq(clothingAnalysesTable.itemId, itemId));
-
-			context.logger.info({
-				msg: "Tags updated",
-				itemId,
-				tagCount: newTags.length,
-				append,
-			});
-
-			return {
-				success: true,
-				tags: newTags,
-			};
-		}),
 
 	/**
 	 * Delete item
@@ -395,7 +475,9 @@ export const wardrobeRouter = {
 			await context.storage.delete({ key: item.imageKey });
 
 			// Delete from DB (cascade will handle analysis)
-			await context.db.delete(clothingItemsTable).where(eq(clothingItemsTable.id, itemId));
+			await context.db
+				.delete(clothingItemsTable)
+				.where(eq(clothingItemsTable.id, itemId));
 
 			context.logger.info({ msg: "Item deleted", itemId });
 
@@ -403,4 +485,40 @@ export const wardrobeRouter = {
 				success: true,
 			};
 		}),
+
+	// ============================================================================
+	// READ-ONLY ENDPOINTS FOR TAGS, CATEGORIES, COLORS
+	// ============================================================================
+
+	/**
+	 * Get all tags (read-only, for autocomplete/filtering)
+	 */
+	listTags: publicProcedure.handler(async ({ context }) => {
+		const tags = await getAllTags(context.db);
+		return { tags };
+	}),
+
+	/**
+	 * Get all categories (read-only)
+	 */
+	listCategories: publicProcedure.handler(async ({ context }) => {
+		const categories = await getAllCategories(context.db);
+		return { categories };
+	}),
+
+	/**
+	 * Get all colors (read-only)
+	 */
+	listColors: publicProcedure.handler(async ({ context }) => {
+		const colors = await getAllColors(context.db);
+		return { colors };
+	}),
+
+	/**
+	 * Get all tag types (read-only)
+	 */
+	listTagTypes: publicProcedure.handler(async ({ context }) => {
+		const tagTypes = await getAllTagTypes(context.db);
+		return { tagTypes };
+	}),
 };

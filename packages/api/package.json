@@ -27,6 +27,7 @@
     "@ai-stilist/shared": "workspace:*",
     "@ai-stilist/storage": "workspace:*",
     "@ai-stilist/wardrobe": "workspace:*",
+    "@ai-stilist/test-utils": "workspace:*",
     "@orpc/client": "catalog:",
     "@orpc/openapi": "catalog:",
     "@orpc/server": "catalog:",

@@ -17,23 +17,27 @@ export const ClothingAnalysisSchema = z.object({
 			"Array of colors - can be names ('navy', 'white') or hex codes ('#FF5733')"
 		),
 
-	tags: z.array(z.string()).describe(`Comprehensive tags including:
-		- Type: 't-shirt', 'jeans', 'sneakers', 'blazer'
-		- Style: 'casual', 'formal', 'streetwear', 'minimalist', 'vintage'
-		- Season: 'summer', 'winter', 'all-season'
-		- Material: 'cotton', 'denim', 'leather', 'silk'
-		- Brand: 'Nike', 'Zara', 'Uniqlo'
-		- Fit: 'slim', 'regular', 'oversized'
-		- Pattern: 'solid', 'striped', 'floral', 'checked'
-		- Features: 'breathable', 'waterproof', 'stretch'
-		- Occasion: 'work', 'party', 'gym', 'date-night'
-		- Details: 'crew-neck', 'v-neck', 'button-up', 'high-waisted'`),
-
-	confidence: z
-		.number()
-		.min(0)
-		.max(1)
-		.describe("AI confidence score for this analysis (0-1)"),
+	tags: z
+		.array(
+			z.object({
+				type: z.string().describe(`Tag type category:
+- 'item': The specific item type ('t-shirt', 'jeans', 'sneakers', 'blazer')
+- 'style': Style attributes ('casual', 'formal', 'streetwear', 'minimalist', 'vintage')
+- 'season': Season suitability ('summer', 'winter', 'spring', 'fall', 'all-season')
+- 'material': Fabric/material ('cotton', 'denim', 'leather', 'silk', 'wool')
+- 'brand': Brand name if visible ('Nike', 'Zara', 'Uniqlo')
+- 'fit': Fit description ('slim-fit', 'regular', 'oversized', 'relaxed')
+- 'pattern': Visual pattern ('solid', 'striped', 'floral', 'checked', 'plaid')
+- 'feature': Special features ('breathable', 'waterproof', 'stretch', 'distressed')
+- 'occasion': Suitable occasions ('work', 'party', 'gym', 'date-night', 'office')
+- 'detail': Specific details ('crew-neck', 'v-neck', 'button-up', 'high-waisted')
+- 'general': Anything that doesn't fit above categories`),
+				name: z
+					.string()
+					.describe("The tag value (e.g., 'cotton', 'casual', 'summer')"),
+			})
+		)
+		.describe("Comprehensive typed tags for the clothing item"),
 });
 
 export type ClothingAnalysis = z.infer<typeof ClothingAnalysisSchema>;
@@ -51,19 +55,20 @@ Instructions:
 
 2. **Colors**: List ALL visible colors. Use common color names when possible ('navy', 'forest green', 'burgundy'), or hex codes for precise colors.
 
-3. **Tags**: Create comprehensive tags covering ALL aspects:
-   - Specific type (e.g., 'crew-neck-tshirt', 'high-top-sneakers', 'midi-dress')
-   - Style attributes ('casual', 'business-casual', 'athleisure', 'bohemian')
-   - Season suitability ('summer', 'winter', 'transitional', 'all-season')
-   - Material if identifiable ('cotton', 'denim', 'knit', 'leather')
-   - Brand if visible
-   - Fit description ('slim-fit', 'relaxed', 'tailored', 'oversized')
-   - Patterns ('solid', 'striped', 'geometric', 'abstract')
-   - Special features ('moisture-wicking', 'stretch', 'distressed')
-   - Suitable occasions ('office', 'weekend', 'formal-event', 'workout')
-   - Specific details ('button-front', 'zipper-closure', 'elastic-waist')
+3. **Tags**: Return tags as objects with "type" and "name" fields. Cover ALL relevant aspects:
 
-4. **Confidence**: Rate your confidence in the analysis (0.0 to 1.0)
+   Tag types to use:
+   - 'item': Specific item type → {type: 'item', name: 't-shirt'}, {type: 'item', name: 'sneakers'}
+   - 'style': Style attributes → {type: 'style', name: 'casual'}, {type: 'style', name: 'minimalist'}
+   - 'season': Season suitability → {type: 'season', name: 'summer'}, {type: 'season', name: 'all-season'}
+   - 'material': Fabric/material → {type: 'material', name: 'cotton'}, {type: 'material', name: 'denim'}
+   - 'brand': Brand name if visible → {type: 'brand', name: 'Nike'}
+   - 'fit': Fit description → {type: 'fit', name: 'slim-fit'}, {type: 'fit', name: 'oversized'}
+   - 'pattern': Visual pattern → {type: 'pattern', name: 'solid'}, {type: 'pattern', name: 'striped'}
+   - 'feature': Special features → {type: 'feature', name: 'stretch'}, {type: 'feature', name: 'waterproof'}
+   - 'occasion': Suitable occasions → {type: 'occasion', name: 'work'}, {type: 'occasion', name: 'party'}
+   - 'detail': Specific details → {type: 'detail', name: 'v-neck'}, {type: 'detail', name: 'button-up'}
+   - 'general': Anything else → {type: 'general', name: 'vintage-inspired'}
 
 Be thorough but accurate. Create tags that would help someone find this exact type of item or style an outfit with it.
 Focus on observable characteristics and common fashion terminology.`;

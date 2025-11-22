@@ -3,8 +3,17 @@ import fs from "node:fs";
 import path from "node:path";
 import { createAiClient } from "@ai-stilist/ai";
 import { createLogger } from "@ai-stilist/logger";
+import { env } from "bun";
+import z from "zod";
 import { analyzeClothingImage } from "./clothing-analyzer";
 import type { ClothingAnalysis } from "./metadata-schemas";
+
+const testEnvSchema = z.object({
+	GOOGLE_GEMINI_API_KEY: z.string(),
+});
+const MAX_TEST_TIME = 100_000;
+const MAX_IMAGES_PER_FOLDER = 5;
+const testEnv = testEnvSchema.parse(env);
 
 // Helper to convert image to base64 data URL
 function imageToDataUrl(filePath: string): string {
@@ -30,7 +39,7 @@ function loadTestImages(): Array<{
 	name: string;
 	folder: string;
 }> {
-	const dataDir = path.join(import.meta.dir, "../_data");
+	const dataDir = path.join(process.cwd(), "_data");
 	const folders = fs.readdirSync(dataDir);
 	const images: Array<{ path: string; name: string; folder: string }> = [];
 
@@ -41,16 +50,20 @@ function loadTestImages(): Array<{
 		}
 
 		const files = fs.readdirSync(folderPath);
+		const folderImages: Array<{ path: string; name: string; folder: string }> =
+			[];
 		for (const file of files) {
 			const ext = path.extname(file).toLowerCase();
 			if ([".jpg", ".jpeg", ".png", ".heic"].includes(ext)) {
-				images.push({
+				folderImages.push({
 					path: path.join(folderPath, file),
 					name: file,
 					folder,
 				});
 			}
 		}
+		// Take only first 5 from each folder
+		images.push(...folderImages.slice(0, MAX_IMAGES_PER_FOLDER));
 	}
 
 	return images;
@@ -60,7 +73,6 @@ function loadTestImages(): Array<{
 const TEST_CONFIG = {
 	saveResults: true,
 	resultsPath: path.join(import.meta.dir, "../_data/analysis-results.json"),
-	lowConfidenceThreshold: 0.7,
 	sampleTagsCount: 20,
 };
 
@@ -94,8 +106,7 @@ const TEST_CONFIG = {
  * const analysis = {
  *   category: "sweater",
  *   colors: ["beige", "#D4C5B0", "tan"],
- *   tags: ["casual", "knit", "autumn", "oversized", "cotton-blend"],
- *   confidence: 0.92
+ *   tags: ["casual", "knit", "autumn", "oversized", "cotton-blend"]
  * };
  *
  * // DB Operations:
@@ -130,162 +141,144 @@ const TEST_CONFIG = {
  */
 
 describe("Clothing Analyzer", () => {
-	it("should analyze all clothing images from test data", async () => {
-		// Skip if no API key available
-		const apiKey = process.env.GOOGLE_GEMINI_API_KEY;
-		if (!apiKey) {
-			console.warn("⚠️  Skipping test: GOOGLE_GEMINI_API_KEY not set");
-			return;
-		}
+	it(
+		"should analyze all clothing images from test data",
+		async () => {
+			// Setup AI client
+			// Use 'warn' level to suppress verbose info logs (especially base64 image data)
+			const logger = createLogger({
+				level: "debug",
+			});
+			const aiClient = createAiClient({
+				logger,
+				providerConfigs: {
+					googleGeminiApiKey: testEnv.GOOGLE_GEMINI_API_KEY,
+				},
+				environment: "dev",
+			});
 
-		// Setup AI client
-		const logger = createLogger({
-			environment: "dev",
-		});
-		const aiClient = createAiClient({
-			logger,
-			providerConfigs: {
-				googleGeminiApiKey: apiKey,
-			},
-			environment: "dev",
-		});
+			// Load test images
+			const images = loadTestImages();
+			logger.info(`Found ${images.length} images to analyze`);
 
-		// Load test images
-		const images = loadTestImages();
-		console.log(`\n📸 Found ${images.length} images to analyze\n`);
+			// Results storage
+			const results: Array<{
+				filename: string;
+				folder: string;
+				path: string;
+				analysis?: ClothingAnalysis;
+				modelVersion?: string;
+				tokensUsed?: number;
+				durationMs?: number;
+				error?: string;
+			}> = [];
 
-		// Results storage
-		const results: Array<{
-			filename: string;
-			folder: string;
-			path: string;
-			analysis?: ClothingAnalysis;
-			modelVersion?: string;
-			tokensUsed?: number;
-			durationMs?: number;
-			error?: string;
-		}> = [];
+			// Process each image
+			for (let i = 0; i < images.length; i += 1) {
+				const image = images[i];
+				if (!image) {
+					continue;
+				}
 
-		// Process each image
-		for (let i = 0; i < images.length; i += 1) {
-			const image = images[i];
-			if (!image) {
-				continue;
-			}
-
-			console.log(
-				`[${i + 1}/${images.length}] Analyzing: ${image.folder}/${image.name}`
-			);
-
-			try {
-				// Convert to data URL
-				const dataUrl = imageToDataUrl(image.path);
-
-				// Analyze
-				const result = await analyzeClothingImage({
-					imageUrl: dataUrl,
-					aiClient,
-					logger,
-				});
-
-				// Store result
-				results.push({
-					filename: image.name,
-					folder: image.folder,
-					path: image.path,
-					analysis: result.analysis,
-					modelVersion: result.modelVersion,
-					tokensUsed: result.tokensUsed,
-					durationMs: result.durationMs,
-				});
-
-				console.log(
-					`  ✓ ${result.analysis.category} | ${result.analysis.colors.length} colors | ${result.analysis.tags.length} tags | confidence: ${result.analysis.confidence}`
+				logger.info(
+					`Analyzing [${i + 1}/${images.length}]: ${image.folder}/${image.name}`
 				);
-			} catch (error) {
-				console.error(`  ✗ Error: ${error}`);
-				results.push({
-					filename: image.name,
-					folder: image.folder,
-					path: image.path,
-					error: error instanceof Error ? error.message : String(error),
-				});
+
+				try {
+					// Convert to data URL
+					const dataUrl = imageToDataUrl(image.path);
+
+					// Analyze
+					const result = await analyzeClothingImage({
+						imageUrl: dataUrl,
+						aiClient,
+						logger,
+					});
+
+					// Store result
+					results.push({
+						filename: image.name,
+						folder: image.folder,
+						path: image.path,
+						analysis: result.analysis,
+						modelVersion: result.modelVersion,
+						tokensUsed: result.tokensUsed,
+						durationMs: result.durationMs,
+					});
+
+					logger.info({
+						msg: "Analysis complete",
+						category: result.analysis.category,
+						colorCount: result.analysis.colors.length,
+						tagCount: result.analysis.tags.length,
+					});
+				} catch (error) {
+					logger.error({ msg: "Analysis failed", error });
+					results.push({
+						filename: image.name,
+						folder: image.folder,
+						path: image.path,
+						error: error instanceof Error ? error.message : String(error),
+					});
+				}
 			}
-		}
 
-		// Save results if configured
-		if (TEST_CONFIG.saveResults) {
-			fs.writeFileSync(
-				TEST_CONFIG.resultsPath,
-				JSON.stringify(results, null, 2)
-			);
-			console.log(`\n💾 Results saved to: ${TEST_CONFIG.resultsPath}`);
-		}
+			// Save results if configured
+			if (TEST_CONFIG.saveResults) {
+				fs.writeFileSync(
+					TEST_CONFIG.resultsPath,
+					JSON.stringify(results, null, 2)
+				);
+				logger.info(`Results saved to: ${TEST_CONFIG.resultsPath}`);
+			}
 
-		// Generate summary statistics
-		const successful = results.filter((r) => r.analysis);
-		const failed = results.filter((r) => r.error);
+			// Generate summary statistics
+			const successful = results.filter((r) => r.analysis);
+			const failed = results.filter((r) => r.error);
 
-		console.log("\n📊 Summary Statistics:");
-		console.log(`   Total images: ${results.length}`);
-		console.log(`   Successful: ${successful.length}`);
-		console.log(`   Failed: ${failed.length}`);
+			logger.info({
+				msg: "Summary Statistics",
+				totalImages: results.length,
+				successful: successful.length,
+				failed: failed.length,
+			});
 
-		if (successful.length > 0) {
-			const avgConfidence =
-				successful.reduce((sum, r) => sum + (r.analysis?.confidence || 0), 0) /
-				successful.length;
-			const avgDuration =
-				successful.reduce((sum, r) => sum + (r.durationMs || 0), 0) /
-				successful.length;
-			const totalTokens = successful.reduce(
-				(sum, r) => sum + (r.tokensUsed || 0),
-				0
-			);
+			if (successful.length > 0) {
+				const avgDuration =
+					successful.reduce((sum, r) => sum + (r.durationMs || 0), 0) /
+					successful.length;
+				const totalTokens = successful.reduce(
+					(sum, r) => sum + (r.tokensUsed || 0),
+					0
+				);
 
-			// Collect unique categories and tags
-			const categories = new Set<string>();
-			const allTags = new Set<string>();
+				// Collect unique categories and tags
+				const categories = new Set<string>();
+				const allTags = new Set<string>();
 
-			for (const result of successful) {
-				if (result.analysis) {
-					categories.add(result.analysis.category);
-					for (const tag of result.analysis.tags) {
-						allTags.add(tag);
+				for (const result of successful) {
+					if (result.analysis) {
+						categories.add(result.analysis.category);
+						for (const tag of result.analysis.tags) {
+							allTags.add(`${tag.type}:${tag.name}`);
+						}
 					}
 				}
+
+				logger.info({
+					msg: "Analysis Details",
+					avgDurationMs: Math.round(avgDuration),
+					totalTokens,
+					uniqueCategories: categories.size,
+					categories: Array.from(categories),
+					uniqueTags: allTags.size,
+					sampleTags: Array.from(allTags).slice(0, TEST_CONFIG.sampleTagsCount),
+				});
 			}
 
-			console.log(`   Avg confidence: ${avgConfidence.toFixed(2)}`);
-			console.log(`   Avg duration: ${avgDuration.toFixed(0)}ms`);
-			console.log(`   Total tokens: ${totalTokens}`);
-			console.log(`   Unique categories: ${categories.size}`);
-			console.log(`   Categories: ${Array.from(categories).join(", ")}`);
-			console.log(`   Unique tags: ${allTags.size}`);
-			console.log(
-				`   Sample tags: ${Array.from(allTags).slice(0, TEST_CONFIG.sampleTagsCount).join(", ")}`
-			);
-
-			// Low confidence warnings
-			const lowConfidence = successful.filter(
-				(r) =>
-					(r.analysis?.confidence || 0) < TEST_CONFIG.lowConfidenceThreshold
-			);
-			if (lowConfidence.length > 0) {
-				console.log(
-					`\n⚠️  ${lowConfidence.length} images with low confidence (<${TEST_CONFIG.lowConfidenceThreshold}):`
-				);
-				for (const result of lowConfidence) {
-					console.log(
-						`   - ${result.folder}/${result.filename}: ${result.analysis?.confidence}`
-					);
-				}
-			}
-		}
-
-		console.log();
-
-		// Basic assertion - at least some images should be analyzed successfully
-		expect(successful.length).toBeGreaterThan(0);
-	});
+			// Basic assertion - at least some images should be analyzed successfully
+			expect(successful.length).toBeGreaterThan(0);
+		},
+		MAX_TEST_TIME
+	);
 });
