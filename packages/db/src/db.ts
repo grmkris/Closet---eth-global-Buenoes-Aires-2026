@@ -7,13 +7,26 @@ import { migrate as migrateBunSql } from "drizzle-orm/bun-sql/migrator";
 import { drizzle as drizzlePglite, PgliteDatabase } from "drizzle-orm/pglite";
 import { migrate as migratePgLite } from "drizzle-orm/pglite/migrator";
 // biome-ignore lint/performance/noNamespaceImport: Drizzle requires full schema object for type inference
+import * as agentsSchema from "./schema/agents/index";
+// biome-ignore lint/performance/noNamespaceImport: Drizzle requires full schema object for type inference
 import * as aiSchema from "./schema/ai/index";
 // biome-ignore lint/performance/noNamespaceImport: Drizzle requires full schema object for type inference
 import * as authSchema from "./schema/auth/index";
 // biome-ignore lint/performance/noNamespaceImport: Drizzle requires full schema object for type inference
+import * as spendingSchema from "./schema/spending/index";
+// biome-ignore lint/performance/noNamespaceImport: Drizzle requires full schema object for type inference
+import * as subscriptionsSchema from "./schema/subscriptions/index";
+// biome-ignore lint/performance/noNamespaceImport: Drizzle requires full schema object for type inference
 import * as wardrobeSchema from "./schema/wardrobe/index";
 
-const schema = { ...authSchema, ...wardrobeSchema, ...aiSchema };
+const schema = {
+	...authSchema,
+	...wardrobeSchema,
+	...aiSchema,
+	...agentsSchema,
+	...subscriptionsSchema,
+	...spendingSchema,
+};
 
 export const DB_SCHEMA = schema;
 export type Database =

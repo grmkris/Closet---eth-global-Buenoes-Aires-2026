@@ -45,7 +45,7 @@ export function WalletBalanceCard() {
 	// Format USDC balance for display
 	const formattedUsdcBalance = usdcBalance
 		? Number.parseFloat(formatUnits(usdcBalance, 6)).toFixed(
-				WALLET_UI_CONFIG.USDC_DECIMALS,
+				WALLET_UI_CONFIG.USDC_DECIMALS
 			)
 		: "0.00";
 
@@ -55,10 +55,10 @@ export function WalletBalanceCard() {
 				<div className="flex items-center justify-between">
 					<h3 className="font-semibold text-lg">Wallet Balance</h3>
 					<Button
-						variant="ghost"
-						size="sm"
-						onClick={() => refetchUsdc()}
 						disabled={isLoadingUsdc}
+						onClick={() => refetchUsdc()}
+						size="sm"
+						variant="ghost"
 					>
 						{isLoadingUsdc ? "..." : "Refresh"}
 					</Button>

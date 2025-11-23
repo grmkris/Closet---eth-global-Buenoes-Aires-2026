@@ -2,7 +2,6 @@
 
 import { CheckCircle, Image as ImageIcon, XCircle } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import type { ToolRendererProps } from "./types";
@@ -13,8 +12,6 @@ import { getToolStatus, getTypedToolOutput } from "./types";
  * Displays generated outfit images inline instead of JSON
  */
 export function OutfitPreviewRenderer({ part }: ToolRendererProps) {
-	const [imageLoaded, setImageLoaded] = useState(false);
-	const [imageError, setImageError] = useState(false);
 	const status = getToolStatus(part);
 	const output = getTypedToolOutput(part, "generateOutfitPreview");
 
@@ -37,14 +34,14 @@ export function OutfitPreviewRenderer({ part }: ToolRendererProps) {
 
 			{/* Image */}
 			<div className="relative aspect-square bg-muted/10">
-				{!(imageLoaded || imageError) && (
+				{!output.imageUrl && (
 					<div className="absolute inset-0 flex items-center justify-center">
 						<div className="text-muted-foreground text-sm">
 							Loading image...
 						</div>
 					</div>
 				)}
-				{imageError && (
+				{output.error && (
 					<div className="absolute inset-0 flex items-center justify-center">
 						<div className="flex flex-col items-center gap-2 text-muted-foreground">
 							<XCircle className="h-8 w-8 text-destructive" />
@@ -54,16 +51,8 @@ export function OutfitPreviewRenderer({ part }: ToolRendererProps) {
 				)}
 				<Image
 					alt="Generated outfit preview"
-					className={cn("object-contain", !imageLoaded && "hidden")}
+					className={cn("object-contain", !output.imageUrl && "hidden")}
 					fill
-					onError={() => {
-						setImageError(true);
-						setImageLoaded(false);
-					}}
-					onLoad={() => {
-						setImageLoaded(true);
-						setImageError(false);
-					}}
 					sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
 					src={output.imageUrl}
 				/>

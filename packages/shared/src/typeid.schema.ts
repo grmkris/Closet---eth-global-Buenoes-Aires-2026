@@ -26,6 +26,12 @@ export const idTypesMapNameToPrefix = {
 
 	// request tracking
 	request: "req",
+
+	// agents & subscriptions
+	agent: "agt",
+	subscription: "sub",
+	subscriptionPayment: "spm",
+	spendingAuthorization: "spa",
 } as const;
 
 type IdTypesMapNameToPrefix = typeof idTypesMapNameToPrefix;
@@ -140,3 +146,15 @@ export type MessageId = z.infer<typeof MessageId>;
 
 export const MessagePartId = typeIdValidator("messagePart");
 export type MessagePartId = z.infer<typeof MessagePartId>;
+
+export const AgentId = typeIdValidator("agent");
+export type AgentId = z.infer<typeof AgentId>;
+
+export const SubscriptionId = typeIdValidator("subscription");
+export type SubscriptionId = z.infer<typeof SubscriptionId>;
+
+export const SubscriptionPaymentId = typeIdValidator("subscriptionPayment");
+export type SubscriptionPaymentId = z.infer<typeof SubscriptionPaymentId>;
+
+export const SpendingAuthorizationId = typeIdValidator("spendingAuthorization");
+export type SpendingAuthorizationId = z.infer<typeof SpendingAuthorizationId>;
