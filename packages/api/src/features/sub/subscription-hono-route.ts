@@ -37,8 +37,14 @@ export const createSubscriptionHonoRoute = (deps: ContextDeps) => {
 			cors({
 				origin: SERVICE_URLS[appEnv].web,
 				allowMethods: ["GET", "POST", "OPTIONS"],
-				allowHeaders: ["Content-Type", "Authorization", "X-PAYMENT"],
-				exposeHeaders: ["X-PAYMENT-RESPONSE"],
+				allowHeaders: [
+					"Content-Type",
+					"Authorization",
+					"X-PAYMENT",
+					"X-Wallet-Address",
+				],
+				exposeHeaders: ["X-PAYMENT-RESPONSE", "Access-Control-Expose-Headers"],
+				credentials: true,
 			})
 		)
 		.use(
@@ -59,7 +65,7 @@ export const createSubscriptionHonoRoute = (deps: ContextDeps) => {
 			)
 			// // POST /create/:agentId - Create subscription (runs AFTER x402 payment verified)
 		)
-		.post("/create", async (c) => {
+		.get("/create", async (c) => {
 			// Payment already verified by x402 middleware at this point
 
 			deps.logger.info({

@@ -86,7 +86,7 @@ export function useSubscribe() {
 			const response = await x402Fetch(
 				`${SERVICE_URLS[env.NEXT_PUBLIC_APP_ENV].api}/api/subscription/create`,
 				{
-					method: "POST",
+					method: "GET",
 				}
 			);
 

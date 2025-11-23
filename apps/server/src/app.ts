@@ -103,7 +103,7 @@ export const createApp = async (props: {
 					"X-PAYMENT",
 					"X-Wallet-Address",
 				],
-				exposeHeaders: ["X-PAYMENT-RESPONSE"],
+				exposeHeaders: ["X-PAYMENT-RESPONSE", "Access-Control-Expose-Headers"],
 				credentials: true,
 			})
 		)

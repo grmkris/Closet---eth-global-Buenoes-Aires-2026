@@ -95,12 +95,8 @@
           "name": "account_user_id_user_id_fk",
           "tableFrom": "account",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -172,12 +168,8 @@
           "name": "session_user_id_user_id_fk",
           "tableFrom": "session",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -187,9 +179,7 @@
         "session_token_unique": {
           "name": "session_token_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "token"
-          ]
+          "columns": ["token"]
         }
       },
       "policies": {},
@@ -264,16 +254,12 @@
         "user_email_unique": {
           "name": "user_email_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         },
         "user_username_unique": {
           "name": "user_username_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "username"
-          ]
+          "columns": ["username"]
         }
       },
       "policies": {},
@@ -384,12 +370,8 @@
           "name": "wallet_address_user_id_user_id_fk",
           "tableFrom": "wallet_address",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -399,9 +381,7 @@
         "wallet_address_address_unique": {
           "name": "wallet_address_address_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "address"
-          ]
+          "columns": ["address"]
         }
       },
       "policies": {},
@@ -468,9 +448,7 @@
         "category_name_unique": {
           "name": "category_name_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "name"
-          ]
+          "columns": ["name"]
         }
       },
       "policies": {},
@@ -536,12 +514,8 @@
           "name": "clothing_analysis_item_id_clothing_item_id_fk",
           "tableFrom": "clothing_analysis",
           "tableTo": "clothing_item",
-          "columnsFrom": [
-            "item_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["item_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -551,9 +525,7 @@
         "clothing_analysis_item_id_unique": {
           "name": "clothing_analysis_item_id_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "item_id"
-          ]
+          "columns": ["item_id"]
         }
       },
       "policies": {},
@@ -628,12 +600,8 @@
           "name": "clothing_item_category_item_id_clothing_item_id_fk",
           "tableFrom": "clothing_item_category",
           "tableTo": "clothing_item",
-          "columnsFrom": [
-            "item_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["item_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -641,12 +609,8 @@
           "name": "clothing_item_category_category_id_category_id_fk",
           "tableFrom": "clothing_item_category",
           "tableTo": "category",
-          "columnsFrom": [
-            "category_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["category_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -654,10 +618,7 @@
       "compositePrimaryKeys": {
         "clothing_item_category_item_id_category_id_pk": {
           "name": "clothing_item_category_item_id_category_id_pk",
-          "columns": [
-            "item_id",
-            "category_id"
-          ]
+          "columns": ["item_id", "category_id"]
         }
       },
       "uniqueConstraints": {},
@@ -740,12 +701,8 @@
           "name": "clothing_item_color_item_id_clothing_item_id_fk",
           "tableFrom": "clothing_item_color",
           "tableTo": "clothing_item",
-          "columnsFrom": [
-            "item_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["item_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -753,12 +710,8 @@
           "name": "clothing_item_color_color_id_color_id_fk",
           "tableFrom": "clothing_item_color",
           "tableTo": "color",
-          "columnsFrom": [
-            "color_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["color_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -766,10 +719,7 @@
       "compositePrimaryKeys": {
         "clothing_item_color_item_id_color_id_pk": {
           "name": "clothing_item_color_item_id_color_id_pk",
-          "columns": [
-            "item_id",
-            "color_id"
-          ]
+          "columns": ["item_id", "color_id"]
         }
       },
       "uniqueConstraints": {},
@@ -868,12 +818,8 @@
           "name": "clothing_item_tag_item_id_clothing_item_id_fk",
           "tableFrom": "clothing_item_tag",
           "tableTo": "clothing_item",
-          "columnsFrom": [
-            "item_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["item_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -881,12 +827,8 @@
           "name": "clothing_item_tag_tag_id_tag_id_fk",
           "tableFrom": "clothing_item_tag",
           "tableTo": "tag",
-          "columnsFrom": [
-            "tag_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["tag_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -894,10 +836,7 @@
       "compositePrimaryKeys": {
         "clothing_item_tag_item_id_tag_id_pk": {
           "name": "clothing_item_tag_item_id_tag_id_pk",
-          "columns": [
-            "item_id",
-            "tag_id"
-          ]
+          "columns": ["item_id", "tag_id"]
         }
       },
       "uniqueConstraints": {},
@@ -1039,12 +978,8 @@
           "name": "clothing_item_user_id_user_id_fk",
           "tableFrom": "clothing_item",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -1115,9 +1050,7 @@
         "color_name_unique": {
           "name": "color_name_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "name"
-          ]
+          "columns": ["name"]
         }
       },
       "policies": {},
@@ -1184,9 +1117,7 @@
         "tag_type_name_unique": {
           "name": "tag_type_name_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "name"
-          ]
+          "columns": ["name"]
         }
       },
       "policies": {},
@@ -1274,12 +1205,8 @@
           "name": "tag_type_id_tag_type_id_fk",
           "tableFrom": "tag",
           "tableTo": "tag_type",
-          "columnsFrom": [
-            "type_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["type_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -1289,10 +1216,7 @@
         "tag_type_id_name_unique": {
           "name": "tag_type_id_name_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "type_id",
-            "name"
-          ]
+          "columns": ["type_id", "name"]
         }
       },
       "policies": {},
@@ -1385,12 +1309,8 @@
           "name": "ai_conversations_user_id_user_id_fk",
           "tableFrom": "ai_conversations",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -1446,12 +1366,8 @@
           "name": "ai_message_parts_message_id_ai_messages_id_fk",
           "tableFrom": "ai_message_parts",
           "tableTo": "ai_messages",
-          "columnsFrom": [
-            "message_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["message_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -1535,12 +1451,8 @@
           "name": "ai_messages_conversation_id_ai_conversations_id_fk",
           "tableFrom": "ai_messages",
           "tableTo": "ai_conversations",
-          "columnsFrom": [
-            "conversation_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["conversation_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -1548,12 +1460,8 @@
           "name": "ai_messages_user_id_user_id_fk",
           "tableFrom": "ai_messages",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -1637,12 +1545,8 @@
           "name": "subscription_payments_subscription_id_subscriptions_id_fk",
           "tableFrom": "subscription_payments",
           "tableTo": "subscriptions",
-          "columnsFrom": [
-            "subscription_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["subscription_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -1714,12 +1618,8 @@
           "name": "subscriptions_user_id_user_id_fk",
           "tableFrom": "subscriptions",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -1830,12 +1730,8 @@
           "name": "agents_creator_user_id_user_id_fk",
           "tableFrom": "agents",
           "tableTo": "user",
-          "columnsFrom": [
-            "creator_user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["creator_user_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -1946,12 +1842,8 @@
           "name": "spending_authorizations_user_id_user_id_fk",
           "tableFrom": "spending_authorizations",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -1959,12 +1851,8 @@
           "name": "spending_authorizations_agent_id_agents_id_fk",
           "tableFrom": "spending_authorizations",
           "tableTo": "agents",
-          "columnsFrom": [
-            "agent_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["agent_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -1992,10 +1880,7 @@
     "public.tag_source": {
       "name": "tag_source",
       "schema": "public",
-      "values": [
-        "ai",
-        "user"
-      ]
+      "values": ["ai", "user"]
     }
   },
   "schemas": {},
