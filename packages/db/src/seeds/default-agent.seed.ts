@@ -31,7 +31,7 @@ export async function seedDefaultAgent(props: {
 	};
 
 	// No agents exist, create the default one
-	await db.insert(agentsTable).values(DEFAULT_AGENT);
+	await db.insert(agentsTable).values(DEFAULT_AGENT).onConflictDoNothing();
 	logger.info({
 		msg: "Default agent created",
 		walletAddress,
