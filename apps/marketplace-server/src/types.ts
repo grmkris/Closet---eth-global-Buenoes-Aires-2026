@@ -1,4 +1,4 @@
-export interface MarketplaceItem {
+export type MarketplaceItem = {
 	id: string;
 	name: string;
 	description: string;
@@ -12,9 +12,9 @@ export interface MarketplaceItem {
 		color?: string[];
 		material?: string;
 	};
-}
+};
 
-export interface X402PaymentRequirement {
+export type X402PaymentRequirement = {
 	x402Version: string;
 	accepts: Array<{
 		amount: string;
@@ -29,16 +29,16 @@ export interface X402PaymentRequirement {
 		price: number;
 		category: string;
 	};
-}
+};
 
-export interface XPaymentHeader {
+export type XPaymentHeader = {
 	ap2Intent: AP2Intent;
 	ap2Signature: string;
 	txHash: string;
 	network: string;
-}
+};
 
-export interface AP2Intent {
+export type AP2Intent = {
 	userId: string;
 	agentId: string;
 	monthlyBudget: number; // cents
@@ -47,15 +47,15 @@ export interface AP2Intent {
 	allowedBrands?: string[];
 	validFrom: string;
 	validUntil: string;
-}
+};
 
-export interface XPaymentResponse {
+export type XPaymentResponse = {
 	txHash: string;
 	status: string;
 	purchaseId: string;
-}
+};
 
-export interface PurchaseRecord {
+export type PurchaseRecord = {
 	id: string;
 	itemId: string;
 	txHash: string;
@@ -63,9 +63,9 @@ export interface PurchaseRecord {
 	agentWalletAddress?: string;
 	amount: number;
 	timestamp: string;
-}
+};
 
-export interface PaymentVerificationResult {
+export type PaymentVerificationResult = {
 	valid: boolean;
 	error?: string;
 	proof?: {
@@ -75,4 +75,4 @@ export interface PaymentVerificationResult {
 		txHash: string;
 		blockNumber: bigint;
 	};
-}
+};

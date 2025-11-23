@@ -5,10 +5,13 @@ import type { MessageId } from "@ai-stilist/shared/typeid";
 import { DefaultToolRenderer } from "./default-tool-renderer";
 import { ItemDetailsRenderer } from "./item-details-renderer";
 import { OutfitPreviewRenderer } from "./outfit-preview-renderer";
+import { PurchaseMarketplaceRenderer } from "./purchase-marketplace-renderer";
+import { SearchExternalMarketplaceRenderer } from "./search-external-marketplace-renderer";
 import { ShowItemsRenderer } from "./show-items-renderer";
 import type { ToolRendererEntry } from "./types";
 import { getToolName, isToolPart } from "./types";
 import { WardrobeSearchRenderer } from "./wardrobe-search-renderer";
+import { WardrobeSummaryRenderer } from "./wardrobe-summary-renderer";
 
 /**
  * Registry of tool renderers
@@ -24,6 +27,10 @@ const toolRenderers: Record<string, ToolRendererEntry> = {
 		renderer: WardrobeSearchRenderer,
 		displayName: "Wardrobe Search",
 	},
+	getWardrobeSummary: {
+		renderer: WardrobeSummaryRenderer,
+		displayName: "Wardrobe Summary",
+	},
 	getItemDetails: {
 		renderer: ItemDetailsRenderer,
 		displayName: "Item Details",
@@ -31,6 +38,16 @@ const toolRenderers: Record<string, ToolRendererEntry> = {
 	showItems: {
 		renderer: ShowItemsRenderer,
 		displayName: "Show Items",
+	},
+
+	// Marketplace tools
+	searchExternalMarketplace: {
+		renderer: SearchExternalMarketplaceRenderer,
+		displayName: "Marketplace Search",
+	},
+	purchaseFromMarketplace: {
+		renderer: PurchaseMarketplaceRenderer,
+		displayName: "Purchase Item",
 	},
 
 	// Default fallback - handles all other tools

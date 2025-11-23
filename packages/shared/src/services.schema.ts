@@ -15,6 +15,7 @@ export const SERVICE_URLS: Record<
 		storage: string;
 		redis: string;
 		x402FacilitatorUrl: string;
+		allowedMarketplaces: string[];
 		chain: {
 			id: number;
 			name: string;
@@ -31,6 +32,7 @@ export const SERVICE_URLS: Record<
 		storage: "http://localhost:9000",
 		redis: "redis://localhost:63791",
 		x402FacilitatorUrl: "http://localhost:3002",
+		allowedMarketplaces: ["http://localhost:3002"],
 		chain: {
 			id: 80_002, // Polygon Amoy testnet
 			name: "polygon-amoy",
@@ -46,6 +48,7 @@ export const SERVICE_URLS: Record<
 		storage: "https://storage.ai-stilist.com",
 		redis: "redis://redis.ai-stilist.com:6379",
 		x402FacilitatorUrl: "https://x402.org/facilitator",
+		allowedMarketplaces: [], // Add production marketplace URLs as needed
 		chain: {
 			id: 137, // Polygon mainnet
 			name: "polygon",

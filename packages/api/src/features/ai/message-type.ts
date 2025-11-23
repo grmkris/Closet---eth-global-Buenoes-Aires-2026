@@ -28,6 +28,9 @@ export type GetWardrobeSummaryTool = MyToolSet["getWardrobeSummary"];
 export type GetItemDetailsTool = MyToolSet["getItemDetails"];
 export type ShowItemsTool = MyToolSet["showItems"];
 export type GenerateOutfitPreviewTool = MyToolSet["generateOutfitPreview"];
+export type SearchExternalMarketplaceTool =
+	MyToolSet["searchExternalMarketplace"];
+export type PurchaseFromMarketplaceTool = MyToolSet["purchaseFromMarketplace"];
 
 // Extract input/output types for each tool
 export type SearchWardrobeInput = SearchWardrobeTool["input"];
@@ -45,15 +48,28 @@ export type ShowItemsOutput = ShowItemsTool["output"];
 export type GenerateOutfitPreviewInput = GenerateOutfitPreviewTool["input"];
 export type GenerateOutfitPreviewOutput = GenerateOutfitPreviewTool["output"];
 
+export type SearchExternalMarketplaceInput =
+	SearchExternalMarketplaceTool["input"];
+export type SearchExternalMarketplaceOutput =
+	SearchExternalMarketplaceTool["output"];
+
+export type PurchaseFromMarketplaceInput = PurchaseFromMarketplaceTool["input"];
+export type PurchaseFromMarketplaceOutput =
+	PurchaseFromMarketplaceTool["output"];
+
 export type ToolOutput =
 	| SearchWardrobeOutput
 	| GetWardrobeSummaryOutput
 	| GetItemDetailsOutput
 	| ShowItemsOutput
-	| GenerateOutfitPreviewOutput;
+	| GenerateOutfitPreviewOutput
+	| SearchExternalMarketplaceOutput
+	| PurchaseFromMarketplaceOutput;
 export type ToolInput =
 	| SearchWardrobeInput
 	| GetWardrobeSummaryInput
 	| GetItemDetailsInput
 	| ShowItemsInput
-	| GenerateOutfitPreviewInput;
+	| GenerateOutfitPreviewInput
+	| SearchExternalMarketplaceInput
+	| PurchaseFromMarketplaceInput;

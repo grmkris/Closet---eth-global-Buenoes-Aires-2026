@@ -1,0 +1,496 @@
+{
+  "gender": "unisex",
+  "items": [
+    {
+      "id": "accessory-001",
+      "category": "accessory",
+      "name": "Classic black leather belt",
+      "brand": "Uniqlo",
+      "colors": [
+        "black"
+      ],
+      "material": "leather",
+      "style": [
+        "classic",
+        "minimalist"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "pattern": "solid",
+      "details": [
+        "simple-buckle"
+      ],
+      "gender": "unisex",
+      "tier": 2
+    },
+    {
+      "id": "accessory-002",
+      "category": "accessory",
+      "name": "Brown leather dress belt",
+      "brand": "H&M",
+      "colors": [
+        "brown"
+      ],
+      "material": "leather",
+      "style": [
+        "formal",
+        "classic"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "pattern": "solid",
+      "details": [
+        "silver-buckle"
+      ],
+      "gender": "unisex",
+      "tier": 2
+    },
+    {
+      "id": "accessory-003",
+      "category": "accessory",
+      "name": "Beige canvas tote bag",
+      "brand": "Everlane",
+      "colors": [
+        "beige"
+      ],
+      "material": "canvas",
+      "style": [
+        "casual",
+        "eco-friendly"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "pattern": "solid",
+      "details": [
+        "shoulder-straps"
+      ],
+      "gender": "unisex",
+      "tier": 2
+    },
+    {
+      "id": "accessory-004",
+      "category": "accessory",
+      "name": "Black leather crossbody bag",
+      "brand": "Zara",
+      "colors": [
+        "black"
+      ],
+      "material": "leather",
+      "style": [
+        "casual",
+        "minimalist"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "pattern": "solid",
+      "details": [
+        "adjustable-strap",
+        "zipper"
+      ],
+      "gender": "unisex",
+      "tier": 2
+    },
+    {
+      "id": "accessory-005",
+      "category": "accessory",
+      "name": "Navy backpack",
+      "brand": "Herschel",
+      "colors": [
+        "navy"
+      ],
+      "material": "polyester",
+      "style": [
+        "casual",
+        "functional"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "pattern": "solid",
+      "details": [
+        "laptop-compartment",
+        "padded-straps"
+      ],
+      "gender": "unisex",
+      "tier": 2
+    },
+    {
+      "id": "accessory-006",
+      "category": "accessory",
+      "name": "Gray wool scarf",
+      "brand": "Uniqlo",
+      "colors": [
+        "gray"
+      ],
+      "material": "wool",
+      "style": [
+        "classic",
+        "cozy"
+      ],
+      "season": [
+        "winter"
+      ],
+      "pattern": "solid",
+      "gender": "unisex",
+      "tier": 2
+    },
+    {
+      "id": "accessory-007",
+      "category": "accessory",
+      "name": "Black knit beanie",
+      "brand": "H&M",
+      "colors": [
+        "black"
+      ],
+      "material": "knit",
+      "style": [
+        "casual",
+        "streetwear"
+      ],
+      "season": [
+        "winter"
+      ],
+      "pattern": "solid",
+      "gender": "unisex",
+      "tier": 2
+    },
+    {
+      "id": "accessory-008",
+      "category": "accessory",
+      "name": "Black cotton baseball cap",
+      "brand": "Nike",
+      "colors": [
+        "black"
+      ],
+      "material": "cotton",
+      "style": [
+        "casual",
+        "athletic"
+      ],
+      "season": [
+        "summer"
+      ],
+      "pattern": "solid",
+      "details": [
+        "adjustable-strap"
+      ],
+      "gender": "unisex",
+      "tier": 2
+    },
+    {
+      "id": "accessory-009",
+      "category": "accessory",
+      "name": "Black aviator sunglasses",
+      "brand": "Ray-Ban",
+      "colors": [
+        "black"
+      ],
+      "material": "metal",
+      "style": [
+        "classic",
+        "cool"
+      ],
+      "season": [
+        "summer"
+      ],
+      "pattern": "solid",
+      "details": [
+        "UV-protection"
+      ],
+      "gender": "unisex",
+      "tier": 2
+    },
+    {
+      "id": "accessory-010",
+      "category": "accessory",
+      "name": "Silver minimalist watch",
+      "brand": "Daniel Wellington",
+      "colors": [
+        "silver"
+      ],
+      "material": "stainless steel",
+      "style": [
+        "minimalist",
+        "elegant"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "pattern": "solid",
+      "gender": "unisex",
+      "tier": 2
+    },
+    {
+      "id": "accessory-011",
+      "category": "accessory",
+      "name": "Brown leather wallet",
+      "brand": "Fossil",
+      "colors": [
+        "brown"
+      ],
+      "material": "leather",
+      "style": [
+        "classic"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "pattern": "solid",
+      "details": [
+        "bifold",
+        "card-slots"
+      ],
+      "gender": "unisex",
+      "tier": 2
+    },
+    {
+      "id": "accessory-012",
+      "category": "accessory",
+      "name": "Navy and white striped canvas tote bag",
+      "brand": "Gap",
+      "colors": [
+        "navy",
+        "white"
+      ],
+      "material": "canvas",
+      "style": [
+        "casual",
+        "nautical"
+      ],
+      "season": [
+        "summer"
+      ],
+      "pattern": "striped",
+      "details": [
+        "shoulder-straps"
+      ],
+      "gender": "unisex",
+      "tier": 2
+    },
+    {
+      "id": "accessory-013",
+      "category": "accessory",
+      "name": "Beige cotton bucket hat",
+      "brand": "Uniqlo",
+      "colors": [
+        "beige"
+      ],
+      "material": "cotton",
+      "style": [
+        "casual",
+        "trendy"
+      ],
+      "season": [
+        "summer"
+      ],
+      "pattern": "solid",
+      "gender": "unisex",
+      "tier": 2
+    },
+    {
+      "id": "accessory-014",
+      "category": "accessory",
+      "name": "Floral silk scarf",
+      "brand": "Zara",
+      "colors": [
+        "pink",
+        "green"
+      ],
+      "material": "silk",
+      "style": [
+        "elegant",
+        "feminine"
+      ],
+      "season": [
+        "spring"
+      ],
+      "pattern": "floral",
+      "gender": "unisex",
+      "tier": 2
+    },
+    {
+      "id": "accessory-015",
+      "category": "accessory",
+      "name": "Black faux-leather belt bag",
+      "brand": "H&M",
+      "colors": [
+        "black"
+      ],
+      "material": "faux-leather",
+      "style": [
+        "casual",
+        "hands-free"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "pattern": "solid",
+      "details": [
+        "adjustable-strap",
+        "zipper"
+      ],
+      "gender": "unisex",
+      "tier": 2
+    },
+    {
+      "id": "special-009",
+      "category": "outerwear",
+      "name": "White cotton terry bathrobe",
+      "brand": "Pottery Barn",
+      "colors": [
+        "white"
+      ],
+      "material": "cotton terry",
+      "style": [
+        "loungewear",
+        "home"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "relaxed",
+      "pattern": "solid",
+      "details": [
+        "belt",
+        "pockets"
+      ],
+      "gender": "unisex",
+      "tier": 3
+    },
+    {
+      "id": "special-010",
+      "category": "top",
+      "name": "Striped cotton pajama set",
+      "brand": "Gap",
+      "colors": [
+        "blue",
+        "white"
+      ],
+      "material": "cotton",
+      "style": [
+        "loungewear",
+        "sleepwear"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "relaxed",
+      "pattern": "striped",
+      "details": [
+        "button-front",
+        "long-sleeve"
+      ],
+      "gender": "unisex",
+      "tier": 3
+    }
+  ],
+  "results": [
+    {
+      "id": "accessory-001",
+      "name": "Classic black leather belt",
+      "status": "success",
+      "filePath": "unisex/accessory/uniqlo-classic-black-leather-belt.webp"
+    },
+    {
+      "id": "accessory-002",
+      "name": "Brown leather dress belt",
+      "status": "success",
+      "filePath": "unisex/accessory/h-m-brown-leather-dress-belt.webp"
+    },
+    {
+      "id": "accessory-003",
+      "name": "Beige canvas tote bag",
+      "status": "success",
+      "filePath": "unisex/accessory/everlane-beige-canvas-tote-bag.webp"
+    },
+    {
+      "id": "accessory-004",
+      "name": "Black leather crossbody bag",
+      "status": "success",
+      "filePath": "unisex/accessory/zara-black-leather-crossbody-bag.webp"
+    },
+    {
+      "id": "accessory-005",
+      "name": "Navy backpack",
+      "status": "success",
+      "filePath": "unisex/accessory/herschel-navy-backpack.webp"
+    },
+    {
+      "id": "accessory-006",
+      "name": "Gray wool scarf",
+      "status": "success",
+      "filePath": "unisex/accessory/uniqlo-gray-wool-scarf.webp"
+    },
+    {
+      "id": "accessory-007",
+      "name": "Black knit beanie",
+      "status": "success",
+      "filePath": "unisex/accessory/h-m-black-knit-beanie.webp"
+    },
+    {
+      "id": "accessory-008",
+      "name": "Black cotton baseball cap",
+      "status": "success",
+      "filePath": "unisex/accessory/nike-black-cotton-baseball-cap.webp"
+    },
+    {
+      "id": "accessory-009",
+      "name": "Black aviator sunglasses",
+      "status": "success",
+      "filePath": "unisex/accessory/ray-ban-black-aviator-sunglasses.webp"
+    },
+    {
+      "id": "accessory-010",
+      "name": "Silver minimalist watch",
+      "status": "success",
+      "filePath": "unisex/accessory/daniel-wellington-silver-minimalist-watch.webp"
+    },
+    {
+      "id": "accessory-011",
+      "name": "Brown leather wallet",
+      "status": "success",
+      "filePath": "unisex/accessory/fossil-brown-leather-wallet.webp"
+    },
+    {
+      "id": "accessory-012",
+      "name": "Navy and white striped canvas tote bag",
+      "status": "success",
+      "filePath": "unisex/accessory/gap-navy-and-white-striped-canvas-tote-bag.webp"
+    },
+    {
+      "id": "accessory-013",
+      "name": "Beige cotton bucket hat",
+      "status": "success",
+      "filePath": "unisex/accessory/uniqlo-beige-cotton-bucket-hat.webp"
+    },
+    {
+      "id": "accessory-014",
+      "name": "Floral silk scarf",
+      "status": "success",
+      "filePath": "unisex/accessory/zara-floral-silk-scarf.webp"
+    },
+    {
+      "id": "accessory-015",
+      "name": "Black faux-leather belt bag",
+      "status": "success",
+      "filePath": "unisex/accessory/h-m-black-faux-leather-belt-bag.webp"
+    },
+    {
+      "id": "special-009",
+      "name": "White cotton terry bathrobe",
+      "status": "success",
+      "filePath": "unisex/outerwear/pottery-barn-white-cotton-terry-bathrobe.webp"
+    },
+    {
+      "id": "special-010",
+      "name": "Striped cotton pajama set",
+      "status": "success",
+      "filePath": "unisex/top/gap-striped-cotton-pajama-set.webp"
+    }
+  ],
+  "generatedAt": "2025-11-23T08:19:39.615Z"
+}

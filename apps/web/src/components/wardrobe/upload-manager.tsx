@@ -31,7 +31,13 @@ type UploadStatus = {
 	error?: string;
 };
 
-export function UploadManager() {
+type UploadManagerProps = {
+	onUploadStateChange?: (hasActiveUploads: boolean) => void;
+};
+
+export function UploadManager({
+	onUploadStateChange,
+}: UploadManagerProps = {}) {
 	const [uploads, setUploads] = useState<UploadStatus[]>([]);
 	const [isUploading, setIsUploading] = useState(false);
 
@@ -41,6 +47,7 @@ export function UploadManager() {
 		}
 
 		setIsUploading(true);
+		onUploadStateChange?.(true);
 
 		// Initialize upload status for each file
 		const newUploads: UploadStatus[] = files.map((file, index) => ({
@@ -154,6 +161,7 @@ export function UploadManager() {
 			toast.error(errorMessage);
 		} finally {
 			setIsUploading(false);
+			onUploadStateChange?.(false);
 		}
 	};
 

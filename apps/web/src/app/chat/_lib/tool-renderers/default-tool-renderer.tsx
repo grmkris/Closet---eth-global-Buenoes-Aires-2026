@@ -116,7 +116,6 @@ export function DefaultToolRenderer({ part }: ToolRendererProps) {
 			color: "text-muted-foreground",
 			badge: "secondary" as const,
 			label: "Preparing...",
-			bgGradient: "bg-muted/30",
 		},
 		running: {
 			icon: Loader2,
@@ -124,7 +123,6 @@ export function DefaultToolRenderer({ part }: ToolRendererProps) {
 			color: "text-primary",
 			badge: "default" as const,
 			label: "Working...",
-			bgGradient: "bg-gradient-to-br from-primary/5 to-transparent",
 		},
 		success: {
 			icon: CheckCircle,
@@ -132,7 +130,6 @@ export function DefaultToolRenderer({ part }: ToolRendererProps) {
 			color: "text-primary",
 			badge: "secondary" as const,
 			label: "Completed",
-			bgGradient: "bg-gradient-to-br from-primary/5 to-transparent",
 		},
 		error: {
 			icon: XCircle,
@@ -140,7 +137,6 @@ export function DefaultToolRenderer({ part }: ToolRendererProps) {
 			color: "text-destructive",
 			badge: "destructive" as const,
 			label: "Failed",
-			bgGradient: "bg-gradient-to-br from-destructive/5 to-transparent",
 		},
 	};
 
@@ -153,14 +149,9 @@ export function DefaultToolRenderer({ part }: ToolRendererProps) {
 	const input = getToolInput(part);
 
 	return (
-		<div
-			className={cn(
-				"my-3 overflow-hidden rounded-lg border bg-card shadow-sm transition-shadow hover:shadow-md",
-				config.bgGradient
-			)}
-		>
-			{/* Header */}
-			<div className="flex items-center gap-2 border-b bg-muted/20 px-4 py-3">
+		<div className="my-3 max-w-full overflow-hidden rounded-lg border bg-card">
+			{/* Header - clean, no gradient */}
+			<div className="flex items-center gap-2 border-b px-4 py-3">
 				<StatusIcon className={cn("h-4 w-4", config.className, config.color)} />
 				<span className="font-medium text-sm">{formattedName}</span>
 				<Badge className="ml-auto" variant={config.badge}>

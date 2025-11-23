@@ -1,6 +1,7 @@
 "use client";
 
 import { USDC_ADDRESSES, WALLET_UI_CONFIG } from "@ai-stilist/shared/constants";
+import { Wallet } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { erc20Abi, formatUnits } from "viem";
@@ -12,7 +13,7 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { formatAddress } from "@/lib/utils";
+import { formatAddress, formatCompactNumber } from "@/lib/utils";
 
 export function WalletBadge() {
 	const { address, isConnected } = useAccount();
@@ -50,44 +51,50 @@ export function WalletBadge() {
 		}
 	};
 
-	// Hide completely when wallet not connected
-	if (!(isConnected && address)) {
-		return null;
-	}
-
 	// Format USDC balance for display
-	const formattedBalance = usdcBalance
-		? Number.parseFloat(formatUnits(usdcBalance, 6)).toFixed(
-				WALLET_UI_CONFIG.USDC_DECIMALS
-			)
-		: "0.00";
+	const balanceNumber = usdcBalance
+		? Number.parseFloat(formatUnits(usdcBalance, 6))
+		: 0;
 
-	const truncatedAddress = formatAddress(address);
+	const compactBalance = formatCompactNumber(balanceNumber, 1);
+	const fullBalance = balanceNumber.toFixed(WALLET_UI_CONFIG.USDC_DECIMALS);
+	const truncatedAddress = address ? formatAddress(address) : "";
 
+	// Render consistent wrapper to avoid hydration mismatch
+	// suppressHydrationWarning handles server/client state differences
 	return (
-		<TooltipProvider>
-			<Tooltip>
-				<TooltipTrigger asChild>
-					<Badge
-						className="cursor-pointer font-mono text-xs"
-						onClick={copyAddress}
-						variant="secondary"
-					>
-						{isLoading ? (
-							<span className="animate-pulse">Loading...</span>
-						) : (
-							<>
-								{truncatedAddress} • ${formattedBalance} USDC
-							</>
-						)}
-					</Badge>
-				</TooltipTrigger>
-				<TooltipContent>
-					<p className="font-mono text-xs">
-						{copied ? "Copied!" : "Click to copy address"}
-					</p>
-				</TooltipContent>
-			</Tooltip>
-		</TooltipProvider>
+		<div suppressHydrationWarning>
+			{isConnected && address && (
+				<TooltipProvider>
+					<Tooltip>
+						<TooltipTrigger asChild>
+							<Badge
+								className="group flex cursor-pointer items-center gap-1.5 font-mono text-xs transition-all hover:scale-[1.02]"
+								onClick={copyAddress}
+								variant="secondary"
+							>
+								{isLoading ? (
+									<span className="animate-pulse">Loading...</span>
+								) : (
+									<>
+										<Wallet className="size-3.5 shrink-0" />
+										<span className="font-semibold">${compactBalance}</span>
+									</>
+								)}
+							</Badge>
+						</TooltipTrigger>
+						<TooltipContent className="font-mono text-xs">
+							<div className="flex flex-col gap-1">
+								<p className="text-muted-foreground">
+									{copied ? "✓ Copied!" : "Click to copy"}
+								</p>
+								<p className="font-semibold">{truncatedAddress}</p>
+								<p className="text-muted-foreground">${fullBalance} USDC</p>
+							</div>
+						</TooltipContent>
+					</Tooltip>
+				</TooltipProvider>
+			)}
+		</div>
 	);
 }

@@ -3,10 +3,12 @@
 import { Camera, Home, MessageSquare, Shirt } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import UserMenu from "@/components/user-menu";
 import { WalletBadge } from "@/components/wallet/wallet-badge";
 import { cn } from "@/lib/utils";
+import { UploadModal } from "./wardrobe/upload-modal";
 
 /**
  * Mobile-only bottom navigation bar
@@ -14,6 +16,7 @@ import { cn } from "@/lib/utils";
  */
 export function BottomNav() {
 	const pathname = usePathname();
+	const [uploadModalOpen, setUploadModalOpen] = useState(false);
 
 	const routes = [
 		{
@@ -29,11 +32,11 @@ export function BottomNav() {
 			active: pathname === "/wardrobe",
 		},
 		{
-			href: "/wardrobe",
 			label: "Upload",
 			icon: Camera,
 			active: false,
-			isFAB: true, // Floating Action Button (center) - temporarily links to wardrobe
+			isFAB: true, // Floating Action Button (center) - triggers upload modal
+			key: "upload-fab", // Unique key to avoid React duplicate key warning
 		},
 		{
 			href: "/chat",
@@ -51,13 +54,17 @@ export function BottomNav() {
 			}}
 		>
 			<div className="flex h-16 items-center justify-around px-2">
+				{/** biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <LIST_MAP> */}
 				{routes.map((route) => {
 					const Icon = route.icon;
 
 					// Special case: Profile menu
 					if ("isProfile" in route && route.isProfile) {
 						return (
-							<div className="flex flex-col items-center" key={route.label}>
+							<div
+								className="flex flex-col items-center"
+								key={"key" in route ? route.key : route.label}
+							>
 								<UserMenu
 									trigger={
 										<Button
@@ -78,14 +85,15 @@ export function BottomNav() {
 
 					if ("isFAB" in route && route.isFAB) {
 						return (
-							<Link
+							<button
 								className="flex flex-col items-center justify-center gap-0.5 rounded-full bg-primary p-3 text-primary-foreground shadow-lg transition-transform active:scale-95"
-								href={route.href}
-								key={route.href}
+								key={route.key}
+								onClick={() => setUploadModalOpen(true)}
+								type="button"
 							>
 								<Icon className="h-6 w-6" />
 								<span className="sr-only">{route.label}</span>
-							</Link>
+							</button>
 						);
 					}
 
@@ -98,8 +106,8 @@ export function BottomNav() {
 									? "text-foreground"
 									: "text-muted-foreground hover:text-foreground"
 							)}
-							href={route.href}
-							key={route.href}
+							href={"href" in route ? route.href : "/"}
+							key={"key" in route ? route.key : route.href}
 						>
 							<Icon
 								className={cn(
@@ -112,6 +120,9 @@ export function BottomNav() {
 					);
 				})}
 			</div>
+
+			{/* Upload Modal */}
+			<UploadModal onOpenChange={setUploadModalOpen} open={uploadModalOpen} />
 		</nav>
 	);
 }

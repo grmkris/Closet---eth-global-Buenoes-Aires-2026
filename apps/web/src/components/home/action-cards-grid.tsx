@@ -1,6 +1,6 @@
 "use client";
 
-import { Camera, MessageSquare, Shirt, TrendingUp } from "lucide-react";
+import { Camera, MessageSquare, Shirt } from "lucide-react";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
@@ -23,12 +23,6 @@ const actions = [
 		label: "AI Stylist",
 		description: "Get advice",
 		icon: MessageSquare,
-	},
-	{
-		href: "/outfits",
-		label: "My Outfits",
-		description: "Saved looks",
-		icon: TrendingUp,
 	},
 ] as const;
 

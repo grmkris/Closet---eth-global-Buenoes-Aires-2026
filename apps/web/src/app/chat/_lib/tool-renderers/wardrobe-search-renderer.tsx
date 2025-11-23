@@ -39,7 +39,10 @@ export function WardrobeSearchRenderer({ part }: ToolRendererProps) {
 			footer={footer}
 			headerIcon={<Search className="h-4 w-4 text-muted-foreground" />}
 			headerTitle="Wardrobe Search"
-			items={items}
+			items={items.map((item) => ({
+				...item,
+				status: item.status,
+			}))}
 		/>
 	);
 }

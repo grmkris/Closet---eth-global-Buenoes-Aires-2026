@@ -1,16 +1,25 @@
 "use client";
 
-import { CheckCircle, ShirtIcon } from "lucide-react";
-import Image from "next/image";
+import type { ClothingItemId } from "@ai-stilist/shared/typeid";
+import type { ClothingItemStatus } from "@ai-stilist/shared/wardrobe-types";
+import { CheckCircle, ChevronDown } from "lucide-react";
 import type { ReactNode } from "react";
+import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
+import { ItemCardMinimal } from "@/components/wardrobe/item-card-minimal";
+import { ItemDetailDialog } from "@/components/wardrobe/item-detail-dialog";
+import { cn } from "@/lib/utils";
+import { getItemCardStatus, useItemDetail } from "./shared";
 
 /**
  * Common item type shared between searchWardrobe and showItems
  */
 export type GridItem = {
-	id: string;
+	id: ClothingItemId;
 	thumbnailUrl: string | null;
+
+	originalFileName?: string;
+	status: ClothingItemStatus;
 	categories: string[];
 	colors: Array<{
 		name: string;
@@ -39,6 +48,7 @@ type ItemsGridProps = {
 /**
  * Shared grid component for displaying clothing items
  * Used by both wardrobe search and show items renderers
+ * Now uses ItemCardMinimal for consistent styling with wardrobe gallery
  */
 export function ItemsGrid({
 	items,
@@ -49,10 +59,14 @@ export function ItemsGrid({
 	emptyMessage,
 	emptyBadge = "No results",
 }: ItemsGridProps) {
+	const { selectedItemId, dialogOpen, setDialogOpen, openItem } =
+		useItemDetail();
+	const [isCollapsed, setIsCollapsed] = useState(false);
+
 	if (items.length === 0) {
 		return (
-			<div className="my-3 overflow-hidden rounded-lg border bg-card shadow-sm">
-				<div className="flex items-center gap-2 border-b bg-gradient-to-r from-muted/40 to-muted/20 px-4 py-3">
+			<div className="my-3 max-w-full overflow-hidden rounded-lg border bg-card">
+				<div className="flex items-center gap-2 border-b px-4 py-3">
 					{headerIcon}
 					<span className="font-medium text-sm">{headerTitle}</span>
 					<Badge className="ml-auto" variant="secondary">
@@ -67,101 +81,69 @@ export function ItemsGrid({
 	}
 
 	return (
-		<div className="my-3 overflow-hidden rounded-lg border bg-card shadow-sm">
-			{/* Header with subtle gradient */}
-			<div className="flex items-center gap-2 border-b bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 px-4 py-3">
-				{headerIcon}
-				<span className="font-medium text-sm">{headerTitle}</span>
-				<Badge className="ml-auto" variant="secondary">
-					<CheckCircle className="mr-1 h-3 w-3 text-primary" />
-					{badgeContent}
-				</Badge>
-			</div>
+		<>
+			<div className="my-3 max-w-full overflow-hidden rounded-lg border bg-card">
+				{/* Clickable header for collapse/expand */}
+				<button
+					className="flex w-full cursor-pointer items-center gap-2 border-b px-4 py-3 text-left transition-colors hover:bg-muted/50"
+					onClick={() => setIsCollapsed(!isCollapsed)}
+					type="button"
+				>
+					{headerIcon}
+					<span className="font-medium text-sm">{headerTitle}</span>
+					<Badge className="ml-auto" variant="secondary">
+						<CheckCircle className="mr-1 h-3 w-3 text-primary" />
+						{badgeContent}
+					</Badge>
+					<ChevronDown
+						className={cn(
+							"ml-2 h-4 w-4 text-muted-foreground transition-transform",
+							isCollapsed && "rotate-180"
+						)}
+					/>
+				</button>
 
-			{/* Grid of items - mobile-first with larger items */}
-			<div className="grid grid-cols-2 gap-3 p-4 sm:grid-cols-3 md:grid-cols-4 lg:gap-4">
-				{items.map((item) => (
-					<div
-						className="overflow-hidden rounded-lg border bg-background shadow-sm"
-						key={item.id}
-					>
-						{/* Thumbnail */}
-						<div className="relative aspect-square overflow-hidden bg-gradient-to-br from-muted/20 to-muted/5">
-							{item.thumbnailUrl ? (
-								<Image
-									alt={item.categories.join(", ")}
-									className="object-cover"
-									fill
-									sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
-									src={item.thumbnailUrl}
-								/>
-							) : (
-								<div className="absolute inset-0 flex items-center justify-center">
-									<ShirtIcon className="h-14 w-14 text-muted-foreground/20" />
-								</div>
-							)}
+				{/* Collapsible content */}
+				{!isCollapsed && (
+					<>
+						{/* Grid of items using ItemCardMinimal */}
+						<div className="grid grid-cols-2 gap-1 p-3 sm:grid-cols-3 md:grid-cols-4 md:gap-2">
+							{items.map((item) => {
+								// Map grid item structure to ItemCardMinimal props
+								const category = item.categories[0] || undefined;
+								const tags = Object.values(item.tagsByType).flat().slice(0, 3);
+
+								return (
+									<ItemCardMinimal
+										category={category}
+										id={item.id}
+										imageUrl={item.thumbnailUrl || ""}
+										key={item.id}
+										name={item.originalFileName || category || "Item"}
+										onClick={() => openItem(item.id)}
+										status={getItemCardStatus(item.status || "completed")}
+										tags={tags}
+									/>
+								);
+							})}
 						</div>
 
-						{/* Metadata with improved spacing */}
-						<div className="space-y-1.5 p-3">
-							{/* Categories */}
-							<div className="font-medium text-xs leading-tight">
-								{item.categories.join(", ") || "Unknown"}
+						{/* Footer - clean, no gradient */}
+						{footer && (
+							<div className="border-t px-4 py-2.5">
+								<p className="text-muted-foreground text-xs">{footer}</p>
 							</div>
-
-							{/* Colors with enhanced presentation */}
-							{item.colors.length > 0 && (
-								<div className="flex flex-wrap items-center gap-1.5">
-									{item.colors.map((color, idx) => (
-										<div
-											className="flex items-center gap-1"
-											key={`${color.name}-${idx}`}
-										>
-											{color.hex && (
-												<div
-													className="h-3.5 w-3.5 rounded-full border-2 shadow-sm"
-													style={{ backgroundColor: color.hex }}
-													title={color.name}
-												/>
-											)}
-											{idx === 0 && (
-												<span className="text-muted-foreground text-xs">
-													{color.name}
-												</span>
-											)}
-										</div>
-									))}
-								</div>
-							)}
-
-							{/* Tags with improved visibility */}
-							{Object.entries(item.tagsByType).length > 0 && (
-								<div className="flex flex-wrap gap-1">
-									{Object.entries(item.tagsByType)
-										.slice(0, 1)
-										.map(([type, tags]) => (
-											<Badge className="text-xs" key={type} variant="outline">
-												{tags[0]}
-											</Badge>
-										))}
-									{Object.keys(item.tagsByType).length > 1 && (
-										<Badge className="text-xs" variant="secondary">
-											+{Object.keys(item.tagsByType).length - 1}
-										</Badge>
-									)}
-								</div>
-							)}
-						</div>
-					</div>
-				))}
+						)}
+					</>
+				)}
 			</div>
 
-			{/* Footer with gradient */}
-			{footer && (
-				<div className="border-t bg-gradient-to-r from-muted/40 to-muted/20 px-4 py-2.5">
-					<p className="text-muted-foreground text-xs">{footer}</p>
-				</div>
-			)}
-		</div>
+			{/* Detail dialog - reused from wardrobe */}
+			<ItemDetailDialog
+				itemId={selectedItemId}
+				onOpenChange={setDialogOpen}
+				open={dialogOpen}
+			/>
+		</>
 	);
 }

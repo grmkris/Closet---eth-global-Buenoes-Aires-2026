@@ -17,6 +17,7 @@ import {
 	PromptInputTextarea,
 	PromptInputTools,
 } from "@/components/ai-elements/prompt-input";
+import { ChatContext } from "./chat-context";
 import { ChatMessages } from "./chat-messages";
 import { EmptyChat } from "./empty-chat";
 import { useChatStream } from "./use-chat-stream";
@@ -55,7 +56,7 @@ export function Chat({
 	);
 
 	// Initialize chat stream with stable conversationId
-	const { messages, sendMessage, status } = useChatStream({
+	const { messages, sendMessage, status, addToolOutput } = useChatStream({
 		conversationId: normalizedConversationId,
 		initialMessages,
 		onFinish: () => {
@@ -112,41 +113,46 @@ export function Chat({
 	const isLoading = status === "submitted" || status === "streaming";
 
 	return (
-		<div className="relative flex h-full flex-col overflow-hidden">
-			{/* Content area - show suggested prompts when empty, messages otherwise */}
-			<div className="flex-1 overflow-hidden">
-				{messages.length === 0 ? (
-					<EmptyChat isLoading={isLoading} onSendMessage={handleSendMessage} />
-				) : (
-					<Conversation className="h-full">
-						<ConversationContent>
-							<ChatMessages isLoading={isLoading} messages={messages} />
-						</ConversationContent>
-						<ConversationScrollButton />
-					</Conversation>
-				)}
-			</div>
-
-			{/* Input area - always visible */}
-			<div className="border-t bg-background">
-				<div className="p-3 pb-24 md:p-4 md:pb-4">
-					<PromptInput
-						onSubmit={(message) => {
-							if (message.text?.trim()) {
-								handleSendMessage(message.text);
-							}
-						}}
-					>
-						<PromptInputTextarea
-							autoFocus
-							placeholder="Ask about your wardrobe, style, or outfit ideas..."
+		<ChatContext.Provider value={{ addToolOutput }}>
+			<div className="relative flex h-full flex-col overflow-hidden">
+				{/* Content area - show suggested prompts when empty, messages otherwise */}
+				<div className="flex-1 overflow-hidden">
+					{messages.length === 0 ? (
+						<EmptyChat
+							isLoading={isLoading}
+							onSendMessage={handleSendMessage}
 						/>
-						<PromptInputTools>
-							<PromptInputSubmit status={isLoading ? "streaming" : "ready"} />
-						</PromptInputTools>
-					</PromptInput>
+					) : (
+						<Conversation className="h-full">
+							<ConversationContent>
+								<ChatMessages isLoading={isLoading} messages={messages} />
+							</ConversationContent>
+							<ConversationScrollButton />
+						</Conversation>
+					)}
+				</div>
+
+				{/* Input area - always visible */}
+				<div className="border-t bg-background">
+					<div className="p-3 pb-24 md:p-4 md:pb-4">
+						<PromptInput
+							onSubmit={(message) => {
+								if (message.text?.trim()) {
+									handleSendMessage(message.text);
+								}
+							}}
+						>
+							<PromptInputTextarea
+								autoFocus
+								placeholder="Ask about your wardrobe, style, or outfit ideas..."
+							/>
+							<PromptInputTools>
+								<PromptInputSubmit status={isLoading ? "streaming" : "ready"} />
+							</PromptInputTools>
+						</PromptInput>
+					</div>
 				</div>
 			</div>
-		</div>
+		</ChatContext.Provider>
 	);
 }

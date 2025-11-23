@@ -8,7 +8,7 @@ export const items: MarketplaceItem[] = [
 			"Timeless black leather motorcycle jacket with asymmetric zip closure",
 		category: "outerwear",
 		brand: "Heritage & Co",
-		price: 299.99,
+		price: 0.05,
 		imageUrl: "https://images.unsplash.com/photo-1551028719-00167b16eac5",
 		available: true,
 		metadata: {
@@ -23,7 +23,7 @@ export const items: MarketplaceItem[] = [
 		description: "Distressed light blue denim jacket with classic fit",
 		category: "outerwear",
 		brand: "Vintage Co",
-		price: 89.99,
+		price: 0.03,
 		imageUrl: "https://images.unsplash.com/photo-1576995853123-5a10305d93c0",
 		available: true,
 		metadata: {
@@ -38,7 +38,7 @@ export const items: MarketplaceItem[] = [
 		description: "Minimalist low-top sneakers in premium white canvas",
 		category: "footwear",
 		brand: "Urban Stride",
-		price: 79.99,
+		price: 0.02,
 		imageUrl: "https://images.unsplash.com/photo-1549298916-b41d501d3772",
 		available: true,
 		metadata: {
@@ -53,7 +53,7 @@ export const items: MarketplaceItem[] = [
 		description: "Classic leather Chelsea boots with elastic side panels",
 		category: "footwear",
 		brand: "Heritage & Co",
-		price: 189.99,
+		price: 0.04,
 		imageUrl: "https://images.unsplash.com/photo-1608256246200-53e635b5b65f",
 		available: true,
 		metadata: {
@@ -68,7 +68,7 @@ export const items: MarketplaceItem[] = [
 		description: "Luxurious navy blue crew neck sweater in pure cashmere",
 		category: "tops",
 		brand: "Luxury Knits",
-		price: 249.99,
+		price: 0.05,
 		imageUrl: "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633",
 		available: true,
 		metadata: {
@@ -83,7 +83,7 @@ export const items: MarketplaceItem[] = [
 		description: "Charcoal grey wool blend trousers with classic fit",
 		category: "bottoms",
 		brand: "Formal House",
-		price: 129.99,
+		price: 0.03,
 		imageUrl: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80",
 		available: true,
 		metadata: {
@@ -98,7 +98,7 @@ export const items: MarketplaceItem[] = [
 		description: "Hand-rolled silk scarf with geometric pattern",
 		category: "accessories",
 		brand: "Luxury House",
-		price: 159.99,
+		price: 0.04,
 		imageUrl: "https://images.unsplash.com/photo-1601924994987-69e26d50dc26",
 		available: true,
 		metadata: {
@@ -112,7 +112,7 @@ export const items: MarketplaceItem[] = [
 		description: "Compact leather crossbody bag in cognac brown",
 		category: "accessories",
 		brand: "Heritage & Co",
-		price: 199.99,
+		price: 0.04,
 		imageUrl: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa",
 		available: true,
 		metadata: {
@@ -126,7 +126,7 @@ export const items: MarketplaceItem[] = [
 		description: "Lightweight grey cardigan in merino wool",
 		category: "tops",
 		brand: "Luxury Knits",
-		price: 179.99,
+		price: 0.03,
 		imageUrl: "https://images.unsplash.com/photo-1434389677669-e08b4cac3105",
 		available: true,
 		metadata: {
@@ -141,7 +141,7 @@ export const items: MarketplaceItem[] = [
 		description: "Modern slim-fit chinos in khaki",
 		category: "bottoms",
 		brand: "Urban Stride",
-		price: 69.99,
+		price: 0.01,
 		imageUrl: "https://images.unsplash.com/photo-1473966968600-fa801b869a1a",
 		available: true,
 		metadata: {

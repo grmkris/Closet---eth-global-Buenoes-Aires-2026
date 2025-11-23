@@ -85,7 +85,8 @@ export default function SubscribePage() {
 						<div>
 							<h2 className="font-bold text-2xl">Subscription Activated!</h2>
 							<p className="text-muted-foreground">
-								You're now subscribed to {subscribeData.agent.name}
+								You're now subscribed to{" "}
+								{subscribeData.agent?.name ?? "Premium"}
 							</p>
 						</div>
 						{subscribeData.payment.network && (

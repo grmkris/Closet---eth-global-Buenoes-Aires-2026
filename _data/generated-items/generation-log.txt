@@ -1,0 +1,142 @@
+
+==============================================
+CLOTHING ITEM IMAGE GENERATION LOG
+==============================================
+Generated: 2025-11-23T08:19:39.615Z
+Gender Filter: all
+Total Items: 129
+Successful: 127
+Failed: 2
+Output Directory: /Users/kristjangrm/Code/github-com/ai-stilist/_data/generated-items
+
+RESULTS:
+✓ men-top-001 - White crew-neck t-shirt 
+✓ men-top-002 - Black crew-neck t-shirt 
+✓ men-top-003 - Navy v-neck t-shirt 
+✓ men-top-004 - Striped long-sleeve t-shirt 
+✓ men-top-005 - White oxford button-down shirt 
+✓ men-top-006 - Light blue dress shirt 
+✓ men-top-007 - Black turtleneck sweater 
+✓ men-top-008 - Gray crew-neck sweater 
+✓ men-top-009 - Navy cable-knit sweater 
+✓ men-top-010 - Gray hoodie 
+✓ men-top-011 - Red and black flannel shirt 
+✓ men-top-012 - Light wash denim shirt 
+✓ men-top-013 - Navy polo shirt 
+✓ men-top-014 - Black athletic performance t-shirt 
+✓ men-top-015 - Charcoal long-sleeve henley 
+✓ women-top-001 - White basic t-shirt 
+✓ women-top-002 - Black basic t-shirt 
+✓ women-top-003 - Striped breton top 
+✓ women-top-004 - Cream silk blouse 
+✓ women-top-005 - White button-down shirt 
+✓ women-top-006 - Beige cropped sweater 
+✓ women-top-007 - Black turtleneck 
+✓ women-top-008 - Oversized gray sweater 
+✓ women-top-009 - Camel cardigan 
+✓ women-top-010 - White ribbed tank top 
+✓ women-top-011 - Vintage band graphic t-shirt 
+✓ women-top-012 - Floral print blouse 
+✓ women-top-013 - Dusty pink cropped hoodie 
+✓ women-top-014 - Black fitted long-sleeve 
+✓ women-top-015 - Navy silk camisole 
+✓ men-bottom-001 - Dark wash raw denim jeans 
+✓ men-bottom-002 - Light wash jeans 
+✓ men-bottom-003 - Black jeans 
+✓ men-bottom-004 - Khaki chinos 
+✓ men-bottom-005 - Navy chinos 
+✓ men-bottom-006 - Gray dress pants 
+✓ men-bottom-007 - Black dress pants 
+✓ men-bottom-008 - Olive cargo pants 
+✓ men-bottom-009 - Black athletic joggers 
+✗ men-bottom-010 - Navy chino shorts (No files returned in response. Ensure the model supports image generation.)
+✓ men-bottom-011 - Light wash denim shorts 
+✓ men-bottom-012 - Brown corduroy pants 
+✓ women-bottom-001 - Dark wash high-waisted jeans 
+✓ women-bottom-002 - Light wash mom jeans 
+✓ women-bottom-003 - Black jeans 
+✓ women-bottom-004 - Vintage wash wide-leg jeans 
+✓ women-bottom-005 - White jeans 
+✓ women-bottom-006 - Black dress pants 
+✓ women-bottom-007 - Khaki wide-leg trousers 
+✓ women-bottom-008 - Black pleated midi skirt 
+✓ women-bottom-009 - Denim A-line mini skirt 
+✓ women-bottom-010 - Black faux-leather pants 
+✓ women-bottom-011 - Black high-rise athletic leggings 
+✓ women-bottom-012 - High-waisted denim shorts 
+✓ men-outerwear-001 - Medium wash denim jacket 
+✓ men-outerwear-002 - Black leather moto jacket 
+✓ men-outerwear-003 - Navy wool coat 
+✗ men-outerwear-004 - Black quilted puffer jacket (No files returned in response. Ensure the model supports image generation.)
+✓ men-outerwear-005 - Olive bomber jacket 
+✓ men-outerwear-006 - Beige trench coat 
+✓ men-outerwear-007 - Gray zip-up hoodie 
+✓ men-outerwear-008 - Navy blazer 
+✓ men-outerwear-009 - Green waterproof parka 
+✓ men-outerwear-010 - Gray shawl-collar cardigan 
+✓ women-outerwear-001 - Light wash denim jacket 
+✓ women-outerwear-002 - Black leather moto jacket 
+✓ women-outerwear-003 - Beige trench coat 
+✓ women-outerwear-004 - Camel double-breasted wool coat 
+✓ women-outerwear-005 - Cream quilted puffer jacket 
+✓ women-outerwear-006 - Black oversized blazer 
+✓ women-outerwear-007 - Sage green satin bomber jacket 
+✓ women-outerwear-008 - Gray long open-front cardigan 
+✓ women-outerwear-009 - Brown teddy sherpa coat 
+✓ women-outerwear-010 - Yellow waterproof rain jacket 
+✓ women-dress-001 - Little black dress 
+✓ women-dress-002 - Floral wrap midi dress 
+✓ women-dress-003 - White cotton slip maxi dress 
+✓ women-dress-004 - Gray oversized knit sweater dress 
+✓ women-dress-005 - Striped cotton shirt dress 
+✓ women-dress-006 - Black silk slip dress 
+✓ women-dress-007 - Beige linen midi dress 
+✓ women-dress-008 - Navy sequin mini party dress 
+✓ women-dress-009 - Burgundy wrap midi dress 
+✓ women-dress-010 - Button-front denim dress 
+✓ men-shoes-001 - White leather sneakers 
+✓ men-shoes-002 - Black leather sneakers 
+✓ men-shoes-003 - Brown leather Chelsea boots 
+✓ men-shoes-004 - Black leather oxford dress shoes 
+✓ men-shoes-005 - Navy canvas sneakers 
+✓ men-shoes-006 - Gray mesh running shoes 
+✓ men-shoes-007 - Brown suede loafers 
+✓ men-shoes-008 - Sand suede desert boots 
+✓ men-shoes-009 - Black leather sandals 
+✓ men-shoes-010 - Black canvas slip-on sneakers 
+✓ women-shoes-001 - White leather sneakers 
+✓ women-shoes-002 - Black leather ankle boots 
+✓ women-shoes-003 - Brown leather knee-high boots 
+✓ women-shoes-004 - Black leather ballet flats 
+✓ women-shoes-005 - Tan leather sandals 
+✓ women-shoes-006 - Black leather pointed-toe stiletto heels 
+✓ women-shoes-007 - White and pink mesh running shoes 
+✓ women-shoes-008 - Brown leather loafers 
+✓ women-shoes-009 - White leather mules 
+✓ women-shoes-010 - White canvas platform sneakers 
+✓ accessory-001 - Classic black leather belt 
+✓ accessory-002 - Brown leather dress belt 
+✓ accessory-003 - Beige canvas tote bag 
+✓ accessory-004 - Black leather crossbody bag 
+✓ accessory-005 - Navy backpack 
+✓ accessory-006 - Gray wool scarf 
+✓ accessory-007 - Black knit beanie 
+✓ accessory-008 - Black cotton baseball cap 
+✓ accessory-009 - Black aviator sunglasses 
+✓ accessory-010 - Silver minimalist watch 
+✓ accessory-011 - Brown leather wallet 
+✓ accessory-012 - Navy and white striped canvas tote bag 
+✓ accessory-013 - Beige cotton bucket hat 
+✓ accessory-014 - Floral silk scarf 
+✓ accessory-015 - Black faux-leather belt bag 
+✓ special-001 - Charcoal wool suit jacket 
+✓ special-002 - Charcoal wool suit pants 
+✓ special-003 - Navy silk tie 
+✓ special-004 - Black athletic running shorts 
+✓ special-005 - Black sports bra 
+✓ special-006 - White athletic tank top 
+✓ special-007 - Black one-piece swimsuit 
+✓ special-008 - Navy swim trunks 
+✓ special-009 - White cotton terry bathrobe 
+✓ special-010 - Striped cotton pajama set 
+==============================================

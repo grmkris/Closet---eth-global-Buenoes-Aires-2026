@@ -1,0 +1,3984 @@
+{
+  "items": [
+    {
+      "id": "men-top-001",
+      "category": "top",
+      "name": "White crew-neck t-shirt",
+      "brand": "Uniqlo",
+      "colors": [
+        "white"
+      ],
+      "material": "cotton",
+      "style": [
+        "casual",
+        "minimalist"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "crew-neck",
+        "short-sleeve"
+      ],
+      "gender": "men",
+      "tier": 1
+    },
+    {
+      "id": "men-top-002",
+      "category": "top",
+      "name": "Black crew-neck t-shirt",
+      "brand": "H&M",
+      "colors": [
+        "black"
+      ],
+      "material": "cotton",
+      "style": [
+        "casual",
+        "minimalist"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "crew-neck",
+        "short-sleeve"
+      ],
+      "gender": "men",
+      "tier": 1
+    },
+    {
+      "id": "men-top-003",
+      "category": "top",
+      "name": "Navy v-neck t-shirt",
+      "brand": "Gap",
+      "colors": [
+        "navy"
+      ],
+      "material": "cotton",
+      "style": [
+        "casual"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "v-neck",
+        "short-sleeve"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-top-004",
+      "category": "top",
+      "name": "Striped long-sleeve t-shirt",
+      "brand": "Zara",
+      "colors": [
+        "navy",
+        "white"
+      ],
+      "material": "cotton",
+      "style": [
+        "casual"
+      ],
+      "season": [
+        "spring",
+        "fall"
+      ],
+      "fit": "regular",
+      "pattern": "striped",
+      "details": [
+        "crew-neck",
+        "long-sleeve"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-top-005",
+      "category": "top",
+      "name": "White oxford button-down shirt",
+      "brand": "Uniqlo",
+      "colors": [
+        "white"
+      ],
+      "material": "cotton",
+      "style": [
+        "business-casual",
+        "formal"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "slim-fit",
+      "pattern": "solid",
+      "details": [
+        "button-up",
+        "collar",
+        "long-sleeve"
+      ],
+      "gender": "men",
+      "tier": 1
+    },
+    {
+      "id": "men-top-006",
+      "category": "top",
+      "name": "Light blue dress shirt",
+      "brand": "H&M",
+      "colors": [
+        "light blue"
+      ],
+      "material": "cotton",
+      "style": [
+        "business-casual",
+        "formal"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "slim-fit",
+      "pattern": "solid",
+      "details": [
+        "button-up",
+        "collar",
+        "long-sleeve"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-top-007",
+      "category": "top",
+      "name": "Black turtleneck sweater",
+      "brand": "Zara",
+      "colors": [
+        "black"
+      ],
+      "material": "merino wool",
+      "style": [
+        "minimalist",
+        "smart-casual"
+      ],
+      "season": [
+        "fall",
+        "winter"
+      ],
+      "fit": "slim-fit",
+      "pattern": "solid",
+      "details": [
+        "turtleneck",
+        "long-sleeve"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-top-008",
+      "category": "top",
+      "name": "Gray crew-neck sweater",
+      "brand": "Gap",
+      "colors": [
+        "gray"
+      ],
+      "material": "cotton blend",
+      "style": [
+        "casual"
+      ],
+      "season": [
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "crew-neck",
+        "long-sleeve"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-top-009",
+      "category": "top",
+      "name": "Navy cable-knit sweater",
+      "brand": "Mango",
+      "colors": [
+        "navy"
+      ],
+      "material": "wool blend",
+      "style": [
+        "casual",
+        "preppy"
+      ],
+      "season": [
+        "winter"
+      ],
+      "fit": "regular",
+      "pattern": "cable-knit",
+      "details": [
+        "crew-neck",
+        "long-sleeve"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-top-010",
+      "category": "top",
+      "name": "Gray hoodie",
+      "brand": "Nike",
+      "colors": [
+        "gray"
+      ],
+      "material": "cotton fleece",
+      "style": [
+        "casual",
+        "athletic"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "hood",
+        "kangaroo-pocket"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-top-011",
+      "category": "top",
+      "name": "Red and black flannel shirt",
+      "brand": "Uniqlo",
+      "colors": [
+        "red",
+        "black"
+      ],
+      "material": "cotton",
+      "style": [
+        "casual",
+        "workwear"
+      ],
+      "season": [
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "pattern": "plaid",
+      "details": [
+        "button-up",
+        "long-sleeve"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-top-012",
+      "category": "top",
+      "name": "Light wash denim shirt",
+      "brand": "Levi's",
+      "colors": [
+        "light blue"
+      ],
+      "material": "denim",
+      "style": [
+        "casual"
+      ],
+      "season": [
+        "spring",
+        "fall"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "button-up",
+        "long-sleeve"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-top-013",
+      "category": "top",
+      "name": "Navy polo shirt",
+      "brand": "Ralph Lauren",
+      "colors": [
+        "navy"
+      ],
+      "material": "cotton pique",
+      "style": [
+        "casual",
+        "preppy"
+      ],
+      "season": [
+        "summer"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "polo-collar",
+        "short-sleeve"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-top-014",
+      "category": "top",
+      "name": "Black athletic performance t-shirt",
+      "brand": "Adidas",
+      "colors": [
+        "black"
+      ],
+      "material": "polyester",
+      "style": [
+        "athletic"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "crew-neck",
+        "short-sleeve"
+      ],
+      "features": [
+        "breathable",
+        "moisture-wicking"
+      ],
+      "gender": "men",
+      "tier": 3
+    },
+    {
+      "id": "men-top-015",
+      "category": "top",
+      "name": "Charcoal long-sleeve henley",
+      "brand": "Gap",
+      "colors": [
+        "charcoal"
+      ],
+      "material": "cotton",
+      "style": [
+        "casual"
+      ],
+      "season": [
+        "fall"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "henley",
+        "long-sleeve"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "women-top-001",
+      "category": "top",
+      "name": "White basic t-shirt",
+      "brand": "Everlane",
+      "colors": [
+        "white"
+      ],
+      "material": "cotton",
+      "style": [
+        "casual",
+        "minimalist"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "crew-neck",
+        "short-sleeve"
+      ],
+      "gender": "women",
+      "tier": 1
+    },
+    {
+      "id": "women-top-002",
+      "category": "top",
+      "name": "Black basic t-shirt",
+      "brand": "COS",
+      "colors": [
+        "black"
+      ],
+      "material": "cotton",
+      "style": [
+        "casual",
+        "minimalist"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "crew-neck",
+        "short-sleeve"
+      ],
+      "gender": "women",
+      "tier": 1
+    },
+    {
+      "id": "women-top-003",
+      "category": "top",
+      "name": "Striped breton top",
+      "brand": "Zara",
+      "colors": [
+        "navy",
+        "white"
+      ],
+      "material": "cotton",
+      "style": [
+        "casual",
+        "nautical"
+      ],
+      "season": [
+        "spring",
+        "summer"
+      ],
+      "fit": "regular",
+      "pattern": "striped",
+      "details": [
+        "boat-neck",
+        "long-sleeve"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "women-top-004",
+      "category": "top",
+      "name": "Cream silk blouse",
+      "brand": "Mango",
+      "colors": [
+        "cream"
+      ],
+      "material": "silk",
+      "style": [
+        "elegant",
+        "business-casual"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "v-neck",
+        "long-sleeve"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "women-top-005",
+      "category": "top",
+      "name": "White button-down shirt",
+      "brand": "Everlane",
+      "colors": [
+        "white"
+      ],
+      "material": "cotton",
+      "style": [
+        "minimalist",
+        "business-casual"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "button-up",
+        "collar",
+        "long-sleeve"
+      ],
+      "gender": "women",
+      "tier": 1
+    },
+    {
+      "id": "women-top-006",
+      "category": "top",
+      "name": "Beige cropped sweater",
+      "brand": "H&M",
+      "colors": [
+        "beige"
+      ],
+      "material": "knit",
+      "style": [
+        "casual"
+      ],
+      "season": [
+        "fall",
+        "winter"
+      ],
+      "fit": "cropped",
+      "pattern": "solid",
+      "details": [
+        "crew-neck",
+        "long-sleeve"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "women-top-007",
+      "category": "top",
+      "name": "Black turtleneck",
+      "brand": "Uniqlo",
+      "colors": [
+        "black"
+      ],
+      "material": "merino wool",
+      "style": [
+        "minimalist",
+        "smart-casual"
+      ],
+      "season": [
+        "fall",
+        "winter"
+      ],
+      "fit": "fitted",
+      "pattern": "solid",
+      "details": [
+        "turtleneck",
+        "long-sleeve"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "women-top-008",
+      "category": "top",
+      "name": "Oversized gray sweater",
+      "brand": "Zara",
+      "colors": [
+        "gray"
+      ],
+      "material": "wool blend",
+      "style": [
+        "casual",
+        "cozy"
+      ],
+      "season": [
+        "fall",
+        "winter"
+      ],
+      "fit": "oversized",
+      "pattern": "solid",
+      "details": [
+        "crew-neck",
+        "long-sleeve"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "women-top-009",
+      "category": "top",
+      "name": "Camel cardigan",
+      "brand": "COS",
+      "colors": [
+        "camel"
+      ],
+      "material": "cashmere blend",
+      "style": [
+        "elegant",
+        "minimalist"
+      ],
+      "season": [
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "open-front",
+        "long-sleeve"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "women-top-010",
+      "category": "top",
+      "name": "White ribbed tank top",
+      "brand": "Gap",
+      "colors": [
+        "white"
+      ],
+      "material": "cotton",
+      "style": [
+        "casual"
+      ],
+      "season": [
+        "summer"
+      ],
+      "fit": "fitted",
+      "pattern": "ribbed",
+      "details": [
+        "sleeveless"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "women-top-011",
+      "category": "top",
+      "name": "Vintage band graphic t-shirt",
+      "brand": "Urban Outfitters",
+      "colors": [
+        "black",
+        "white"
+      ],
+      "material": "cotton",
+      "style": [
+        "casual",
+        "vintage"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "regular",
+      "pattern": "graphic",
+      "details": [
+        "crew-neck",
+        "short-sleeve"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "women-top-012",
+      "category": "top",
+      "name": "Floral print blouse",
+      "brand": "Zara",
+      "colors": [
+        "pink",
+        "green",
+        "white"
+      ],
+      "material": "viscose",
+      "style": [
+        "feminine",
+        "romantic"
+      ],
+      "season": [
+        "spring",
+        "summer"
+      ],
+      "fit": "regular",
+      "pattern": "floral",
+      "details": [
+        "v-neck",
+        "long-sleeve"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "women-top-013",
+      "category": "top",
+      "name": "Dusty pink cropped hoodie",
+      "brand": "Alo Yoga",
+      "colors": [
+        "dusty pink"
+      ],
+      "material": "cotton fleece",
+      "style": [
+        "athletic",
+        "casual"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "cropped",
+      "pattern": "solid",
+      "details": [
+        "hood",
+        "cropped"
+      ],
+      "gender": "women",
+      "tier": 3
+    },
+    {
+      "id": "women-top-014",
+      "category": "top",
+      "name": "Black fitted long-sleeve",
+      "brand": "Everlane",
+      "colors": [
+        "black"
+      ],
+      "material": "cotton",
+      "style": [
+        "minimalist",
+        "casual"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "fitted",
+      "pattern": "solid",
+      "details": [
+        "crew-neck",
+        "long-sleeve"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "women-top-015",
+      "category": "top",
+      "name": "Navy silk camisole",
+      "brand": "Mango",
+      "colors": [
+        "navy"
+      ],
+      "material": "silk",
+      "style": [
+        "elegant"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "spaghetti-strap",
+        "sleeveless"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "men-bottom-001",
+      "category": "bottom",
+      "name": "Dark wash raw denim jeans",
+      "brand": "Levi's 511",
+      "colors": [
+        "dark blue"
+      ],
+      "material": "denim",
+      "style": [
+        "casual"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "slim-fit",
+      "pattern": "solid",
+      "details": [
+        "five-pocket",
+        "raw-denim"
+      ],
+      "gender": "men",
+      "tier": 1
+    },
+    {
+      "id": "men-bottom-002",
+      "category": "bottom",
+      "name": "Light wash jeans",
+      "brand": "Zara",
+      "colors": [
+        "light blue"
+      ],
+      "material": "denim",
+      "style": [
+        "casual"
+      ],
+      "season": [
+        "spring",
+        "summer"
+      ],
+      "fit": "slim-fit",
+      "pattern": "solid",
+      "details": [
+        "five-pocket",
+        "distressed"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-bottom-003",
+      "category": "bottom",
+      "name": "Black jeans",
+      "brand": "Diesel",
+      "colors": [
+        "black"
+      ],
+      "material": "denim",
+      "style": [
+        "casual",
+        "streetwear"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "slim-fit",
+      "pattern": "solid",
+      "details": [
+        "five-pocket"
+      ],
+      "features": [
+        "stretch"
+      ],
+      "gender": "men",
+      "tier": 1
+    },
+    {
+      "id": "men-bottom-004",
+      "category": "bottom",
+      "name": "Khaki chinos",
+      "brand": "Gap",
+      "colors": [
+        "khaki"
+      ],
+      "material": "cotton",
+      "style": [
+        "casual",
+        "business-casual"
+      ],
+      "season": [
+        "spring",
+        "summer",
+        "fall"
+      ],
+      "fit": "slim-fit",
+      "pattern": "solid",
+      "details": [
+        "flat-front"
+      ],
+      "gender": "men",
+      "tier": 1
+    },
+    {
+      "id": "men-bottom-005",
+      "category": "bottom",
+      "name": "Navy chinos",
+      "brand": "Uniqlo",
+      "colors": [
+        "navy"
+      ],
+      "material": "cotton",
+      "style": [
+        "casual",
+        "business-casual"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "tapered",
+      "pattern": "solid",
+      "details": [
+        "flat-front"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-bottom-006",
+      "category": "bottom",
+      "name": "Gray dress pants",
+      "brand": "H&M",
+      "colors": [
+        "gray"
+      ],
+      "material": "wool blend",
+      "style": [
+        "formal",
+        "business"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "slim-fit",
+      "pattern": "solid",
+      "details": [
+        "flat-front",
+        "creased"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-bottom-007",
+      "category": "bottom",
+      "name": "Black dress pants",
+      "brand": "Zara",
+      "colors": [
+        "black"
+      ],
+      "material": "wool blend",
+      "style": [
+        "formal",
+        "business"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "tailored",
+      "pattern": "solid",
+      "details": [
+        "flat-front",
+        "creased"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-bottom-008",
+      "category": "bottom",
+      "name": "Olive cargo pants",
+      "brand": "Carhartt",
+      "colors": [
+        "olive"
+      ],
+      "material": "cotton canvas",
+      "style": [
+        "casual",
+        "workwear"
+      ],
+      "season": [
+        "fall"
+      ],
+      "fit": "relaxed-fit",
+      "pattern": "solid",
+      "details": [
+        "cargo-pockets"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-bottom-009",
+      "category": "bottom",
+      "name": "Black athletic joggers",
+      "brand": "Nike",
+      "colors": [
+        "black"
+      ],
+      "material": "polyester",
+      "style": [
+        "athletic",
+        "casual"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "tapered",
+      "pattern": "solid",
+      "details": [
+        "elastic-waist",
+        "drawstring"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-bottom-010",
+      "category": "bottom",
+      "name": "Navy chino shorts",
+      "brand": "Gap",
+      "colors": [
+        "navy"
+      ],
+      "material": "cotton",
+      "style": [
+        "casual"
+      ],
+      "season": [
+        "summer"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "9-inch-inseam"
+      ],
+      "gender": "men",
+      "tier": 3
+    },
+    {
+      "id": "men-bottom-011",
+      "category": "bottom",
+      "name": "Light wash denim shorts",
+      "brand": "Levi's",
+      "colors": [
+        "light blue"
+      ],
+      "material": "denim",
+      "style": [
+        "casual"
+      ],
+      "season": [
+        "summer"
+      ],
+      "fit": "slim-fit",
+      "pattern": "solid",
+      "details": [
+        "five-pocket"
+      ],
+      "gender": "men",
+      "tier": 3
+    },
+    {
+      "id": "men-bottom-012",
+      "category": "bottom",
+      "name": "Brown corduroy pants",
+      "brand": "Mango",
+      "colors": [
+        "brown"
+      ],
+      "material": "corduroy",
+      "style": [
+        "casual",
+        "vintage"
+      ],
+      "season": [
+        "fall",
+        "winter"
+      ],
+      "fit": "straight-leg",
+      "pattern": "corduroy",
+      "details": [
+        "five-pocket"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "women-bottom-001",
+      "category": "bottom",
+      "name": "Dark wash high-waisted jeans",
+      "brand": "Levi's",
+      "colors": [
+        "dark blue"
+      ],
+      "material": "denim",
+      "style": [
+        "casual"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "skinny",
+      "pattern": "solid",
+      "details": [
+        "high-waisted",
+        "five-pocket"
+      ],
+      "gender": "women",
+      "tier": 1
+    },
+    {
+      "id": "women-bottom-002",
+      "category": "bottom",
+      "name": "Light wash mom jeans",
+      "brand": "Zara",
+      "colors": [
+        "light blue"
+      ],
+      "material": "denim",
+      "style": [
+        "casual",
+        "vintage"
+      ],
+      "season": [
+        "spring",
+        "summer"
+      ],
+      "fit": "relaxed-fit",
+      "pattern": "solid",
+      "details": [
+        "high-waisted",
+        "five-pocket"
+      ],
+      "gender": "women",
+      "tier": 1
+    },
+    {
+      "id": "women-bottom-003",
+      "category": "bottom",
+      "name": "Black jeans",
+      "brand": "Everlane",
+      "colors": [
+        "black"
+      ],
+      "material": "denim",
+      "style": [
+        "casual",
+        "minimalist"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "straight-leg",
+      "pattern": "solid",
+      "details": [
+        "high-waisted",
+        "five-pocket"
+      ],
+      "gender": "women",
+      "tier": 1
+    },
+    {
+      "id": "women-bottom-004",
+      "category": "bottom",
+      "name": "Vintage wash wide-leg jeans",
+      "brand": "Madewell",
+      "colors": [
+        "medium blue"
+      ],
+      "material": "denim",
+      "style": [
+        "casual",
+        "vintage"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "wide-leg",
+      "pattern": "solid",
+      "details": [
+        "high-waisted",
+        "five-pocket"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "women-bottom-005",
+      "category": "bottom",
+      "name": "White jeans",
+      "brand": "COS",
+      "colors": [
+        "white"
+      ],
+      "material": "denim",
+      "style": [
+        "casual",
+        "minimalist"
+      ],
+      "season": [
+        "spring",
+        "summer"
+      ],
+      "fit": "straight-leg",
+      "pattern": "solid",
+      "details": [
+        "high-waisted",
+        "five-pocket"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "women-bottom-006",
+      "category": "bottom",
+      "name": "Black dress pants",
+      "brand": "Mango",
+      "colors": [
+        "black"
+      ],
+      "material": "wool blend",
+      "style": [
+        "business-casual",
+        "formal"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "tailored",
+      "pattern": "solid",
+      "details": [
+        "flat-front",
+        "creased"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "women-bottom-007",
+      "category": "bottom",
+      "name": "Khaki wide-leg trousers",
+      "brand": "Everlane",
+      "colors": [
+        "khaki"
+      ],
+      "material": "cotton",
+      "style": [
+        "casual",
+        "minimalist"
+      ],
+      "season": [
+        "spring",
+        "fall"
+      ],
+      "fit": "wide-leg",
+      "pattern": "solid",
+      "details": [
+        "high-waisted"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "women-bottom-008",
+      "category": "bottom",
+      "name": "Black pleated midi skirt",
+      "brand": "Zara",
+      "colors": [
+        "black"
+      ],
+      "material": "polyester",
+      "style": [
+        "elegant",
+        "business-casual"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "pleated",
+        "midi-length"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "women-bottom-009",
+      "category": "bottom",
+      "name": "Denim A-line mini skirt",
+      "brand": "Levi's",
+      "colors": [
+        "medium blue"
+      ],
+      "material": "denim",
+      "style": [
+        "casual"
+      ],
+      "season": [
+        "spring",
+        "summer"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "a-line",
+        "mini-length"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "women-bottom-010",
+      "category": "bottom",
+      "name": "Black faux-leather pants",
+      "brand": "Zara",
+      "colors": [
+        "black"
+      ],
+      "material": "faux-leather",
+      "style": [
+        "edgy",
+        "night-out"
+      ],
+      "season": [
+        "fall",
+        "winter"
+      ],
+      "fit": "slim-fit",
+      "pattern": "solid",
+      "details": [
+        "high-waisted"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "women-bottom-011",
+      "category": "bottom",
+      "name": "Black high-rise athletic leggings",
+      "brand": "Lululemon",
+      "colors": [
+        "black"
+      ],
+      "material": "nylon",
+      "style": [
+        "athletic"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "fitted",
+      "pattern": "solid",
+      "details": [
+        "high-rise"
+      ],
+      "features": [
+        "moisture-wicking",
+        "stretch"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "women-bottom-012",
+      "category": "bottom",
+      "name": "High-waisted denim shorts",
+      "brand": "Levi's",
+      "colors": [
+        "light blue"
+      ],
+      "material": "denim",
+      "style": [
+        "casual"
+      ],
+      "season": [
+        "summer"
+      ],
+      "fit": "mom-fit",
+      "pattern": "solid",
+      "details": [
+        "high-waisted",
+        "five-pocket"
+      ],
+      "gender": "women",
+      "tier": 3
+    },
+    {
+      "id": "men-outerwear-001",
+      "category": "outerwear",
+      "name": "Medium wash denim jacket",
+      "brand": "Levi's",
+      "colors": [
+        "medium blue"
+      ],
+      "material": "denim",
+      "style": [
+        "casual",
+        "classic"
+      ],
+      "season": [
+        "spring",
+        "fall"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "trucker-style",
+        "button-front"
+      ],
+      "gender": "men",
+      "tier": 1
+    },
+    {
+      "id": "men-outerwear-002",
+      "category": "outerwear",
+      "name": "Black leather moto jacket",
+      "brand": "Zara",
+      "colors": [
+        "black"
+      ],
+      "material": "leather",
+      "style": [
+        "edgy",
+        "streetwear"
+      ],
+      "season": [
+        "fall",
+        "winter"
+      ],
+      "fit": "slim-fit",
+      "pattern": "solid",
+      "details": [
+        "moto-style",
+        "zipper",
+        "lapels"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-outerwear-003",
+      "category": "outerwear",
+      "name": "Navy wool coat",
+      "brand": "H&M",
+      "colors": [
+        "navy"
+      ],
+      "material": "wool",
+      "style": [
+        "formal",
+        "business"
+      ],
+      "season": [
+        "winter"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "single-breasted",
+        "notch-lapel"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-outerwear-004",
+      "category": "outerwear",
+      "name": "Black quilted puffer jacket",
+      "brand": "The North Face",
+      "colors": [
+        "black"
+      ],
+      "material": "nylon",
+      "style": [
+        "casual",
+        "athletic"
+      ],
+      "season": [
+        "winter"
+      ],
+      "fit": "regular",
+      "pattern": "quilted",
+      "details": [
+        "zipper",
+        "hood"
+      ],
+      "features": [
+        "insulated",
+        "water-resistant"
+      ],
+      "gender": "men",
+      "tier": 1
+    },
+    {
+      "id": "men-outerwear-005",
+      "category": "outerwear",
+      "name": "Olive bomber jacket",
+      "brand": "Alpha Industries",
+      "colors": [
+        "olive"
+      ],
+      "material": "nylon",
+      "style": [
+        "casual",
+        "military"
+      ],
+      "season": [
+        "fall"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "zipper",
+        "ribbed-cuffs"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-outerwear-006",
+      "category": "outerwear",
+      "name": "Beige trench coat",
+      "brand": "Zara",
+      "colors": [
+        "beige"
+      ],
+      "material": "cotton",
+      "style": [
+        "classic",
+        "formal"
+      ],
+      "season": [
+        "spring",
+        "fall"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "double-breasted",
+        "belt"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-outerwear-007",
+      "category": "outerwear",
+      "name": "Gray zip-up hoodie",
+      "brand": "Nike",
+      "colors": [
+        "gray"
+      ],
+      "material": "cotton fleece",
+      "style": [
+        "casual",
+        "athletic"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "zipper",
+        "hood",
+        "pockets"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-outerwear-008",
+      "category": "outerwear",
+      "name": "Navy blazer",
+      "brand": "H&M",
+      "colors": [
+        "navy"
+      ],
+      "material": "cotton blend",
+      "style": [
+        "business-casual",
+        "smart-casual"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "slim-fit",
+      "pattern": "solid",
+      "details": [
+        "notch-lapel",
+        "two-button"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-outerwear-009",
+      "category": "outerwear",
+      "name": "Green waterproof parka",
+      "brand": "Carhartt",
+      "colors": [
+        "green"
+      ],
+      "material": "nylon",
+      "style": [
+        "casual",
+        "outdoor"
+      ],
+      "season": [
+        "winter"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "zipper",
+        "hood",
+        "pockets"
+      ],
+      "features": [
+        "waterproof",
+        "insulated"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-outerwear-010",
+      "category": "outerwear",
+      "name": "Gray shawl-collar cardigan",
+      "brand": "Gap",
+      "colors": [
+        "gray"
+      ],
+      "material": "knit",
+      "style": [
+        "casual",
+        "cozy"
+      ],
+      "season": [
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "shawl-collar",
+        "button-front"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "women-outerwear-001",
+      "category": "outerwear",
+      "name": "Light wash denim jacket",
+      "brand": "Levi's",
+      "colors": [
+        "light blue"
+      ],
+      "material": "denim",
+      "style": [
+        "casual",
+        "classic"
+      ],
+      "season": [
+        "spring",
+        "fall"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "trucker-style",
+        "button-front"
+      ],
+      "gender": "women",
+      "tier": 1
+    },
+    {
+      "id": "women-outerwear-002",
+      "category": "outerwear",
+      "name": "Black leather moto jacket",
+      "brand": "Zara",
+      "colors": [
+        "black"
+      ],
+      "material": "leather",
+      "style": [
+        "edgy",
+        "streetwear"
+      ],
+      "season": [
+        "fall",
+        "winter"
+      ],
+      "fit": "slim-fit",
+      "pattern": "solid",
+      "details": [
+        "moto-style",
+        "zipper",
+        "lapels"
+      ],
+      "gender": "women",
+      "tier": 1
+    },
+    {
+      "id": "women-outerwear-003",
+      "category": "outerwear",
+      "name": "Beige trench coat",
+      "brand": "Everlane",
+      "colors": [
+        "beige"
+      ],
+      "material": "cotton",
+      "style": [
+        "classic",
+        "elegant"
+      ],
+      "season": [
+        "spring",
+        "fall"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "double-breasted",
+        "belt"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "women-outerwear-004",
+      "category": "outerwear",
+      "name": "Camel double-breasted wool coat",
+      "brand": "COS",
+      "colors": [
+        "camel"
+      ],
+      "material": "wool",
+      "style": [
+        "elegant",
+        "minimalist"
+      ],
+      "season": [
+        "winter"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "double-breasted",
+        "notch-lapel"
+      ],
+      "gender": "women",
+      "tier": 1
+    },
+    {
+      "id": "women-outerwear-005",
+      "category": "outerwear",
+      "name": "Cream quilted puffer jacket",
+      "brand": "Patagonia",
+      "colors": [
+        "cream"
+      ],
+      "material": "nylon",
+      "style": [
+        "casual",
+        "outdoor"
+      ],
+      "season": [
+        "winter"
+      ],
+      "fit": "regular",
+      "pattern": "quilted",
+      "details": [
+        "zipper",
+        "pockets"
+      ],
+      "features": [
+        "insulated",
+        "water-resistant"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "women-outerwear-006",
+      "category": "outerwear",
+      "name": "Black oversized blazer",
+      "brand": "Zara",
+      "colors": [
+        "black"
+      ],
+      "material": "wool blend",
+      "style": [
+        "business-casual",
+        "minimalist"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "oversized",
+      "pattern": "solid",
+      "details": [
+        "notch-lapel",
+        "single-button"
+      ],
+      "gender": "women",
+      "tier": 1
+    },
+    {
+      "id": "women-outerwear-007",
+      "category": "outerwear",
+      "name": "Sage green satin bomber jacket",
+      "brand": "Zara",
+      "colors": [
+        "sage green"
+      ],
+      "material": "satin",
+      "style": [
+        "casual",
+        "trendy"
+      ],
+      "season": [
+        "fall"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "zipper",
+        "ribbed-cuffs"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "women-outerwear-008",
+      "category": "outerwear",
+      "name": "Gray long open-front cardigan",
+      "brand": "H&M",
+      "colors": [
+        "gray"
+      ],
+      "material": "knit",
+      "style": [
+        "casual",
+        "cozy"
+      ],
+      "season": [
+        "fall",
+        "winter"
+      ],
+      "fit": "long",
+      "pattern": "solid",
+      "details": [
+        "open-front",
+        "pockets"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "women-outerwear-009",
+      "category": "outerwear",
+      "name": "Brown teddy sherpa coat",
+      "brand": "Mango",
+      "colors": [
+        "brown"
+      ],
+      "material": "sherpa",
+      "style": [
+        "casual",
+        "cozy"
+      ],
+      "season": [
+        "winter"
+      ],
+      "fit": "oversized",
+      "pattern": "solid",
+      "details": [
+        "zipper",
+        "pockets"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "women-outerwear-010",
+      "category": "outerwear",
+      "name": "Yellow waterproof rain jacket",
+      "brand": "Stutterheim",
+      "colors": [
+        "yellow"
+      ],
+      "material": "rubber",
+      "style": [
+        "casual",
+        "outdoor"
+      ],
+      "season": [
+        "spring",
+        "fall"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "button-front",
+        "hood"
+      ],
+      "features": [
+        "waterproof"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "women-dress-001",
+      "category": "dress",
+      "name": "Little black dress",
+      "brand": "Zara",
+      "colors": [
+        "black"
+      ],
+      "material": "polyester",
+      "style": [
+        "elegant",
+        "night-out"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "bodycon",
+      "pattern": "solid",
+      "details": [
+        "knee-length"
+      ],
+      "gender": "women",
+      "tier": 1
+    },
+    {
+      "id": "women-dress-002",
+      "category": "dress",
+      "name": "Floral wrap midi dress",
+      "brand": "Mango",
+      "colors": [
+        "pink",
+        "green"
+      ],
+      "material": "viscose",
+      "style": [
+        "feminine",
+        "romantic"
+      ],
+      "season": [
+        "spring",
+        "summer"
+      ],
+      "fit": "wrap",
+      "pattern": "floral",
+      "details": [
+        "midi-length",
+        "v-neck"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "women-dress-003",
+      "category": "dress",
+      "name": "White cotton slip maxi dress",
+      "brand": "Everlane",
+      "colors": [
+        "white"
+      ],
+      "material": "cotton",
+      "style": [
+        "minimalist",
+        "casual"
+      ],
+      "season": [
+        "summer"
+      ],
+      "fit": "slip",
+      "pattern": "solid",
+      "details": [
+        "maxi-length",
+        "spaghetti-strap"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "women-dress-004",
+      "category": "dress",
+      "name": "Gray oversized knit sweater dress",
+      "brand": "COS",
+      "colors": [
+        "gray"
+      ],
+      "material": "knit",
+      "style": [
+        "casual",
+        "cozy"
+      ],
+      "season": [
+        "fall",
+        "winter"
+      ],
+      "fit": "oversized",
+      "pattern": "solid",
+      "details": [
+        "midi-length",
+        "long-sleeve"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "women-dress-005",
+      "category": "dress",
+      "name": "Striped cotton shirt dress",
+      "brand": "Zara",
+      "colors": [
+        "navy",
+        "white"
+      ],
+      "material": "cotton",
+      "style": [
+        "casual",
+        "preppy"
+      ],
+      "season": [
+        "spring",
+        "summer"
+      ],
+      "fit": "regular",
+      "pattern": "striped",
+      "details": [
+        "midi-length",
+        "button-front",
+        "collar"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "women-dress-006",
+      "category": "dress",
+      "name": "Black silk slip dress",
+      "brand": "Mango",
+      "colors": [
+        "black"
+      ],
+      "material": "silk",
+      "style": [
+        "elegant",
+        "minimalist"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "slip",
+      "pattern": "solid",
+      "details": [
+        "midi-length",
+        "bias-cut",
+        "spaghetti-strap"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "women-dress-007",
+      "category": "dress",
+      "name": "Beige linen midi dress",
+      "brand": "Everlane",
+      "colors": [
+        "beige"
+      ],
+      "material": "linen",
+      "style": [
+        "casual",
+        "minimalist"
+      ],
+      "season": [
+        "summer"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "midi-length",
+        "sleeveless"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "women-dress-008",
+      "category": "dress",
+      "name": "Navy sequin mini party dress",
+      "brand": "H&M",
+      "colors": [
+        "navy"
+      ],
+      "material": "polyester",
+      "style": [
+        "party",
+        "glamorous"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "fitted",
+      "pattern": "sequin",
+      "details": [
+        "mini-length",
+        "sleeveless"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "women-dress-009",
+      "category": "dress",
+      "name": "Burgundy wrap midi dress",
+      "brand": "Zara",
+      "colors": [
+        "burgundy"
+      ],
+      "material": "polyester",
+      "style": [
+        "elegant",
+        "feminine"
+      ],
+      "season": [
+        "fall"
+      ],
+      "fit": "wrap",
+      "pattern": "solid",
+      "details": [
+        "midi-length",
+        "v-neck",
+        "long-sleeve"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "women-dress-010",
+      "category": "dress",
+      "name": "Button-front denim dress",
+      "brand": "Levi's",
+      "colors": [
+        "medium blue"
+      ],
+      "material": "denim",
+      "style": [
+        "casual"
+      ],
+      "season": [
+        "spring",
+        "summer"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "midi-length",
+        "button-front",
+        "collar"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "men-shoes-001",
+      "category": "shoes",
+      "name": "White leather sneakers",
+      "brand": "Adidas Stan Smith",
+      "colors": [
+        "white"
+      ],
+      "material": "leather",
+      "style": [
+        "casual",
+        "minimalist"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "pattern": "solid",
+      "gender": "men",
+      "tier": 1
+    },
+    {
+      "id": "men-shoes-002",
+      "category": "shoes",
+      "name": "Black leather sneakers",
+      "brand": "Nike Air Force 1",
+      "colors": [
+        "black"
+      ],
+      "material": "leather",
+      "style": [
+        "casual",
+        "streetwear"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "pattern": "solid",
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-shoes-003",
+      "category": "shoes",
+      "name": "Brown leather Chelsea boots",
+      "brand": "Thursday Boot Co.",
+      "colors": [
+        "brown"
+      ],
+      "material": "leather",
+      "style": [
+        "smart-casual",
+        "business-casual"
+      ],
+      "season": [
+        "fall",
+        "winter"
+      ],
+      "pattern": "solid",
+      "details": [
+        "elastic-side-panel"
+      ],
+      "gender": "men",
+      "tier": 1
+    },
+    {
+      "id": "men-shoes-004",
+      "category": "shoes",
+      "name": "Black leather oxford dress shoes",
+      "brand": "H&M",
+      "colors": [
+        "black"
+      ],
+      "material": "leather",
+      "style": [
+        "formal",
+        "business"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "pattern": "solid",
+      "details": [
+        "lace-up"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-shoes-005",
+      "category": "shoes",
+      "name": "Navy canvas sneakers",
+      "brand": "Converse Chuck Taylor",
+      "colors": [
+        "navy"
+      ],
+      "material": "canvas",
+      "style": [
+        "casual",
+        "classic"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "pattern": "solid",
+      "details": [
+        "lace-up",
+        "high-top"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-shoes-006",
+      "category": "shoes",
+      "name": "Gray mesh running shoes",
+      "brand": "Nike",
+      "colors": [
+        "gray"
+      ],
+      "material": "mesh",
+      "style": [
+        "athletic"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "pattern": "solid",
+      "features": [
+        "breathable",
+        "cushioned"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-shoes-007",
+      "category": "shoes",
+      "name": "Brown suede loafers",
+      "brand": "Mango",
+      "colors": [
+        "brown"
+      ],
+      "material": "suede",
+      "style": [
+        "smart-casual",
+        "preppy"
+      ],
+      "season": [
+        "spring",
+        "fall"
+      ],
+      "pattern": "solid",
+      "details": [
+        "slip-on"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-shoes-008",
+      "category": "shoes",
+      "name": "Sand suede desert boots",
+      "brand": "Clarks",
+      "colors": [
+        "sand"
+      ],
+      "material": "suede",
+      "style": [
+        "casual",
+        "classic"
+      ],
+      "season": [
+        "fall"
+      ],
+      "pattern": "solid",
+      "details": [
+        "lace-up",
+        "crepe-sole"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-shoes-009",
+      "category": "shoes",
+      "name": "Black leather sandals",
+      "brand": "Birkenstock Arizona",
+      "colors": [
+        "black"
+      ],
+      "material": "leather",
+      "style": [
+        "casual"
+      ],
+      "season": [
+        "summer"
+      ],
+      "pattern": "solid",
+      "details": [
+        "two-strap"
+      ],
+      "gender": "men",
+      "tier": 3
+    },
+    {
+      "id": "men-shoes-010",
+      "category": "shoes",
+      "name": "Black canvas slip-on sneakers",
+      "brand": "Vans",
+      "colors": [
+        "black"
+      ],
+      "material": "canvas",
+      "style": [
+        "casual",
+        "skatewear"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "pattern": "solid",
+      "details": [
+        "slip-on"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "women-shoes-001",
+      "category": "shoes",
+      "name": "White leather sneakers",
+      "brand": "Adidas Stan Smith",
+      "colors": [
+        "white"
+      ],
+      "material": "leather",
+      "style": [
+        "casual",
+        "minimalist"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "pattern": "solid",
+      "gender": "women",
+      "tier": 1
+    },
+    {
+      "id": "women-shoes-002",
+      "category": "shoes",
+      "name": "Black leather ankle boots",
+      "brand": "Zara",
+      "colors": [
+        "black"
+      ],
+      "material": "leather",
+      "style": [
+        "casual",
+        "edgy"
+      ],
+      "season": [
+        "fall",
+        "winter"
+      ],
+      "pattern": "solid",
+      "details": [
+        "block-heel",
+        "side-zipper"
+      ],
+      "gender": "women",
+      "tier": 1
+    },
+    {
+      "id": "women-shoes-003",
+      "category": "shoes",
+      "name": "Brown leather knee-high boots",
+      "brand": "Mango",
+      "colors": [
+        "brown"
+      ],
+      "material": "leather",
+      "style": [
+        "elegant",
+        "classic"
+      ],
+      "season": [
+        "fall",
+        "winter"
+      ],
+      "pattern": "solid",
+      "details": [
+        "block-heel",
+        "side-zipper"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "women-shoes-004",
+      "category": "shoes",
+      "name": "Black leather ballet flats",
+      "brand": "Everlane",
+      "colors": [
+        "black"
+      ],
+      "material": "leather",
+      "style": [
+        "minimalist",
+        "classic"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "pattern": "solid",
+      "details": [
+        "round-toe"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "women-shoes-005",
+      "category": "shoes",
+      "name": "Tan leather sandals",
+      "brand": "Birkenstock Arizona",
+      "colors": [
+        "tan"
+      ],
+      "material": "leather",
+      "style": [
+        "casual"
+      ],
+      "season": [
+        "summer"
+      ],
+      "pattern": "solid",
+      "details": [
+        "two-strap"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "women-shoes-006",
+      "category": "shoes",
+      "name": "Black leather pointed-toe stiletto heels",
+      "brand": "Zara",
+      "colors": [
+        "black"
+      ],
+      "material": "leather",
+      "style": [
+        "elegant",
+        "formal"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "pattern": "solid",
+      "details": [
+        "pointed-toe",
+        "stiletto-heel"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "women-shoes-007",
+      "category": "shoes",
+      "name": "White and pink mesh running shoes",
+      "brand": "Nike",
+      "colors": [
+        "white",
+        "pink"
+      ],
+      "material": "mesh",
+      "style": [
+        "athletic"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "pattern": "solid",
+      "features": [
+        "breathable",
+        "cushioned"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "women-shoes-008",
+      "category": "shoes",
+      "name": "Brown leather loafers",
+      "brand": "COS",
+      "colors": [
+        "brown"
+      ],
+      "material": "leather",
+      "style": [
+        "minimalist",
+        "smart-casual"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "pattern": "solid",
+      "details": [
+        "slip-on"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "women-shoes-009",
+      "category": "shoes",
+      "name": "White leather mules",
+      "brand": "Everlane",
+      "colors": [
+        "white"
+      ],
+      "material": "leather",
+      "style": [
+        "minimalist",
+        "casual"
+      ],
+      "season": [
+        "spring",
+        "summer"
+      ],
+      "pattern": "solid",
+      "details": [
+        "backless",
+        "low-heel"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "women-shoes-010",
+      "category": "shoes",
+      "name": "White canvas platform sneakers",
+      "brand": "Converse",
+      "colors": [
+        "white"
+      ],
+      "material": "canvas",
+      "style": [
+        "casual",
+        "trendy"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "pattern": "solid",
+      "details": [
+        "platform-sole",
+        "lace-up"
+      ],
+      "gender": "women",
+      "tier": 2
+    },
+    {
+      "id": "accessory-001",
+      "category": "accessory",
+      "name": "Classic black leather belt",
+      "brand": "Uniqlo",
+      "colors": [
+        "black"
+      ],
+      "material": "leather",
+      "style": [
+        "classic",
+        "minimalist"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "pattern": "solid",
+      "details": [
+        "simple-buckle"
+      ],
+      "gender": "unisex",
+      "tier": 2
+    },
+    {
+      "id": "accessory-002",
+      "category": "accessory",
+      "name": "Brown leather dress belt",
+      "brand": "H&M",
+      "colors": [
+        "brown"
+      ],
+      "material": "leather",
+      "style": [
+        "formal",
+        "classic"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "pattern": "solid",
+      "details": [
+        "silver-buckle"
+      ],
+      "gender": "unisex",
+      "tier": 2
+    },
+    {
+      "id": "accessory-003",
+      "category": "accessory",
+      "name": "Beige canvas tote bag",
+      "brand": "Everlane",
+      "colors": [
+        "beige"
+      ],
+      "material": "canvas",
+      "style": [
+        "casual",
+        "eco-friendly"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "pattern": "solid",
+      "details": [
+        "shoulder-straps"
+      ],
+      "gender": "unisex",
+      "tier": 2
+    },
+    {
+      "id": "accessory-004",
+      "category": "accessory",
+      "name": "Black leather crossbody bag",
+      "brand": "Zara",
+      "colors": [
+        "black"
+      ],
+      "material": "leather",
+      "style": [
+        "casual",
+        "minimalist"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "pattern": "solid",
+      "details": [
+        "adjustable-strap",
+        "zipper"
+      ],
+      "gender": "unisex",
+      "tier": 2
+    },
+    {
+      "id": "accessory-005",
+      "category": "accessory",
+      "name": "Navy backpack",
+      "brand": "Herschel",
+      "colors": [
+        "navy"
+      ],
+      "material": "polyester",
+      "style": [
+        "casual",
+        "functional"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "pattern": "solid",
+      "details": [
+        "laptop-compartment",
+        "padded-straps"
+      ],
+      "gender": "unisex",
+      "tier": 2
+    },
+    {
+      "id": "accessory-006",
+      "category": "accessory",
+      "name": "Gray wool scarf",
+      "brand": "Uniqlo",
+      "colors": [
+        "gray"
+      ],
+      "material": "wool",
+      "style": [
+        "classic",
+        "cozy"
+      ],
+      "season": [
+        "winter"
+      ],
+      "pattern": "solid",
+      "gender": "unisex",
+      "tier": 2
+    },
+    {
+      "id": "accessory-007",
+      "category": "accessory",
+      "name": "Black knit beanie",
+      "brand": "H&M",
+      "colors": [
+        "black"
+      ],
+      "material": "knit",
+      "style": [
+        "casual",
+        "streetwear"
+      ],
+      "season": [
+        "winter"
+      ],
+      "pattern": "solid",
+      "gender": "unisex",
+      "tier": 2
+    },
+    {
+      "id": "accessory-008",
+      "category": "accessory",
+      "name": "Black cotton baseball cap",
+      "brand": "Nike",
+      "colors": [
+        "black"
+      ],
+      "material": "cotton",
+      "style": [
+        "casual",
+        "athletic"
+      ],
+      "season": [
+        "summer"
+      ],
+      "pattern": "solid",
+      "details": [
+        "adjustable-strap"
+      ],
+      "gender": "unisex",
+      "tier": 2
+    },
+    {
+      "id": "accessory-009",
+      "category": "accessory",
+      "name": "Black aviator sunglasses",
+      "brand": "Ray-Ban",
+      "colors": [
+        "black"
+      ],
+      "material": "metal",
+      "style": [
+        "classic",
+        "cool"
+      ],
+      "season": [
+        "summer"
+      ],
+      "pattern": "solid",
+      "details": [
+        "UV-protection"
+      ],
+      "gender": "unisex",
+      "tier": 2
+    },
+    {
+      "id": "accessory-010",
+      "category": "accessory",
+      "name": "Silver minimalist watch",
+      "brand": "Daniel Wellington",
+      "colors": [
+        "silver"
+      ],
+      "material": "stainless steel",
+      "style": [
+        "minimalist",
+        "elegant"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "pattern": "solid",
+      "gender": "unisex",
+      "tier": 2
+    },
+    {
+      "id": "accessory-011",
+      "category": "accessory",
+      "name": "Brown leather wallet",
+      "brand": "Fossil",
+      "colors": [
+        "brown"
+      ],
+      "material": "leather",
+      "style": [
+        "classic"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "pattern": "solid",
+      "details": [
+        "bifold",
+        "card-slots"
+      ],
+      "gender": "unisex",
+      "tier": 2
+    },
+    {
+      "id": "accessory-012",
+      "category": "accessory",
+      "name": "Navy and white striped canvas tote bag",
+      "brand": "Gap",
+      "colors": [
+        "navy",
+        "white"
+      ],
+      "material": "canvas",
+      "style": [
+        "casual",
+        "nautical"
+      ],
+      "season": [
+        "summer"
+      ],
+      "pattern": "striped",
+      "details": [
+        "shoulder-straps"
+      ],
+      "gender": "unisex",
+      "tier": 2
+    },
+    {
+      "id": "accessory-013",
+      "category": "accessory",
+      "name": "Beige cotton bucket hat",
+      "brand": "Uniqlo",
+      "colors": [
+        "beige"
+      ],
+      "material": "cotton",
+      "style": [
+        "casual",
+        "trendy"
+      ],
+      "season": [
+        "summer"
+      ],
+      "pattern": "solid",
+      "gender": "unisex",
+      "tier": 2
+    },
+    {
+      "id": "accessory-014",
+      "category": "accessory",
+      "name": "Floral silk scarf",
+      "brand": "Zara",
+      "colors": [
+        "pink",
+        "green"
+      ],
+      "material": "silk",
+      "style": [
+        "elegant",
+        "feminine"
+      ],
+      "season": [
+        "spring"
+      ],
+      "pattern": "floral",
+      "gender": "unisex",
+      "tier": 2
+    },
+    {
+      "id": "accessory-015",
+      "category": "accessory",
+      "name": "Black faux-leather belt bag",
+      "brand": "H&M",
+      "colors": [
+        "black"
+      ],
+      "material": "faux-leather",
+      "style": [
+        "casual",
+        "hands-free"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "pattern": "solid",
+      "details": [
+        "adjustable-strap",
+        "zipper"
+      ],
+      "gender": "unisex",
+      "tier": 2
+    },
+    {
+      "id": "special-001",
+      "category": "outerwear",
+      "name": "Charcoal wool suit jacket",
+      "brand": "H&M",
+      "colors": [
+        "charcoal"
+      ],
+      "material": "wool",
+      "style": [
+        "formal",
+        "business"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "tailored",
+      "pattern": "solid",
+      "details": [
+        "notch-lapel",
+        "two-button"
+      ],
+      "gender": "men",
+      "tier": 3
+    },
+    {
+      "id": "special-002",
+      "category": "bottom",
+      "name": "Charcoal wool suit pants",
+      "brand": "H&M",
+      "colors": [
+        "charcoal"
+      ],
+      "material": "wool",
+      "style": [
+        "formal",
+        "business"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "tailored",
+      "pattern": "solid",
+      "details": [
+        "flat-front",
+        "creased"
+      ],
+      "gender": "men",
+      "tier": 3
+    },
+    {
+      "id": "special-003",
+      "category": "accessory",
+      "name": "Navy silk tie",
+      "brand": "Brooks Brothers",
+      "colors": [
+        "navy"
+      ],
+      "material": "silk",
+      "style": [
+        "formal",
+        "business"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "pattern": "solid",
+      "gender": "men",
+      "tier": 3
+    },
+    {
+      "id": "special-004",
+      "category": "bottom",
+      "name": "Black athletic running shorts",
+      "brand": "Nike",
+      "colors": [
+        "black"
+      ],
+      "material": "polyester",
+      "style": [
+        "athletic"
+      ],
+      "season": [
+        "summer"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "elastic-waist",
+        "drawstring"
+      ],
+      "features": [
+        "breathable",
+        "moisture-wicking"
+      ],
+      "gender": "men",
+      "tier": 3
+    },
+    {
+      "id": "special-005",
+      "category": "top",
+      "name": "Black sports bra",
+      "brand": "Lululemon",
+      "colors": [
+        "black"
+      ],
+      "material": "nylon",
+      "style": [
+        "athletic"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "fitted",
+      "pattern": "solid",
+      "details": [
+        "racerback"
+      ],
+      "features": [
+        "moisture-wicking",
+        "support"
+      ],
+      "gender": "women",
+      "tier": 3
+    },
+    {
+      "id": "special-006",
+      "category": "top",
+      "name": "White athletic tank top",
+      "brand": "Adidas",
+      "colors": [
+        "white"
+      ],
+      "material": "polyester",
+      "style": [
+        "athletic"
+      ],
+      "season": [
+        "summer"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "racerback",
+        "sleeveless"
+      ],
+      "features": [
+        "breathable",
+        "moisture-wicking"
+      ],
+      "gender": "women",
+      "tier": 3
+    },
+    {
+      "id": "special-007",
+      "category": "dress",
+      "name": "Black one-piece swimsuit",
+      "brand": "Speedo",
+      "colors": [
+        "black"
+      ],
+      "material": "nylon",
+      "style": [
+        "athletic",
+        "swimwear"
+      ],
+      "season": [
+        "summer"
+      ],
+      "fit": "fitted",
+      "pattern": "solid",
+      "features": [
+        "chlorine-resistant",
+        "quick-dry"
+      ],
+      "gender": "women",
+      "tier": 3
+    },
+    {
+      "id": "special-008",
+      "category": "bottom",
+      "name": "Navy swim trunks",
+      "brand": "Speedo",
+      "colors": [
+        "navy"
+      ],
+      "material": "polyester",
+      "style": [
+        "athletic",
+        "swimwear"
+      ],
+      "season": [
+        "summer"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "elastic-waist",
+        "drawstring"
+      ],
+      "features": [
+        "quick-dry"
+      ],
+      "gender": "men",
+      "tier": 3
+    },
+    {
+      "id": "special-009",
+      "category": "outerwear",
+      "name": "White cotton terry bathrobe",
+      "brand": "Pottery Barn",
+      "colors": [
+        "white"
+      ],
+      "material": "cotton terry",
+      "style": [
+        "loungewear",
+        "home"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "relaxed",
+      "pattern": "solid",
+      "details": [
+        "belt",
+        "pockets"
+      ],
+      "gender": "unisex",
+      "tier": 3
+    },
+    {
+      "id": "special-010",
+      "category": "top",
+      "name": "Striped cotton pajama set",
+      "brand": "Gap",
+      "colors": [
+        "blue",
+        "white"
+      ],
+      "material": "cotton",
+      "style": [
+        "loungewear",
+        "sleepwear"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "relaxed",
+      "pattern": "striped",
+      "details": [
+        "button-front",
+        "long-sleeve"
+      ],
+      "gender": "unisex",
+      "tier": 3
+    }
+  ],
+  "results": [
+    {
+      "id": "men-top-001",
+      "name": "White crew-neck t-shirt",
+      "status": "success",
+      "filePath": "men/top/uniqlo-white-crew-neck-t-shirt.webp"
+    },
+    {
+      "id": "men-top-002",
+      "name": "Black crew-neck t-shirt",
+      "status": "success",
+      "filePath": "men/top/h-m-black-crew-neck-t-shirt.webp"
+    },
+    {
+      "id": "men-top-003",
+      "name": "Navy v-neck t-shirt",
+      "status": "success",
+      "filePath": "men/top/gap-navy-v-neck-t-shirt.webp"
+    },
+    {
+      "id": "men-top-004",
+      "name": "Striped long-sleeve t-shirt",
+      "status": "success",
+      "filePath": "men/top/zara-striped-long-sleeve-t-shirt.webp"
+    },
+    {
+      "id": "men-top-005",
+      "name": "White oxford button-down shirt",
+      "status": "success",
+      "filePath": "men/top/uniqlo-white-oxford-button-down-shirt.webp"
+    },
+    {
+      "id": "men-top-006",
+      "name": "Light blue dress shirt",
+      "status": "success",
+      "filePath": "men/top/h-m-light-blue-dress-shirt.webp"
+    },
+    {
+      "id": "men-top-007",
+      "name": "Black turtleneck sweater",
+      "status": "success",
+      "filePath": "men/top/zara-black-turtleneck-sweater.webp"
+    },
+    {
+      "id": "men-top-008",
+      "name": "Gray crew-neck sweater",
+      "status": "success",
+      "filePath": "men/top/gap-gray-crew-neck-sweater.webp"
+    },
+    {
+      "id": "men-top-009",
+      "name": "Navy cable-knit sweater",
+      "status": "success",
+      "filePath": "men/top/mango-navy-cable-knit-sweater.webp"
+    },
+    {
+      "id": "men-top-010",
+      "name": "Gray hoodie",
+      "status": "success",
+      "filePath": "men/top/nike-gray-hoodie.webp"
+    },
+    {
+      "id": "men-top-011",
+      "name": "Red and black flannel shirt",
+      "status": "success",
+      "filePath": "men/top/uniqlo-red-and-black-flannel-shirt.webp"
+    },
+    {
+      "id": "men-top-012",
+      "name": "Light wash denim shirt",
+      "status": "success",
+      "filePath": "men/top/levi-s-light-wash-denim-shirt.webp"
+    },
+    {
+      "id": "men-top-013",
+      "name": "Navy polo shirt",
+      "status": "success",
+      "filePath": "men/top/ralph-lauren-navy-polo-shirt.webp"
+    },
+    {
+      "id": "men-top-014",
+      "name": "Black athletic performance t-shirt",
+      "status": "success",
+      "filePath": "men/top/adidas-black-athletic-performance-t-shirt.webp"
+    },
+    {
+      "id": "men-top-015",
+      "name": "Charcoal long-sleeve henley",
+      "status": "success",
+      "filePath": "men/top/gap-charcoal-long-sleeve-henley.webp"
+    },
+    {
+      "id": "women-top-001",
+      "name": "White basic t-shirt",
+      "status": "success",
+      "filePath": "women/top/everlane-white-basic-t-shirt.webp"
+    },
+    {
+      "id": "women-top-002",
+      "name": "Black basic t-shirt",
+      "status": "success",
+      "filePath": "women/top/cos-black-basic-t-shirt.webp"
+    },
+    {
+      "id": "women-top-003",
+      "name": "Striped breton top",
+      "status": "success",
+      "filePath": "women/top/zara-striped-breton-top.webp"
+    },
+    {
+      "id": "women-top-004",
+      "name": "Cream silk blouse",
+      "status": "success",
+      "filePath": "women/top/mango-cream-silk-blouse.webp"
+    },
+    {
+      "id": "women-top-005",
+      "name": "White button-down shirt",
+      "status": "success",
+      "filePath": "women/top/everlane-white-button-down-shirt.webp"
+    },
+    {
+      "id": "women-top-006",
+      "name": "Beige cropped sweater",
+      "status": "success",
+      "filePath": "women/top/h-m-beige-cropped-sweater.webp"
+    },
+    {
+      "id": "women-top-007",
+      "name": "Black turtleneck",
+      "status": "success",
+      "filePath": "women/top/uniqlo-black-turtleneck.webp"
+    },
+    {
+      "id": "women-top-008",
+      "name": "Oversized gray sweater",
+      "status": "success",
+      "filePath": "women/top/zara-oversized-gray-sweater.webp"
+    },
+    {
+      "id": "women-top-009",
+      "name": "Camel cardigan",
+      "status": "success",
+      "filePath": "women/top/cos-camel-cardigan.webp"
+    },
+    {
+      "id": "women-top-010",
+      "name": "White ribbed tank top",
+      "status": "success",
+      "filePath": "women/top/gap-white-ribbed-tank-top.webp"
+    },
+    {
+      "id": "women-top-011",
+      "name": "Vintage band graphic t-shirt",
+      "status": "success",
+      "filePath": "women/top/urban-outfitters-vintage-band-graphic-t-shirt.webp"
+    },
+    {
+      "id": "women-top-012",
+      "name": "Floral print blouse",
+      "status": "success",
+      "filePath": "women/top/zara-floral-print-blouse.webp"
+    },
+    {
+      "id": "women-top-013",
+      "name": "Dusty pink cropped hoodie",
+      "status": "success",
+      "filePath": "women/top/alo-yoga-dusty-pink-cropped-hoodie.webp"
+    },
+    {
+      "id": "women-top-014",
+      "name": "Black fitted long-sleeve",
+      "status": "success",
+      "filePath": "women/top/everlane-black-fitted-long-sleeve.webp"
+    },
+    {
+      "id": "women-top-015",
+      "name": "Navy silk camisole",
+      "status": "success",
+      "filePath": "women/top/mango-navy-silk-camisole.webp"
+    },
+    {
+      "id": "men-bottom-001",
+      "name": "Dark wash raw denim jeans",
+      "status": "success",
+      "filePath": "men/bottom/levi-s-511-dark-wash-raw-denim-jeans.webp"
+    },
+    {
+      "id": "men-bottom-002",
+      "name": "Light wash jeans",
+      "status": "success",
+      "filePath": "men/bottom/zara-light-wash-jeans.webp"
+    },
+    {
+      "id": "men-bottom-003",
+      "name": "Black jeans",
+      "status": "success",
+      "filePath": "men/bottom/diesel-black-jeans.webp"
+    },
+    {
+      "id": "men-bottom-004",
+      "name": "Khaki chinos",
+      "status": "success",
+      "filePath": "men/bottom/gap-khaki-chinos.webp"
+    },
+    {
+      "id": "men-bottom-005",
+      "name": "Navy chinos",
+      "status": "success",
+      "filePath": "men/bottom/uniqlo-navy-chinos.webp"
+    },
+    {
+      "id": "men-bottom-006",
+      "name": "Gray dress pants",
+      "status": "success",
+      "filePath": "men/bottom/h-m-gray-dress-pants.webp"
+    },
+    {
+      "id": "men-bottom-007",
+      "name": "Black dress pants",
+      "status": "success",
+      "filePath": "men/bottom/zara-black-dress-pants.webp"
+    },
+    {
+      "id": "men-bottom-008",
+      "name": "Olive cargo pants",
+      "status": "success",
+      "filePath": "men/bottom/carhartt-olive-cargo-pants.webp"
+    },
+    {
+      "id": "men-bottom-009",
+      "name": "Black athletic joggers",
+      "status": "success",
+      "filePath": "men/bottom/nike-black-athletic-joggers.webp"
+    },
+    {
+      "id": "men-bottom-010",
+      "name": "Navy chino shorts",
+      "status": "error",
+      "error": "No files returned in response. Ensure the model supports image generation."
+    },
+    {
+      "id": "men-bottom-011",
+      "name": "Light wash denim shorts",
+      "status": "success",
+      "filePath": "men/bottom/levi-s-light-wash-denim-shorts.webp"
+    },
+    {
+      "id": "men-bottom-012",
+      "name": "Brown corduroy pants",
+      "status": "success",
+      "filePath": "men/bottom/mango-brown-corduroy-pants.webp"
+    },
+    {
+      "id": "women-bottom-001",
+      "name": "Dark wash high-waisted jeans",
+      "status": "success",
+      "filePath": "women/bottom/levi-s-dark-wash-high-waisted-jeans.webp"
+    },
+    {
+      "id": "women-bottom-002",
+      "name": "Light wash mom jeans",
+      "status": "success",
+      "filePath": "women/bottom/zara-light-wash-mom-jeans.webp"
+    },
+    {
+      "id": "women-bottom-003",
+      "name": "Black jeans",
+      "status": "success",
+      "filePath": "women/bottom/everlane-black-jeans.webp"
+    },
+    {
+      "id": "women-bottom-004",
+      "name": "Vintage wash wide-leg jeans",
+      "status": "success",
+      "filePath": "women/bottom/madewell-vintage-wash-wide-leg-jeans.webp"
+    },
+    {
+      "id": "women-bottom-005",
+      "name": "White jeans",
+      "status": "success",
+      "filePath": "women/bottom/cos-white-jeans.webp"
+    },
+    {
+      "id": "women-bottom-006",
+      "name": "Black dress pants",
+      "status": "success",
+      "filePath": "women/bottom/mango-black-dress-pants.webp"
+    },
+    {
+      "id": "women-bottom-007",
+      "name": "Khaki wide-leg trousers",
+      "status": "success",
+      "filePath": "women/bottom/everlane-khaki-wide-leg-trousers.webp"
+    },
+    {
+      "id": "women-bottom-008",
+      "name": "Black pleated midi skirt",
+      "status": "success",
+      "filePath": "women/bottom/zara-black-pleated-midi-skirt.webp"
+    },
+    {
+      "id": "women-bottom-009",
+      "name": "Denim A-line mini skirt",
+      "status": "success",
+      "filePath": "women/bottom/levi-s-denim-a-line-mini-skirt.webp"
+    },
+    {
+      "id": "women-bottom-010",
+      "name": "Black faux-leather pants",
+      "status": "success",
+      "filePath": "women/bottom/zara-black-faux-leather-pants.webp"
+    },
+    {
+      "id": "women-bottom-011",
+      "name": "Black high-rise athletic leggings",
+      "status": "success",
+      "filePath": "women/bottom/lululemon-black-high-rise-athletic-leggings.webp"
+    },
+    {
+      "id": "women-bottom-012",
+      "name": "High-waisted denim shorts",
+      "status": "success",
+      "filePath": "women/bottom/levi-s-high-waisted-denim-shorts.webp"
+    },
+    {
+      "id": "men-outerwear-001",
+      "name": "Medium wash denim jacket",
+      "status": "success",
+      "filePath": "men/outerwear/levi-s-medium-wash-denim-jacket.webp"
+    },
+    {
+      "id": "men-outerwear-002",
+      "name": "Black leather moto jacket",
+      "status": "success",
+      "filePath": "men/outerwear/zara-black-leather-moto-jacket.webp"
+    },
+    {
+      "id": "men-outerwear-003",
+      "name": "Navy wool coat",
+      "status": "success",
+      "filePath": "men/outerwear/h-m-navy-wool-coat.webp"
+    },
+    {
+      "id": "men-outerwear-004",
+      "name": "Black quilted puffer jacket",
+      "status": "error",
+      "error": "No files returned in response. Ensure the model supports image generation."
+    },
+    {
+      "id": "men-outerwear-005",
+      "name": "Olive bomber jacket",
+      "status": "success",
+      "filePath": "men/outerwear/alpha-industries-olive-bomber-jacket.webp"
+    },
+    {
+      "id": "men-outerwear-006",
+      "name": "Beige trench coat",
+      "status": "success",
+      "filePath": "men/outerwear/zara-beige-trench-coat.webp"
+    },
+    {
+      "id": "men-outerwear-007",
+      "name": "Gray zip-up hoodie",
+      "status": "success",
+      "filePath": "men/outerwear/nike-gray-zip-up-hoodie.webp"
+    },
+    {
+      "id": "men-outerwear-008",
+      "name": "Navy blazer",
+      "status": "success",
+      "filePath": "men/outerwear/h-m-navy-blazer.webp"
+    },
+    {
+      "id": "men-outerwear-009",
+      "name": "Green waterproof parka",
+      "status": "success",
+      "filePath": "men/outerwear/carhartt-green-waterproof-parka.webp"
+    },
+    {
+      "id": "men-outerwear-010",
+      "name": "Gray shawl-collar cardigan",
+      "status": "success",
+      "filePath": "men/outerwear/gap-gray-shawl-collar-cardigan.webp"
+    },
+    {
+      "id": "women-outerwear-001",
+      "name": "Light wash denim jacket",
+      "status": "success",
+      "filePath": "women/outerwear/levi-s-light-wash-denim-jacket.webp"
+    },
+    {
+      "id": "women-outerwear-002",
+      "name": "Black leather moto jacket",
+      "status": "success",
+      "filePath": "women/outerwear/zara-black-leather-moto-jacket.webp"
+    },
+    {
+      "id": "women-outerwear-003",
+      "name": "Beige trench coat",
+      "status": "success",
+      "filePath": "women/outerwear/everlane-beige-trench-coat.webp"
+    },
+    {
+      "id": "women-outerwear-004",
+      "name": "Camel double-breasted wool coat",
+      "status": "success",
+      "filePath": "women/outerwear/cos-camel-double-breasted-wool-coat.webp"
+    },
+    {
+      "id": "women-outerwear-005",
+      "name": "Cream quilted puffer jacket",
+      "status": "success",
+      "filePath": "women/outerwear/patagonia-cream-quilted-puffer-jacket.webp"
+    },
+    {
+      "id": "women-outerwear-006",
+      "name": "Black oversized blazer",
+      "status": "success",
+      "filePath": "women/outerwear/zara-black-oversized-blazer.webp"
+    },
+    {
+      "id": "women-outerwear-007",
+      "name": "Sage green satin bomber jacket",
+      "status": "success",
+      "filePath": "women/outerwear/zara-sage-green-satin-bomber-jacket.webp"
+    },
+    {
+      "id": "women-outerwear-008",
+      "name": "Gray long open-front cardigan",
+      "status": "success",
+      "filePath": "women/outerwear/h-m-gray-long-open-front-cardigan.webp"
+    },
+    {
+      "id": "women-outerwear-009",
+      "name": "Brown teddy sherpa coat",
+      "status": "success",
+      "filePath": "women/outerwear/mango-brown-teddy-sherpa-coat.webp"
+    },
+    {
+      "id": "women-outerwear-010",
+      "name": "Yellow waterproof rain jacket",
+      "status": "success",
+      "filePath": "women/outerwear/stutterheim-yellow-waterproof-rain-jacket.webp"
+    },
+    {
+      "id": "women-dress-001",
+      "name": "Little black dress",
+      "status": "success",
+      "filePath": "women/dress/zara-little-black-dress.webp"
+    },
+    {
+      "id": "women-dress-002",
+      "name": "Floral wrap midi dress",
+      "status": "success",
+      "filePath": "women/dress/mango-floral-wrap-midi-dress.webp"
+    },
+    {
+      "id": "women-dress-003",
+      "name": "White cotton slip maxi dress",
+      "status": "success",
+      "filePath": "women/dress/everlane-white-cotton-slip-maxi-dress.webp"
+    },
+    {
+      "id": "women-dress-004",
+      "name": "Gray oversized knit sweater dress",
+      "status": "success",
+      "filePath": "women/dress/cos-gray-oversized-knit-sweater-dress.webp"
+    },
+    {
+      "id": "women-dress-005",
+      "name": "Striped cotton shirt dress",
+      "status": "success",
+      "filePath": "women/dress/zara-striped-cotton-shirt-dress.webp"
+    },
+    {
+      "id": "women-dress-006",
+      "name": "Black silk slip dress",
+      "status": "success",
+      "filePath": "women/dress/mango-black-silk-slip-dress.webp"
+    },
+    {
+      "id": "women-dress-007",
+      "name": "Beige linen midi dress",
+      "status": "success",
+      "filePath": "women/dress/everlane-beige-linen-midi-dress.webp"
+    },
+    {
+      "id": "women-dress-008",
+      "name": "Navy sequin mini party dress",
+      "status": "success",
+      "filePath": "women/dress/h-m-navy-sequin-mini-party-dress.webp"
+    },
+    {
+      "id": "women-dress-009",
+      "name": "Burgundy wrap midi dress",
+      "status": "success",
+      "filePath": "women/dress/zara-burgundy-wrap-midi-dress.webp"
+    },
+    {
+      "id": "women-dress-010",
+      "name": "Button-front denim dress",
+      "status": "success",
+      "filePath": "women/dress/levi-s-button-front-denim-dress.webp"
+    },
+    {
+      "id": "men-shoes-001",
+      "name": "White leather sneakers",
+      "status": "success",
+      "filePath": "men/shoes/adidas-stan-smith-white-leather-sneakers.webp"
+    },
+    {
+      "id": "men-shoes-002",
+      "name": "Black leather sneakers",
+      "status": "success",
+      "filePath": "men/shoes/nike-air-force-1-black-leather-sneakers.webp"
+    },
+    {
+      "id": "men-shoes-003",
+      "name": "Brown leather Chelsea boots",
+      "status": "success",
+      "filePath": "men/shoes/thursday-boot-co-brown-leather-chelsea-boots.webp"
+    },
+    {
+      "id": "men-shoes-004",
+      "name": "Black leather oxford dress shoes",
+      "status": "success",
+      "filePath": "men/shoes/h-m-black-leather-oxford-dress-shoes.webp"
+    },
+    {
+      "id": "men-shoes-005",
+      "name": "Navy canvas sneakers",
+      "status": "success",
+      "filePath": "men/shoes/converse-chuck-taylor-navy-canvas-sneakers.webp"
+    },
+    {
+      "id": "men-shoes-006",
+      "name": "Gray mesh running shoes",
+      "status": "success",
+      "filePath": "men/shoes/nike-gray-mesh-running-shoes.webp"
+    },
+    {
+      "id": "men-shoes-007",
+      "name": "Brown suede loafers",
+      "status": "success",
+      "filePath": "men/shoes/mango-brown-suede-loafers.webp"
+    },
+    {
+      "id": "men-shoes-008",
+      "name": "Sand suede desert boots",
+      "status": "success",
+      "filePath": "men/shoes/clarks-sand-suede-desert-boots.webp"
+    },
+    {
+      "id": "men-shoes-009",
+      "name": "Black leather sandals",
+      "status": "success",
+      "filePath": "men/shoes/birkenstock-arizona-black-leather-sandals.webp"
+    },
+    {
+      "id": "men-shoes-010",
+      "name": "Black canvas slip-on sneakers",
+      "status": "success",
+      "filePath": "men/shoes/vans-black-canvas-slip-on-sneakers.webp"
+    },
+    {
+      "id": "women-shoes-001",
+      "name": "White leather sneakers",
+      "status": "success",
+      "filePath": "women/shoes/adidas-stan-smith-white-leather-sneakers.webp"
+    },
+    {
+      "id": "women-shoes-002",
+      "name": "Black leather ankle boots",
+      "status": "success",
+      "filePath": "women/shoes/zara-black-leather-ankle-boots.webp"
+    },
+    {
+      "id": "women-shoes-003",
+      "name": "Brown leather knee-high boots",
+      "status": "success",
+      "filePath": "women/shoes/mango-brown-leather-knee-high-boots.webp"
+    },
+    {
+      "id": "women-shoes-004",
+      "name": "Black leather ballet flats",
+      "status": "success",
+      "filePath": "women/shoes/everlane-black-leather-ballet-flats.webp"
+    },
+    {
+      "id": "women-shoes-005",
+      "name": "Tan leather sandals",
+      "status": "success",
+      "filePath": "women/shoes/birkenstock-arizona-tan-leather-sandals.webp"
+    },
+    {
+      "id": "women-shoes-006",
+      "name": "Black leather pointed-toe stiletto heels",
+      "status": "success",
+      "filePath": "women/shoes/zara-black-leather-pointed-toe-stiletto-heels.webp"
+    },
+    {
+      "id": "women-shoes-007",
+      "name": "White and pink mesh running shoes",
+      "status": "success",
+      "filePath": "women/shoes/nike-white-and-pink-mesh-running-shoes.webp"
+    },
+    {
+      "id": "women-shoes-008",
+      "name": "Brown leather loafers",
+      "status": "success",
+      "filePath": "women/shoes/cos-brown-leather-loafers.webp"
+    },
+    {
+      "id": "women-shoes-009",
+      "name": "White leather mules",
+      "status": "success",
+      "filePath": "women/shoes/everlane-white-leather-mules.webp"
+    },
+    {
+      "id": "women-shoes-010",
+      "name": "White canvas platform sneakers",
+      "status": "success",
+      "filePath": "women/shoes/converse-white-canvas-platform-sneakers.webp"
+    },
+    {
+      "id": "accessory-001",
+      "name": "Classic black leather belt",
+      "status": "success",
+      "filePath": "unisex/accessory/uniqlo-classic-black-leather-belt.webp"
+    },
+    {
+      "id": "accessory-002",
+      "name": "Brown leather dress belt",
+      "status": "success",
+      "filePath": "unisex/accessory/h-m-brown-leather-dress-belt.webp"
+    },
+    {
+      "id": "accessory-003",
+      "name": "Beige canvas tote bag",
+      "status": "success",
+      "filePath": "unisex/accessory/everlane-beige-canvas-tote-bag.webp"
+    },
+    {
+      "id": "accessory-004",
+      "name": "Black leather crossbody bag",
+      "status": "success",
+      "filePath": "unisex/accessory/zara-black-leather-crossbody-bag.webp"
+    },
+    {
+      "id": "accessory-005",
+      "name": "Navy backpack",
+      "status": "success",
+      "filePath": "unisex/accessory/herschel-navy-backpack.webp"
+    },
+    {
+      "id": "accessory-006",
+      "name": "Gray wool scarf",
+      "status": "success",
+      "filePath": "unisex/accessory/uniqlo-gray-wool-scarf.webp"
+    },
+    {
+      "id": "accessory-007",
+      "name": "Black knit beanie",
+      "status": "success",
+      "filePath": "unisex/accessory/h-m-black-knit-beanie.webp"
+    },
+    {
+      "id": "accessory-008",
+      "name": "Black cotton baseball cap",
+      "status": "success",
+      "filePath": "unisex/accessory/nike-black-cotton-baseball-cap.webp"
+    },
+    {
+      "id": "accessory-009",
+      "name": "Black aviator sunglasses",
+      "status": "success",
+      "filePath": "unisex/accessory/ray-ban-black-aviator-sunglasses.webp"
+    },
+    {
+      "id": "accessory-010",
+      "name": "Silver minimalist watch",
+      "status": "success",
+      "filePath": "unisex/accessory/daniel-wellington-silver-minimalist-watch.webp"
+    },
+    {
+      "id": "accessory-011",
+      "name": "Brown leather wallet",
+      "status": "success",
+      "filePath": "unisex/accessory/fossil-brown-leather-wallet.webp"
+    },
+    {
+      "id": "accessory-012",
+      "name": "Navy and white striped canvas tote bag",
+      "status": "success",
+      "filePath": "unisex/accessory/gap-navy-and-white-striped-canvas-tote-bag.webp"
+    },
+    {
+      "id": "accessory-013",
+      "name": "Beige cotton bucket hat",
+      "status": "success",
+      "filePath": "unisex/accessory/uniqlo-beige-cotton-bucket-hat.webp"
+    },
+    {
+      "id": "accessory-014",
+      "name": "Floral silk scarf",
+      "status": "success",
+      "filePath": "unisex/accessory/zara-floral-silk-scarf.webp"
+    },
+    {
+      "id": "accessory-015",
+      "name": "Black faux-leather belt bag",
+      "status": "success",
+      "filePath": "unisex/accessory/h-m-black-faux-leather-belt-bag.webp"
+    },
+    {
+      "id": "special-001",
+      "name": "Charcoal wool suit jacket",
+      "status": "success",
+      "filePath": "men/outerwear/h-m-charcoal-wool-suit-jacket.webp"
+    },
+    {
+      "id": "special-002",
+      "name": "Charcoal wool suit pants",
+      "status": "success",
+      "filePath": "men/bottom/h-m-charcoal-wool-suit-pants.webp"
+    },
+    {
+      "id": "special-003",
+      "name": "Navy silk tie",
+      "status": "success",
+      "filePath": "men/accessory/brooks-brothers-navy-silk-tie.webp"
+    },
+    {
+      "id": "special-004",
+      "name": "Black athletic running shorts",
+      "status": "success",
+      "filePath": "men/bottom/nike-black-athletic-running-shorts.webp"
+    },
+    {
+      "id": "special-005",
+      "name": "Black sports bra",
+      "status": "success",
+      "filePath": "women/top/lululemon-black-sports-bra.webp"
+    },
+    {
+      "id": "special-006",
+      "name": "White athletic tank top",
+      "status": "success",
+      "filePath": "women/top/adidas-white-athletic-tank-top.webp"
+    },
+    {
+      "id": "special-007",
+      "name": "Black one-piece swimsuit",
+      "status": "success",
+      "filePath": "women/dress/speedo-black-one-piece-swimsuit.webp"
+    },
+    {
+      "id": "special-008",
+      "name": "Navy swim trunks",
+      "status": "success",
+      "filePath": "men/bottom/speedo-navy-swim-trunks.webp"
+    },
+    {
+      "id": "special-009",
+      "name": "White cotton terry bathrobe",
+      "status": "success",
+      "filePath": "unisex/outerwear/pottery-barn-white-cotton-terry-bathrobe.webp"
+    },
+    {
+      "id": "special-010",
+      "name": "Striped cotton pajama set",
+      "status": "success",
+      "filePath": "unisex/top/gap-striped-cotton-pajama-set.webp"
+    }
+  ],
+  "genderFilter": "all",
+  "generatedAt": "2025-11-23T08:19:39.613Z"
+}

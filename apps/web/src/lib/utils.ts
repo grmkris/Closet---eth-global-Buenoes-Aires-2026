@@ -54,3 +54,16 @@ export function formatRelativeDate(date: Date): string {
 
 	return "just now";
 }
+
+/**
+ * Format number to compact notation (e.g., 1234 → "1.2k", 1500000 → "1.5M")
+ */
+export function formatCompactNumber(value: number, decimals = 1): string {
+	if (value >= 1_000_000) {
+		return `${(value / 1_000_000).toFixed(decimals)}M`;
+	}
+	if (value >= 1000) {
+		return `${(value / 1000).toFixed(decimals)}k`;
+	}
+	return value.toFixed(decimals);
+}

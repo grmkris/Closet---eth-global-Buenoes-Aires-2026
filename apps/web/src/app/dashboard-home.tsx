@@ -6,7 +6,6 @@ import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { ActionCardsGrid } from "@/components/home/action-cards-grid";
 import { OutfitSuggestionCard } from "@/components/home/outfit-suggestion-card";
-import { RecentItemsScroll } from "@/components/home/recent-items-scroll";
 import {
 	SubscriptionCard,
 	SubscriptionCardSkeleton,
@@ -68,9 +67,6 @@ export default function Dashboard({
 	// Mock outfit data - replace with real API call
 	const todayOutfit = undefined; // TODO: Fetch from API
 
-	// Mock recent items - replace with real data
-	const recentItems = undefined; // TODO: Fetch recent wardrobe items
-
 	return (
 		<div className="mx-auto max-w-2xl space-y-5 px-4 py-3 pb-24 sm:px-6 md:pb-8">
 			{/* Compact Greeting + Stats */}
@@ -101,9 +97,6 @@ export default function Dashboard({
 
 			{/* Quick Action Cards */}
 			<ActionCardsGrid />
-
-			{/* Recent Items Horizontal Scroll */}
-			<RecentItemsScroll isLoading={isLoading} items={recentItems} />
 
 			{/* Subscriptions - Horizontal Scroll */}
 			{!subsLoading && activeSubscriptions.length > 0 && (

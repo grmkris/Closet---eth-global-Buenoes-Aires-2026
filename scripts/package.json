@@ -1,0 +1,10 @@
+{
+	"name": "@ai-stilist/scripts",
+	"private": true,
+	"type": "module",
+	"dependencies": {
+		"@ai-stilist/ai": "workspace:*",
+		"@ai-stilist/logger": "workspace:*",
+		"@ai-stilist/shared": "workspace:*"
+	}
+}

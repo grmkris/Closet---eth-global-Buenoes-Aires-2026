@@ -1,5 +1,6 @@
 "use client";
 
+import type { ClothingItemStatus } from "@ai-stilist/shared/wardrobe-types";
 import { Sparkles } from "lucide-react";
 import { ItemsGrid } from "./items-grid";
 import type { ToolRendererProps } from "./types";
@@ -44,7 +45,10 @@ export function ShowItemsRenderer({ part }: ToolRendererProps) {
 			footer={footer}
 			headerIcon={<Sparkles className="h-4 w-4 text-muted-foreground" />}
 			headerTitle="Suggested Items"
-			items={items}
+			items={items.map((item) => ({
+				...item,
+				status: item.status as ClothingItemStatus,
+			}))}
 		/>
 	);
 }

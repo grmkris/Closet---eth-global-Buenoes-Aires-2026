@@ -21,7 +21,7 @@ import {
 	tagTypesTable,
 } from "@ai-stilist/db/schema/wardrobe";
 import type { Logger } from "@ai-stilist/logger";
-import type { ClothingItemId, UserId } from "@ai-stilist/shared/typeid";
+import { ClothingItemId, type UserId } from "@ai-stilist/shared/typeid";
 import type { StorageClient } from "@ai-stilist/storage";
 import {
 	type ClothingItemWithMetadata,
@@ -30,6 +30,48 @@ import {
 import { z } from "zod";
 
 const MAX_WARDROBE_ITEMS_LIMIT = 50;
+
+// Zod schemas for marketplace API responses
+const MarketplaceItemMetadataSchema = z.object({
+	size: z.array(z.string()).optional(),
+	color: z.array(z.string()).optional(),
+	material: z.string().optional(),
+});
+
+const MarketplaceItemSchema = z.object({
+	id: z.string(),
+	name: z.string(),
+	description: z.string(),
+	category: z.string(),
+	brand: z.string(),
+	price: z.number(),
+	imageUrl: z.string().url(),
+	available: z.boolean(),
+	metadata: MarketplaceItemMetadataSchema,
+});
+
+const MarketplaceItemsResponseSchema = z.object({
+	items: z.array(MarketplaceItemSchema),
+	total: z.number(),
+});
+
+const MarketplacePurchaseResponseSchema = z.object({
+	success: z.boolean(),
+	item: MarketplaceItemSchema,
+	purchase: z.object({
+		id: z.string(),
+		signature: z.string(),
+		timestamp: z.string(),
+		txHash: z.string().optional(), // May be added later
+	}),
+});
+
+// Export schemas for use in client components
+export { MarketplaceItemSchema, MarketplacePurchaseResponseSchema };
+export type MarketplaceItem = z.infer<typeof MarketplaceItemSchema>;
+export type MarketplacePurchaseResponse = z.infer<
+	typeof MarketplacePurchaseResponseSchema
+>;
 
 export const createAiTools = ({
 	userId,
@@ -75,19 +117,7 @@ export const createAiTools = ({
 				.default(10)
 				.describe("Maximum number of items to return"),
 		}),
-		execute: async ({
-			categories,
-			colors,
-			tags,
-			search,
-			limit,
-		}: {
-			categories?: string[];
-			colors?: string[];
-			tags?: string[];
-			search?: string;
-			limit: number;
-		}) => {
+		execute: async ({ categories, colors, tags, search, limit }) => {
 			logger.debug({
 				msg: "AI tool: searchWardrobe",
 				userId,
@@ -230,6 +260,7 @@ export const createAiTools = ({
 						name: c.color.name,
 						hex: c.color.hexCode,
 					})),
+					status: item.status,
 					tagsByType,
 					thumbnailUrl: item.thumbnailKey
 						? storage.getSignedUrl({
@@ -404,9 +435,11 @@ export const createAiTools = ({
 		description:
 			"Get complete details about a specific clothing item by ID. Returns all information including categories, colors with hex codes, all tags grouped by type, and image URLs. Useful when the AI needs detailed information about a particular item.",
 		inputSchema: z.object({
-			itemId: z.string().describe("The clothing item ID to get details for"),
+			itemId: ClothingItemId.describe(
+				"The clothing item ID to get details for"
+			),
 		}),
-		execute: async ({ itemId }: { itemId: string }) => {
+		execute: async ({ itemId }) => {
 			logger.debug({
 				msg: "AI tool: getItemDetails",
 				userId,
@@ -507,12 +540,12 @@ export const createAiTools = ({
 			"Display clothing items to the user in a visual format. Use this tool to show specific items when making outfit recommendations, responding to wardrobe queries, or any time you reference specific clothing items. NEVER include item IDs in your text responses - always use this tool to display items visually instead.",
 		inputSchema: z.object({
 			itemIds: z
-				.array(z.string())
+				.array(ClothingItemId)
 				.min(1)
 				.max(20)
 				.describe("Array of clothing item IDs to display to the user"),
 		}),
-		execute: async ({ itemIds }: { itemIds: string[] }) => {
+		execute: async ({ itemIds }) => {
 			logger.debug({
 				msg: "AI tool: showItems",
 				userId,
@@ -564,6 +597,7 @@ export const createAiTools = ({
 
 				return {
 					id: item.id,
+					status: item.status,
 					categories: item.categories.map((c) => c.category.displayName),
 					colors: item.colors.map((c) => ({
 						name: c.color.name,
@@ -621,10 +655,10 @@ export const createAiTools = ({
 
 	generateOutfitPreview: tool({
 		description:
-			"Generate a visual preview image of an outfit combination using AI. Takes a list of clothing item IDs and creates a photorealistic visualization showing how the items look together. Useful when suggesting outfits to show the user what the combination would look like.",
+			"Generate a visual preview image of an outfit combination using AI. Takes a list of clothing item IDs and creates a photorealistic visualization showing how the items look together. ⚠️ IMPORTANT: ONLY use when user explicitly requests visualization ('show me', 'what would that look like', 'preview', 'visualize') OR after you propose a preview and user agrees. DO NOT auto-generate previews for every outfit suggestion - always ask first.",
 		inputSchema: z.object({
 			itemIds: z
-				.array(z.string())
+				.array(ClothingItemId)
 				.min(1)
 				.max(10)
 				.describe("Array of clothing item IDs to combine into an outfit"),
@@ -646,7 +680,7 @@ export const createAiTools = ({
 			occasion,
 			style,
 		}: {
-			itemIds: string[];
+			itemIds: ClothingItemId[];
 			occasion?: string;
 			style?: string;
 		}) => {
@@ -736,7 +770,42 @@ export const createAiTools = ({
 					imageUrl: result.imageUrl,
 					storageKey: result.storageKey,
 					itemCount: items.length,
-					message: `Generated outfit preview combining ${items.length} item${items.length > 1 ? "s" : ""}${occasion ? ` for ${occasion}` : ""}${style ? ` in ${style} style` : ""}. View the image at the URL above.`,
+					// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <TODO>
+					items: items.map((item) => {
+						// Group tags by type
+						const tagsByType: Record<string, string[]> = {};
+						for (const tagItem of item.tags) {
+							const typeName = tagItem.tag.type.name;
+							if (!tagsByType[typeName]) {
+								tagsByType[typeName] = [];
+							}
+							tagsByType[typeName].push(tagItem.tag.name);
+						}
+						return {
+							id: item.id,
+							category:
+								item.categories[0]?.category.displayName || "uncategorized",
+							tags: tagsByType,
+							thumbnailUrl: item.thumbnailKey
+								? storage.getSignedUrl({
+										key: item.thumbnailKey,
+										expiresIn: 3600,
+									})
+								: null,
+							imageUrl: item.imageKey
+								? storage.getSignedUrl({
+										key: item.imageKey,
+										expiresIn: 3600,
+									})
+								: null,
+							processedImageUrl: item.processedImageKey
+								? storage.getSignedUrl({
+										key: item.processedImageKey,
+										expiresIn: 3600,
+									})
+								: null,
+						};
+					}),
 				};
 			} catch (error) {
 				const errorMessage =
@@ -758,39 +827,31 @@ export const createAiTools = ({
 
 	searchExternalMarketplace: tool({
 		description:
-			"Browse external marketplace for fashion items. Search by category, price range, or keywords. Returns available items that the agent can potentially purchase for the user using spending authorization.",
+			"Browse external marketplace for fashion items. Call with NO parameters to browse all available items. Optionally filter by category or price range only if user explicitly mentions specific preferences. Returns available items that can be purchased.",
 		inputSchema: z.object({
-			marketplaceUrl: z
-				.string()
-				.url()
-				.default("http://localhost:3002")
-				.describe("Marketplace API base URL"),
 			category: z
 				.string()
 				.optional()
 				.describe(
-					"Filter by category (e.g., 'outerwear', 'footwear', 'tops', 'bottoms', 'accessories')"
+					"OPTIONAL: Only use if user explicitly mentions a category (e.g., 'outerwear', 'footwear', 'tops', 'bottoms', 'accessories'). Leave empty to browse all categories."
 				),
 			minPrice: z
 				.number()
 				.optional()
-				.describe("Minimum price in USD (e.g., 50.00)"),
+				.describe(
+					"OPTIONAL: Only use if user explicitly mentions a minimum price. Leave empty otherwise."
+				),
 			maxPrice: z
 				.number()
 				.optional()
-				.describe("Maximum price in USD (e.g., 300.00)"),
+				.describe(
+					"OPTIONAL: Only use if user explicitly mentions a maximum price. Leave empty otherwise."
+				),
 		}),
-		execute: async ({
-			marketplaceUrl,
-			category,
-			minPrice,
-			maxPrice,
-		}: {
-			marketplaceUrl: string;
-			category?: string;
-			minPrice?: number;
-			maxPrice?: number;
-		}) => {
+		execute: async ({ category, minPrice, maxPrice }) => {
+			// Hardcode marketplace URL - there's only one marketplace
+			const marketplaceUrl = "http://localhost:3003";
+
 			logger.debug({
 				msg: "AI tool: searchExternalMarketplace",
 				userId,
@@ -800,68 +861,98 @@ export const createAiTools = ({
 				maxPrice,
 			});
 
-			await Promise.resolve();
+			try {
+				// Build URL with query parameters
+				const url = new URL(`${marketplaceUrl}/api/items`);
+				if (category) {
+					url.searchParams.set("category", category);
+				}
+				if (minPrice !== undefined) {
+					url.searchParams.set("minPrice", minPrice.toString());
+				}
+				if (maxPrice !== undefined) {
+					url.searchParams.set("maxPrice", maxPrice.toString());
+				}
 
-			return {
-				success: true,
-				items: [
-					{
-						id: "1",
-						name: "Test Item",
-						price: 100,
-						imageUrl: "https://via.placeholder.com/150",
-						category: "Test Category",
-						description: "Test Description",
-						createdAt: new Date(),
-						updatedAt: new Date(),
-					},
-				],
-				message: "Search completed",
-			};
+				logger.debug({
+					msg: "Fetching from marketplace",
+					url: url.toString(),
+				});
+
+				// Fetch items from marketplace
+				const response = await fetch(url.toString());
+
+				if (!response.ok) {
+					throw new Error(
+						`Marketplace request failed: ${response.status} ${response.statusText}`
+					);
+				}
+
+				const json = await response.json();
+				const data = MarketplaceItemsResponseSchema.parse(json);
+
+				logger.info({
+					msg: "AI tool: searchExternalMarketplace result",
+					userId,
+					itemCount: data.total,
+					filters: { category, minPrice, maxPrice },
+				});
+
+				return {
+					success: true,
+					items: data.items,
+					itemCount: data.total,
+					message: `Found ${data.total} item${data.total !== 1 ? "s" : ""} in marketplace`,
+				};
+			} catch (error) {
+				const errorMessage =
+					error instanceof Error ? error.message : String(error);
+				logger.error({
+					msg: "AI tool: searchExternalMarketplace failed",
+					userId,
+					error: errorMessage,
+				});
+
+				return {
+					success: false,
+					items: [],
+					itemCount: 0,
+					error: errorMessage,
+					message: `Failed to search marketplace: ${errorMessage}`,
+				};
+			}
 		},
 	}),
 
 	purchaseFromMarketplace: tool({
 		description:
-			"Purchase an item from external marketplace using delegated spending authorization. ONLY use this after user has explicitly confirmed they want to purchase the item. This will execute a real blockchain transaction and spend user funds. Requires valid spending authorization with sufficient budget.",
+			"Purchase an item from external marketplace. This is a CLIENT-SIDE tool that shows a purchase confirmation UI to the user. The user must confirm the purchase by signing with their wallet. DO NOT use this without user explicitly requesting to purchase a specific item. IMPORTANT: You must provide the full item object from searchExternalMarketplace results, not just the ID.",
 		inputSchema: z.object({
-			marketplaceUrl: z
-				.string()
-				.url()
-				.default("http://localhost:3002")
-				.describe("Marketplace API base URL"),
 			itemId: z.string().describe("Marketplace item ID to purchase"),
-			authorizationId: z
-				.string()
-				.describe(
-					"Spending authorization ID that allows this purchase (from user's active authorizations)"
-				),
+			item: MarketplaceItemSchema.describe(
+				"Full marketplace item details including name, price, image, etc. Use the item object from searchExternalMarketplace results."
+			),
 		}),
-		execute: async ({
-			marketplaceUrl,
-			itemId,
-			authorizationId,
-		}: {
-			marketplaceUrl: string;
-			itemId: string;
-			authorizationId: string;
-		}) => {
-			logger.debug({
-				msg: "AI tool: purchaseFromMarketplace",
-				userId,
-				marketplaceUrl,
-				itemId,
-				authorizationId,
-			});
-
-			await Promise.resolve();
-			// TODO: Implement purchase from marketplace
-
-			return {
-				success: true,
-				message: "Purchase completed",
-			};
-		},
+		outputSchema: z.object({
+			success: z.boolean(),
+			item: z
+				.object({
+					id: z.string(),
+					name: z.string(),
+					price: z.number(),
+				})
+				.optional(),
+			purchase: z
+				.object({
+					id: z.string(),
+					signature: z.string(),
+					timestamp: z.string(),
+					txHash: z.string().optional(),
+				})
+				.optional(),
+			error: z.string().optional(),
+			message: z.string(),
+		}),
 	}),
 });
 

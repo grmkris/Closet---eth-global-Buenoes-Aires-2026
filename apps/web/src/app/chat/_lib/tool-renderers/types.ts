@@ -7,6 +7,10 @@ import type {
 	GetWardrobeSummaryOutput,
 	MyToolSet,
 	MyUIMessagePart,
+	PurchaseFromMarketplaceInput,
+	PurchaseFromMarketplaceOutput,
+	SearchExternalMarketplaceInput,
+	SearchExternalMarketplaceOutput,
 	SearchWardrobeInput,
 	SearchWardrobeOutput,
 	ShowItemsInput,
@@ -176,7 +180,9 @@ export type ToolName =
 	| "getWardrobeSummary"
 	| "getItemDetails"
 	| "showItems"
-	| "generateOutfitPreview";
+	| "generateOutfitPreview"
+	| "searchExternalMarketplace"
+	| "purchaseFromMarketplace";
 
 /**
  * Type map for tool inputs
@@ -187,6 +193,8 @@ export type ToolInputMap = {
 	getItemDetails: GetItemDetailsInput;
 	showItems: ShowItemsInput;
 	generateOutfitPreview: GenerateOutfitPreviewInput;
+	searchExternalMarketplace: SearchExternalMarketplaceInput;
+	purchaseFromMarketplace: PurchaseFromMarketplaceInput;
 };
 
 /**
@@ -198,6 +206,8 @@ export type ToolOutputMap = {
 	getItemDetails: GetItemDetailsOutput;
 	showItems: ShowItemsOutput;
 	generateOutfitPreview: GenerateOutfitPreviewOutput;
+	searchExternalMarketplace: SearchExternalMarketplaceOutput;
+	purchaseFromMarketplace: PurchaseFromMarketplaceOutput;
 };
 
 /**

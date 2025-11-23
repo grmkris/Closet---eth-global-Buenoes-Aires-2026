@@ -1,0 +1,1616 @@
+{
+  "gender": "men",
+  "items": [
+    {
+      "id": "men-top-001",
+      "category": "top",
+      "name": "White crew-neck t-shirt",
+      "brand": "Uniqlo",
+      "colors": [
+        "white"
+      ],
+      "material": "cotton",
+      "style": [
+        "casual",
+        "minimalist"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "crew-neck",
+        "short-sleeve"
+      ],
+      "gender": "men",
+      "tier": 1
+    },
+    {
+      "id": "men-top-002",
+      "category": "top",
+      "name": "Black crew-neck t-shirt",
+      "brand": "H&M",
+      "colors": [
+        "black"
+      ],
+      "material": "cotton",
+      "style": [
+        "casual",
+        "minimalist"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "crew-neck",
+        "short-sleeve"
+      ],
+      "gender": "men",
+      "tier": 1
+    },
+    {
+      "id": "men-top-003",
+      "category": "top",
+      "name": "Navy v-neck t-shirt",
+      "brand": "Gap",
+      "colors": [
+        "navy"
+      ],
+      "material": "cotton",
+      "style": [
+        "casual"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "v-neck",
+        "short-sleeve"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-top-004",
+      "category": "top",
+      "name": "Striped long-sleeve t-shirt",
+      "brand": "Zara",
+      "colors": [
+        "navy",
+        "white"
+      ],
+      "material": "cotton",
+      "style": [
+        "casual"
+      ],
+      "season": [
+        "spring",
+        "fall"
+      ],
+      "fit": "regular",
+      "pattern": "striped",
+      "details": [
+        "crew-neck",
+        "long-sleeve"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-top-005",
+      "category": "top",
+      "name": "White oxford button-down shirt",
+      "brand": "Uniqlo",
+      "colors": [
+        "white"
+      ],
+      "material": "cotton",
+      "style": [
+        "business-casual",
+        "formal"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "slim-fit",
+      "pattern": "solid",
+      "details": [
+        "button-up",
+        "collar",
+        "long-sleeve"
+      ],
+      "gender": "men",
+      "tier": 1
+    },
+    {
+      "id": "men-top-006",
+      "category": "top",
+      "name": "Light blue dress shirt",
+      "brand": "H&M",
+      "colors": [
+        "light blue"
+      ],
+      "material": "cotton",
+      "style": [
+        "business-casual",
+        "formal"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "slim-fit",
+      "pattern": "solid",
+      "details": [
+        "button-up",
+        "collar",
+        "long-sleeve"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-top-007",
+      "category": "top",
+      "name": "Black turtleneck sweater",
+      "brand": "Zara",
+      "colors": [
+        "black"
+      ],
+      "material": "merino wool",
+      "style": [
+        "minimalist",
+        "smart-casual"
+      ],
+      "season": [
+        "fall",
+        "winter"
+      ],
+      "fit": "slim-fit",
+      "pattern": "solid",
+      "details": [
+        "turtleneck",
+        "long-sleeve"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-top-008",
+      "category": "top",
+      "name": "Gray crew-neck sweater",
+      "brand": "Gap",
+      "colors": [
+        "gray"
+      ],
+      "material": "cotton blend",
+      "style": [
+        "casual"
+      ],
+      "season": [
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "crew-neck",
+        "long-sleeve"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-top-009",
+      "category": "top",
+      "name": "Navy cable-knit sweater",
+      "brand": "Mango",
+      "colors": [
+        "navy"
+      ],
+      "material": "wool blend",
+      "style": [
+        "casual",
+        "preppy"
+      ],
+      "season": [
+        "winter"
+      ],
+      "fit": "regular",
+      "pattern": "cable-knit",
+      "details": [
+        "crew-neck",
+        "long-sleeve"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-top-010",
+      "category": "top",
+      "name": "Gray hoodie",
+      "brand": "Nike",
+      "colors": [
+        "gray"
+      ],
+      "material": "cotton fleece",
+      "style": [
+        "casual",
+        "athletic"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "hood",
+        "kangaroo-pocket"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-top-011",
+      "category": "top",
+      "name": "Red and black flannel shirt",
+      "brand": "Uniqlo",
+      "colors": [
+        "red",
+        "black"
+      ],
+      "material": "cotton",
+      "style": [
+        "casual",
+        "workwear"
+      ],
+      "season": [
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "pattern": "plaid",
+      "details": [
+        "button-up",
+        "long-sleeve"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-top-012",
+      "category": "top",
+      "name": "Light wash denim shirt",
+      "brand": "Levi's",
+      "colors": [
+        "light blue"
+      ],
+      "material": "denim",
+      "style": [
+        "casual"
+      ],
+      "season": [
+        "spring",
+        "fall"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "button-up",
+        "long-sleeve"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-top-013",
+      "category": "top",
+      "name": "Navy polo shirt",
+      "brand": "Ralph Lauren",
+      "colors": [
+        "navy"
+      ],
+      "material": "cotton pique",
+      "style": [
+        "casual",
+        "preppy"
+      ],
+      "season": [
+        "summer"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "polo-collar",
+        "short-sleeve"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-top-014",
+      "category": "top",
+      "name": "Black athletic performance t-shirt",
+      "brand": "Adidas",
+      "colors": [
+        "black"
+      ],
+      "material": "polyester",
+      "style": [
+        "athletic"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "crew-neck",
+        "short-sleeve"
+      ],
+      "features": [
+        "breathable",
+        "moisture-wicking"
+      ],
+      "gender": "men",
+      "tier": 3
+    },
+    {
+      "id": "men-top-015",
+      "category": "top",
+      "name": "Charcoal long-sleeve henley",
+      "brand": "Gap",
+      "colors": [
+        "charcoal"
+      ],
+      "material": "cotton",
+      "style": [
+        "casual"
+      ],
+      "season": [
+        "fall"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "henley",
+        "long-sleeve"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-bottom-001",
+      "category": "bottom",
+      "name": "Dark wash raw denim jeans",
+      "brand": "Levi's 511",
+      "colors": [
+        "dark blue"
+      ],
+      "material": "denim",
+      "style": [
+        "casual"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "slim-fit",
+      "pattern": "solid",
+      "details": [
+        "five-pocket",
+        "raw-denim"
+      ],
+      "gender": "men",
+      "tier": 1
+    },
+    {
+      "id": "men-bottom-002",
+      "category": "bottom",
+      "name": "Light wash jeans",
+      "brand": "Zara",
+      "colors": [
+        "light blue"
+      ],
+      "material": "denim",
+      "style": [
+        "casual"
+      ],
+      "season": [
+        "spring",
+        "summer"
+      ],
+      "fit": "slim-fit",
+      "pattern": "solid",
+      "details": [
+        "five-pocket",
+        "distressed"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-bottom-003",
+      "category": "bottom",
+      "name": "Black jeans",
+      "brand": "Diesel",
+      "colors": [
+        "black"
+      ],
+      "material": "denim",
+      "style": [
+        "casual",
+        "streetwear"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "slim-fit",
+      "pattern": "solid",
+      "details": [
+        "five-pocket"
+      ],
+      "features": [
+        "stretch"
+      ],
+      "gender": "men",
+      "tier": 1
+    },
+    {
+      "id": "men-bottom-004",
+      "category": "bottom",
+      "name": "Khaki chinos",
+      "brand": "Gap",
+      "colors": [
+        "khaki"
+      ],
+      "material": "cotton",
+      "style": [
+        "casual",
+        "business-casual"
+      ],
+      "season": [
+        "spring",
+        "summer",
+        "fall"
+      ],
+      "fit": "slim-fit",
+      "pattern": "solid",
+      "details": [
+        "flat-front"
+      ],
+      "gender": "men",
+      "tier": 1
+    },
+    {
+      "id": "men-bottom-005",
+      "category": "bottom",
+      "name": "Navy chinos",
+      "brand": "Uniqlo",
+      "colors": [
+        "navy"
+      ],
+      "material": "cotton",
+      "style": [
+        "casual",
+        "business-casual"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "tapered",
+      "pattern": "solid",
+      "details": [
+        "flat-front"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-bottom-006",
+      "category": "bottom",
+      "name": "Gray dress pants",
+      "brand": "H&M",
+      "colors": [
+        "gray"
+      ],
+      "material": "wool blend",
+      "style": [
+        "formal",
+        "business"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "slim-fit",
+      "pattern": "solid",
+      "details": [
+        "flat-front",
+        "creased"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-bottom-007",
+      "category": "bottom",
+      "name": "Black dress pants",
+      "brand": "Zara",
+      "colors": [
+        "black"
+      ],
+      "material": "wool blend",
+      "style": [
+        "formal",
+        "business"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "tailored",
+      "pattern": "solid",
+      "details": [
+        "flat-front",
+        "creased"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-bottom-008",
+      "category": "bottom",
+      "name": "Olive cargo pants",
+      "brand": "Carhartt",
+      "colors": [
+        "olive"
+      ],
+      "material": "cotton canvas",
+      "style": [
+        "casual",
+        "workwear"
+      ],
+      "season": [
+        "fall"
+      ],
+      "fit": "relaxed-fit",
+      "pattern": "solid",
+      "details": [
+        "cargo-pockets"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-bottom-009",
+      "category": "bottom",
+      "name": "Black athletic joggers",
+      "brand": "Nike",
+      "colors": [
+        "black"
+      ],
+      "material": "polyester",
+      "style": [
+        "athletic",
+        "casual"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "tapered",
+      "pattern": "solid",
+      "details": [
+        "elastic-waist",
+        "drawstring"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-bottom-010",
+      "category": "bottom",
+      "name": "Navy chino shorts",
+      "brand": "Gap",
+      "colors": [
+        "navy"
+      ],
+      "material": "cotton",
+      "style": [
+        "casual"
+      ],
+      "season": [
+        "summer"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "9-inch-inseam"
+      ],
+      "gender": "men",
+      "tier": 3
+    },
+    {
+      "id": "men-bottom-011",
+      "category": "bottom",
+      "name": "Light wash denim shorts",
+      "brand": "Levi's",
+      "colors": [
+        "light blue"
+      ],
+      "material": "denim",
+      "style": [
+        "casual"
+      ],
+      "season": [
+        "summer"
+      ],
+      "fit": "slim-fit",
+      "pattern": "solid",
+      "details": [
+        "five-pocket"
+      ],
+      "gender": "men",
+      "tier": 3
+    },
+    {
+      "id": "men-bottom-012",
+      "category": "bottom",
+      "name": "Brown corduroy pants",
+      "brand": "Mango",
+      "colors": [
+        "brown"
+      ],
+      "material": "corduroy",
+      "style": [
+        "casual",
+        "vintage"
+      ],
+      "season": [
+        "fall",
+        "winter"
+      ],
+      "fit": "straight-leg",
+      "pattern": "corduroy",
+      "details": [
+        "five-pocket"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-outerwear-001",
+      "category": "outerwear",
+      "name": "Medium wash denim jacket",
+      "brand": "Levi's",
+      "colors": [
+        "medium blue"
+      ],
+      "material": "denim",
+      "style": [
+        "casual",
+        "classic"
+      ],
+      "season": [
+        "spring",
+        "fall"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "trucker-style",
+        "button-front"
+      ],
+      "gender": "men",
+      "tier": 1
+    },
+    {
+      "id": "men-outerwear-002",
+      "category": "outerwear",
+      "name": "Black leather moto jacket",
+      "brand": "Zara",
+      "colors": [
+        "black"
+      ],
+      "material": "leather",
+      "style": [
+        "edgy",
+        "streetwear"
+      ],
+      "season": [
+        "fall",
+        "winter"
+      ],
+      "fit": "slim-fit",
+      "pattern": "solid",
+      "details": [
+        "moto-style",
+        "zipper",
+        "lapels"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-outerwear-003",
+      "category": "outerwear",
+      "name": "Navy wool coat",
+      "brand": "H&M",
+      "colors": [
+        "navy"
+      ],
+      "material": "wool",
+      "style": [
+        "formal",
+        "business"
+      ],
+      "season": [
+        "winter"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "single-breasted",
+        "notch-lapel"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-outerwear-004",
+      "category": "outerwear",
+      "name": "Black quilted puffer jacket",
+      "brand": "The North Face",
+      "colors": [
+        "black"
+      ],
+      "material": "nylon",
+      "style": [
+        "casual",
+        "athletic"
+      ],
+      "season": [
+        "winter"
+      ],
+      "fit": "regular",
+      "pattern": "quilted",
+      "details": [
+        "zipper",
+        "hood"
+      ],
+      "features": [
+        "insulated",
+        "water-resistant"
+      ],
+      "gender": "men",
+      "tier": 1
+    },
+    {
+      "id": "men-outerwear-005",
+      "category": "outerwear",
+      "name": "Olive bomber jacket",
+      "brand": "Alpha Industries",
+      "colors": [
+        "olive"
+      ],
+      "material": "nylon",
+      "style": [
+        "casual",
+        "military"
+      ],
+      "season": [
+        "fall"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "zipper",
+        "ribbed-cuffs"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-outerwear-006",
+      "category": "outerwear",
+      "name": "Beige trench coat",
+      "brand": "Zara",
+      "colors": [
+        "beige"
+      ],
+      "material": "cotton",
+      "style": [
+        "classic",
+        "formal"
+      ],
+      "season": [
+        "spring",
+        "fall"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "double-breasted",
+        "belt"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-outerwear-007",
+      "category": "outerwear",
+      "name": "Gray zip-up hoodie",
+      "brand": "Nike",
+      "colors": [
+        "gray"
+      ],
+      "material": "cotton fleece",
+      "style": [
+        "casual",
+        "athletic"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "zipper",
+        "hood",
+        "pockets"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-outerwear-008",
+      "category": "outerwear",
+      "name": "Navy blazer",
+      "brand": "H&M",
+      "colors": [
+        "navy"
+      ],
+      "material": "cotton blend",
+      "style": [
+        "business-casual",
+        "smart-casual"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "slim-fit",
+      "pattern": "solid",
+      "details": [
+        "notch-lapel",
+        "two-button"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-outerwear-009",
+      "category": "outerwear",
+      "name": "Green waterproof parka",
+      "brand": "Carhartt",
+      "colors": [
+        "green"
+      ],
+      "material": "nylon",
+      "style": [
+        "casual",
+        "outdoor"
+      ],
+      "season": [
+        "winter"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "zipper",
+        "hood",
+        "pockets"
+      ],
+      "features": [
+        "waterproof",
+        "insulated"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-outerwear-010",
+      "category": "outerwear",
+      "name": "Gray shawl-collar cardigan",
+      "brand": "Gap",
+      "colors": [
+        "gray"
+      ],
+      "material": "knit",
+      "style": [
+        "casual",
+        "cozy"
+      ],
+      "season": [
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "shawl-collar",
+        "button-front"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-shoes-001",
+      "category": "shoes",
+      "name": "White leather sneakers",
+      "brand": "Adidas Stan Smith",
+      "colors": [
+        "white"
+      ],
+      "material": "leather",
+      "style": [
+        "casual",
+        "minimalist"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "pattern": "solid",
+      "gender": "men",
+      "tier": 1
+    },
+    {
+      "id": "men-shoes-002",
+      "category": "shoes",
+      "name": "Black leather sneakers",
+      "brand": "Nike Air Force 1",
+      "colors": [
+        "black"
+      ],
+      "material": "leather",
+      "style": [
+        "casual",
+        "streetwear"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "pattern": "solid",
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-shoes-003",
+      "category": "shoes",
+      "name": "Brown leather Chelsea boots",
+      "brand": "Thursday Boot Co.",
+      "colors": [
+        "brown"
+      ],
+      "material": "leather",
+      "style": [
+        "smart-casual",
+        "business-casual"
+      ],
+      "season": [
+        "fall",
+        "winter"
+      ],
+      "pattern": "solid",
+      "details": [
+        "elastic-side-panel"
+      ],
+      "gender": "men",
+      "tier": 1
+    },
+    {
+      "id": "men-shoes-004",
+      "category": "shoes",
+      "name": "Black leather oxford dress shoes",
+      "brand": "H&M",
+      "colors": [
+        "black"
+      ],
+      "material": "leather",
+      "style": [
+        "formal",
+        "business"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "pattern": "solid",
+      "details": [
+        "lace-up"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-shoes-005",
+      "category": "shoes",
+      "name": "Navy canvas sneakers",
+      "brand": "Converse Chuck Taylor",
+      "colors": [
+        "navy"
+      ],
+      "material": "canvas",
+      "style": [
+        "casual",
+        "classic"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "pattern": "solid",
+      "details": [
+        "lace-up",
+        "high-top"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-shoes-006",
+      "category": "shoes",
+      "name": "Gray mesh running shoes",
+      "brand": "Nike",
+      "colors": [
+        "gray"
+      ],
+      "material": "mesh",
+      "style": [
+        "athletic"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "pattern": "solid",
+      "features": [
+        "breathable",
+        "cushioned"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-shoes-007",
+      "category": "shoes",
+      "name": "Brown suede loafers",
+      "brand": "Mango",
+      "colors": [
+        "brown"
+      ],
+      "material": "suede",
+      "style": [
+        "smart-casual",
+        "preppy"
+      ],
+      "season": [
+        "spring",
+        "fall"
+      ],
+      "pattern": "solid",
+      "details": [
+        "slip-on"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-shoes-008",
+      "category": "shoes",
+      "name": "Sand suede desert boots",
+      "brand": "Clarks",
+      "colors": [
+        "sand"
+      ],
+      "material": "suede",
+      "style": [
+        "casual",
+        "classic"
+      ],
+      "season": [
+        "fall"
+      ],
+      "pattern": "solid",
+      "details": [
+        "lace-up",
+        "crepe-sole"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "men-shoes-009",
+      "category": "shoes",
+      "name": "Black leather sandals",
+      "brand": "Birkenstock Arizona",
+      "colors": [
+        "black"
+      ],
+      "material": "leather",
+      "style": [
+        "casual"
+      ],
+      "season": [
+        "summer"
+      ],
+      "pattern": "solid",
+      "details": [
+        "two-strap"
+      ],
+      "gender": "men",
+      "tier": 3
+    },
+    {
+      "id": "men-shoes-010",
+      "category": "shoes",
+      "name": "Black canvas slip-on sneakers",
+      "brand": "Vans",
+      "colors": [
+        "black"
+      ],
+      "material": "canvas",
+      "style": [
+        "casual",
+        "skatewear"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "pattern": "solid",
+      "details": [
+        "slip-on"
+      ],
+      "gender": "men",
+      "tier": 2
+    },
+    {
+      "id": "special-001",
+      "category": "outerwear",
+      "name": "Charcoal wool suit jacket",
+      "brand": "H&M",
+      "colors": [
+        "charcoal"
+      ],
+      "material": "wool",
+      "style": [
+        "formal",
+        "business"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "tailored",
+      "pattern": "solid",
+      "details": [
+        "notch-lapel",
+        "two-button"
+      ],
+      "gender": "men",
+      "tier": 3
+    },
+    {
+      "id": "special-002",
+      "category": "bottom",
+      "name": "Charcoal wool suit pants",
+      "brand": "H&M",
+      "colors": [
+        "charcoal"
+      ],
+      "material": "wool",
+      "style": [
+        "formal",
+        "business"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "fit": "tailored",
+      "pattern": "solid",
+      "details": [
+        "flat-front",
+        "creased"
+      ],
+      "gender": "men",
+      "tier": 3
+    },
+    {
+      "id": "special-003",
+      "category": "accessory",
+      "name": "Navy silk tie",
+      "brand": "Brooks Brothers",
+      "colors": [
+        "navy"
+      ],
+      "material": "silk",
+      "style": [
+        "formal",
+        "business"
+      ],
+      "season": [
+        "all-season"
+      ],
+      "pattern": "solid",
+      "gender": "men",
+      "tier": 3
+    },
+    {
+      "id": "special-004",
+      "category": "bottom",
+      "name": "Black athletic running shorts",
+      "brand": "Nike",
+      "colors": [
+        "black"
+      ],
+      "material": "polyester",
+      "style": [
+        "athletic"
+      ],
+      "season": [
+        "summer"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "elastic-waist",
+        "drawstring"
+      ],
+      "features": [
+        "breathable",
+        "moisture-wicking"
+      ],
+      "gender": "men",
+      "tier": 3
+    },
+    {
+      "id": "special-008",
+      "category": "bottom",
+      "name": "Navy swim trunks",
+      "brand": "Speedo",
+      "colors": [
+        "navy"
+      ],
+      "material": "polyester",
+      "style": [
+        "athletic",
+        "swimwear"
+      ],
+      "season": [
+        "summer"
+      ],
+      "fit": "regular",
+      "pattern": "solid",
+      "details": [
+        "elastic-waist",
+        "drawstring"
+      ],
+      "features": [
+        "quick-dry"
+      ],
+      "gender": "men",
+      "tier": 3
+    }
+  ],
+  "results": [
+    {
+      "id": "men-top-001",
+      "name": "White crew-neck t-shirt",
+      "status": "success",
+      "filePath": "men/top/uniqlo-white-crew-neck-t-shirt.webp"
+    },
+    {
+      "id": "men-top-002",
+      "name": "Black crew-neck t-shirt",
+      "status": "success",
+      "filePath": "men/top/h-m-black-crew-neck-t-shirt.webp"
+    },
+    {
+      "id": "men-top-003",
+      "name": "Navy v-neck t-shirt",
+      "status": "success",
+      "filePath": "men/top/gap-navy-v-neck-t-shirt.webp"
+    },
+    {
+      "id": "men-top-004",
+      "name": "Striped long-sleeve t-shirt",
+      "status": "success",
+      "filePath": "men/top/zara-striped-long-sleeve-t-shirt.webp"
+    },
+    {
+      "id": "men-top-005",
+      "name": "White oxford button-down shirt",
+      "status": "success",
+      "filePath": "men/top/uniqlo-white-oxford-button-down-shirt.webp"
+    },
+    {
+      "id": "men-top-006",
+      "name": "Light blue dress shirt",
+      "status": "success",
+      "filePath": "men/top/h-m-light-blue-dress-shirt.webp"
+    },
+    {
+      "id": "men-top-007",
+      "name": "Black turtleneck sweater",
+      "status": "success",
+      "filePath": "men/top/zara-black-turtleneck-sweater.webp"
+    },
+    {
+      "id": "men-top-008",
+      "name": "Gray crew-neck sweater",
+      "status": "success",
+      "filePath": "men/top/gap-gray-crew-neck-sweater.webp"
+    },
+    {
+      "id": "men-top-009",
+      "name": "Navy cable-knit sweater",
+      "status": "success",
+      "filePath": "men/top/mango-navy-cable-knit-sweater.webp"
+    },
+    {
+      "id": "men-top-010",
+      "name": "Gray hoodie",
+      "status": "success",
+      "filePath": "men/top/nike-gray-hoodie.webp"
+    },
+    {
+      "id": "men-top-011",
+      "name": "Red and black flannel shirt",
+      "status": "success",
+      "filePath": "men/top/uniqlo-red-and-black-flannel-shirt.webp"
+    },
+    {
+      "id": "men-top-012",
+      "name": "Light wash denim shirt",
+      "status": "success",
+      "filePath": "men/top/levi-s-light-wash-denim-shirt.webp"
+    },
+    {
+      "id": "men-top-013",
+      "name": "Navy polo shirt",
+      "status": "success",
+      "filePath": "men/top/ralph-lauren-navy-polo-shirt.webp"
+    },
+    {
+      "id": "men-top-014",
+      "name": "Black athletic performance t-shirt",
+      "status": "success",
+      "filePath": "men/top/adidas-black-athletic-performance-t-shirt.webp"
+    },
+    {
+      "id": "men-top-015",
+      "name": "Charcoal long-sleeve henley",
+      "status": "success",
+      "filePath": "men/top/gap-charcoal-long-sleeve-henley.webp"
+    },
+    {
+      "id": "men-bottom-001",
+      "name": "Dark wash raw denim jeans",
+      "status": "success",
+      "filePath": "men/bottom/levi-s-511-dark-wash-raw-denim-jeans.webp"
+    },
+    {
+      "id": "men-bottom-002",
+      "name": "Light wash jeans",
+      "status": "success",
+      "filePath": "men/bottom/zara-light-wash-jeans.webp"
+    },
+    {
+      "id": "men-bottom-003",
+      "name": "Black jeans",
+      "status": "success",
+      "filePath": "men/bottom/diesel-black-jeans.webp"
+    },
+    {
+      "id": "men-bottom-004",
+      "name": "Khaki chinos",
+      "status": "success",
+      "filePath": "men/bottom/gap-khaki-chinos.webp"
+    },
+    {
+      "id": "men-bottom-005",
+      "name": "Navy chinos",
+      "status": "success",
+      "filePath": "men/bottom/uniqlo-navy-chinos.webp"
+    },
+    {
+      "id": "men-bottom-006",
+      "name": "Gray dress pants",
+      "status": "success",
+      "filePath": "men/bottom/h-m-gray-dress-pants.webp"
+    },
+    {
+      "id": "men-bottom-007",
+      "name": "Black dress pants",
+      "status": "success",
+      "filePath": "men/bottom/zara-black-dress-pants.webp"
+    },
+    {
+      "id": "men-bottom-008",
+      "name": "Olive cargo pants",
+      "status": "success",
+      "filePath": "men/bottom/carhartt-olive-cargo-pants.webp"
+    },
+    {
+      "id": "men-bottom-009",
+      "name": "Black athletic joggers",
+      "status": "success",
+      "filePath": "men/bottom/nike-black-athletic-joggers.webp"
+    },
+    {
+      "id": "men-bottom-010",
+      "name": "Navy chino shorts",
+      "status": "error",
+      "error": "No files returned in response. Ensure the model supports image generation."
+    },
+    {
+      "id": "men-bottom-011",
+      "name": "Light wash denim shorts",
+      "status": "success",
+      "filePath": "men/bottom/levi-s-light-wash-denim-shorts.webp"
+    },
+    {
+      "id": "men-bottom-012",
+      "name": "Brown corduroy pants",
+      "status": "success",
+      "filePath": "men/bottom/mango-brown-corduroy-pants.webp"
+    },
+    {
+      "id": "men-outerwear-001",
+      "name": "Medium wash denim jacket",
+      "status": "success",
+      "filePath": "men/outerwear/levi-s-medium-wash-denim-jacket.webp"
+    },
+    {
+      "id": "men-outerwear-002",
+      "name": "Black leather moto jacket",
+      "status": "success",
+      "filePath": "men/outerwear/zara-black-leather-moto-jacket.webp"
+    },
+    {
+      "id": "men-outerwear-003",
+      "name": "Navy wool coat",
+      "status": "success",
+      "filePath": "men/outerwear/h-m-navy-wool-coat.webp"
+    },
+    {
+      "id": "men-outerwear-004",
+      "name": "Black quilted puffer jacket",
+      "status": "error",
+      "error": "No files returned in response. Ensure the model supports image generation."
+    },
+    {
+      "id": "men-outerwear-005",
+      "name": "Olive bomber jacket",
+      "status": "success",
+      "filePath": "men/outerwear/alpha-industries-olive-bomber-jacket.webp"
+    },
+    {
+      "id": "men-outerwear-006",
+      "name": "Beige trench coat",
+      "status": "success",
+      "filePath": "men/outerwear/zara-beige-trench-coat.webp"
+    },
+    {
+      "id": "men-outerwear-007",
+      "name": "Gray zip-up hoodie",
+      "status": "success",
+      "filePath": "men/outerwear/nike-gray-zip-up-hoodie.webp"
+    },
+    {
+      "id": "men-outerwear-008",
+      "name": "Navy blazer",
+      "status": "success",
+      "filePath": "men/outerwear/h-m-navy-blazer.webp"
+    },
+    {
+      "id": "men-outerwear-009",
+      "name": "Green waterproof parka",
+      "status": "success",
+      "filePath": "men/outerwear/carhartt-green-waterproof-parka.webp"
+    },
+    {
+      "id": "men-outerwear-010",
+      "name": "Gray shawl-collar cardigan",
+      "status": "success",
+      "filePath": "men/outerwear/gap-gray-shawl-collar-cardigan.webp"
+    },
+    {
+      "id": "men-shoes-001",
+      "name": "White leather sneakers",
+      "status": "success",
+      "filePath": "men/shoes/adidas-stan-smith-white-leather-sneakers.webp"
+    },
+    {
+      "id": "men-shoes-002",
+      "name": "Black leather sneakers",
+      "status": "success",
+      "filePath": "men/shoes/nike-air-force-1-black-leather-sneakers.webp"
+    },
+    {
+      "id": "men-shoes-003",
+      "name": "Brown leather Chelsea boots",
+      "status": "success",
+      "filePath": "men/shoes/thursday-boot-co-brown-leather-chelsea-boots.webp"
+    },
+    {
+      "id": "men-shoes-004",
+      "name": "Black leather oxford dress shoes",
+      "status": "success",
+      "filePath": "men/shoes/h-m-black-leather-oxford-dress-shoes.webp"
+    },
+    {
+      "id": "men-shoes-005",
+      "name": "Navy canvas sneakers",
+      "status": "success",
+      "filePath": "men/shoes/converse-chuck-taylor-navy-canvas-sneakers.webp"
+    },
+    {
+      "id": "men-shoes-006",
+      "name": "Gray mesh running shoes",
+      "status": "success",
+      "filePath": "men/shoes/nike-gray-mesh-running-shoes.webp"
+    },
+    {
+      "id": "men-shoes-007",
+      "name": "Brown suede loafers",
+      "status": "success",
+      "filePath": "men/shoes/mango-brown-suede-loafers.webp"
+    },
+    {
+      "id": "men-shoes-008",
+      "name": "Sand suede desert boots",
+      "status": "success",
+      "filePath": "men/shoes/clarks-sand-suede-desert-boots.webp"
+    },
+    {
+      "id": "men-shoes-009",
+      "name": "Black leather sandals",
+      "status": "success",
+      "filePath": "men/shoes/birkenstock-arizona-black-leather-sandals.webp"
+    },
+    {
+      "id": "men-shoes-010",
+      "name": "Black canvas slip-on sneakers",
+      "status": "success",
+      "filePath": "men/shoes/vans-black-canvas-slip-on-sneakers.webp"
+    },
+    {
+      "id": "special-001",
+      "name": "Charcoal wool suit jacket",
+      "status": "success",
+      "filePath": "men/outerwear/h-m-charcoal-wool-suit-jacket.webp"
+    },
+    {
+      "id": "special-002",
+      "name": "Charcoal wool suit pants",
+      "status": "success",
+      "filePath": "men/bottom/h-m-charcoal-wool-suit-pants.webp"
+    },
+    {
+      "id": "special-003",
+      "name": "Navy silk tie",
+      "status": "success",
+      "filePath": "men/accessory/brooks-brothers-navy-silk-tie.webp"
+    },
+    {
+      "id": "special-004",
+      "name": "Black athletic running shorts",
+      "status": "success",
+      "filePath": "men/bottom/nike-black-athletic-running-shorts.webp"
+    },
+    {
+      "id": "special-008",
+      "name": "Navy swim trunks",
+      "status": "success",
+      "filePath": "men/bottom/speedo-navy-swim-trunks.webp"
+    }
+  ],
+  "generatedAt": "2025-11-23T08:19:39.614Z"
+}

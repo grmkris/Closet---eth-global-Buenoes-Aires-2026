@@ -692,4 +692,62 @@ export const wardrobeRouter = {
 		const tagTypes = await getAllTagTypes(context.db);
 		return { tagTypes };
 	}),
+
+	/**
+	 * Create wardrobe item from marketplace purchase
+	 * This is called after successfully purchasing an item from an external marketplace
+	 */
+	createItemFromMarketplacePurchase: protectedProcedure
+		.input(
+			z.object({
+				marketplaceItemId: z.string(),
+				name: z.string(),
+				description: z.string(),
+				price: z.number(),
+				category: z.string(),
+				brand: z.string().optional(),
+				imageUrl: z.string().url(),
+				metadata: z.object({
+					sizes: z.array(z.string()).optional(),
+					colors: z.array(z.string()).optional(),
+					material: z.string().optional(),
+					marketplaceUrl: z.string().url(),
+					purchaseId: z.string().optional(),
+					txHash: z.string().optional(),
+				}),
+			})
+		)
+		.handler(async ({ input, context }) => {
+			const userId = UserId.parse(context.session.user.id);
+			const itemId = typeIdGenerator("clothingItem");
+
+			// Create placeholder storage key for external image
+			// We'll store the external URL in the DB and optionally download it later
+			const imageKey = `users/${userId}/marketplace/${itemId}_external`;
+
+			// Insert item with 'completed' status since it's already purchased
+			// Note: This item won't have AI analysis initially
+			await context.db.insert(clothingItemsTable).values({
+				id: itemId,
+				userId,
+				imageKey,
+				status: "completed",
+				// Store marketplace metadata in a JSON field if available, or in description
+				// For now, we'll just create the basic item
+			});
+
+			context.logger.info({
+				msg: "Created wardrobe item from marketplace purchase",
+				itemId,
+				userId,
+				marketplaceItemId: input.marketplaceItemId,
+				marketplaceUrl: input.metadata.marketplaceUrl,
+			});
+
+			return {
+				itemId,
+				status: "completed",
+				message: "Item added to wardrobe",
+			};
+		}),
 };
