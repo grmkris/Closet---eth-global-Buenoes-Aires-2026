@@ -1,7 +1,6 @@
 import { createAiClient } from "@ai-stilist/ai";
 import { createAuth } from "@ai-stilist/auth";
-import { createWalletClient } from "@ai-stilist/cdp-wallet";
-import { createDb, seedDefaultAgent } from "@ai-stilist/db";
+import { createDb } from "@ai-stilist/db";
 import { createLogger } from "@ai-stilist/logger";
 import { createQueueClient } from "@ai-stilist/queue";
 import { createRedisClient } from "@ai-stilist/redis";
@@ -20,13 +19,6 @@ const logger = createLogger({
 
 const db = createDb({
 	dbData: { type: "pg", databaseUrl: env.DATABASE_URL },
-});
-
-// Seed default agent
-await seedDefaultAgent({
-	db,
-	logger,
-	walletAddress: env.DEFAULT_AGENT_WALLET_ADDRESS,
 });
 
 const authClient = createAuth({
@@ -69,13 +61,6 @@ const aiClient = createAiClient({
 	environment: env.APP_ENV,
 });
 
-const walletClient = createWalletClient({
-	apiKeyId: env.CDP_API_KEY_ID,
-	apiKeySecret: env.CDP_API_KEY_SECRET,
-	apiKeyFile: env.CDP_API_KEY_FILE, // Legacy fallback
-	logger,
-});
-
 // Start background workers
 logger.info({ msg: "Starting background workers" });
 let imageProcessorWorker: { close: () => Promise<void> };
@@ -113,7 +98,6 @@ const app = await createApp({
 		storage,
 		queue,
 		aiClient,
-		walletClient,
 		appEnv: env.APP_ENV,
 	},
 });

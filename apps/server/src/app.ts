@@ -1,7 +1,7 @@
 import { createContext } from "@ai-stilist/api/context";
 import { createSubscriptionHonoRoute } from "@ai-stilist/api/features/sub/subscription-hono-route";
 import { appRouter } from "@ai-stilist/api/routers/index";
-import { runMigrations } from "@ai-stilist/db";
+import { runMigrations, seedDefaultAgent } from "@ai-stilist/db";
 import { HTTP_STATUS } from "@ai-stilist/shared/constants";
 import { SERVICE_URLS } from "@ai-stilist/shared/services";
 import { typeIdGenerator } from "@ai-stilist/shared/typeid";
@@ -64,6 +64,13 @@ export const createApp = async (props: {
 		throw error;
 	}
 
+	// Seed default agent
+	await seedDefaultAgent({
+		db,
+		logger,
+		walletAddress: env.DEFAULT_AGENT_WALLET_ADDRESS,
+	});
+
 	// Initialize oRPC handler
 	logger.info("Initializing oRPC handler");
 	const orpcHandler = new RPCHandler(appRouter);
@@ -118,7 +125,6 @@ export const createApp = async (props: {
 				storage: deps.storage,
 				queue: deps.queue,
 				aiClient: deps.aiClient,
-				walletClient: deps.walletClient,
 				appEnv: deps.appEnv,
 				headers: c.req.raw.headers,
 				requestId,
@@ -169,7 +175,6 @@ export const createApp = async (props: {
 				storage: deps.storage,
 				queue: deps.queue,
 				aiClient: deps.aiClient,
-				walletClient: deps.walletClient,
 				appEnv: deps.appEnv,
 				headers: c.req.raw.headers,
 				requestId,

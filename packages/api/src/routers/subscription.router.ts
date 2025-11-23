@@ -55,6 +55,10 @@ export const subscriptionRouter = {
 		// Convert price from cents to dollars
 		const priceInDollars = (agent.priceMonthly / 100).toFixed(2);
 
+		if (!agent.walletAddress) {
+			throw new Error("Agent wallet address not found");
+		}
+
 		const requirements: PaymentRequirements = {
 			price: `$${priceInDollars}`,
 			recipient: agent.walletAddress,

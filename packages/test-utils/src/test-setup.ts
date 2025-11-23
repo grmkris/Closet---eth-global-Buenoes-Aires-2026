@@ -1,8 +1,6 @@
 import type { AiClient } from "@ai-stilist/ai";
 import { createAiClient } from "@ai-stilist/ai";
 import { type Auth, createAuth } from "@ai-stilist/auth";
-import type { WalletClient } from "@ai-stilist/cdp-wallet";
-import { createWalletClient } from "@ai-stilist/cdp-wallet";
 import { createDb, type Database, runMigrations } from "@ai-stilist/db";
 import type { Logger as DrizzleLogger } from "@ai-stilist/db/drizzle";
 import {
@@ -40,7 +38,6 @@ export type Context = {
 	storage: StorageClient;
 	queue: QueueClient;
 	aiClient: AiClient;
-	walletClient: WalletClient;
 	appEnv: Environment;
 	logger: Logger;
 	headers: Headers;
@@ -313,11 +310,6 @@ export async function createTestContext(props: {
 		headers,
 	});
 
-	const walletClient = createWalletClient({
-		apiKeyFile: testEnv.CDP_API_KEY_FILE,
-		logger,
-	});
-
 	// Build context object directly
 	return {
 		session,
@@ -325,7 +317,6 @@ export async function createTestContext(props: {
 		storage: deps.storage,
 		queue: deps.queue,
 		aiClient: deps.aiClient,
-		walletClient,
 		appEnv: testEnv.APP_ENV,
 		logger: deps.logger,
 		headers,

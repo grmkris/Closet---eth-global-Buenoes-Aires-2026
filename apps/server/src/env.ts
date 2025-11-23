@@ -28,12 +28,6 @@ export const envSchema = z.object({
 	GROQ_API_KEY: z.string().optional(),
 	XAI_API_KEY: z.string().optional(),
 
-	// CDP (Coinbase Developer Platform) Configuration
-	CDP_API_KEY_ID: z.string().optional(),
-	CDP_API_KEY_SECRET: z.string().optional(),
-	CDP_WALLET_SECRET: z.string().optional(),
-	CDP_API_KEY_FILE: z.string().optional(), // Legacy, keeping for backward compatibility
-
 	// x402 Facilitator (Optional - for gasless subscription payments)
 	DEFAULT_AGENT_WALLET_ADDRESS: z.string(),
 });

@@ -19,8 +19,8 @@ export const agentsTable = pgTable("agents", {
 	description: text("description").notNull(),
 	specialty: text("specialty").notNull(),
 
-	// CDP Wallet - just store address
-	walletAddress: text("wallet_address").notNull().unique(),
+	// Wallet address (optional, for future blockchain integration)
+	walletAddress: text("wallet_address"),
 
 	// ERC-8004
 	erc8004TokenId: text("erc8004_token_id"),

@@ -31,19 +31,12 @@ const GetAgentInput = z.object({
 
 export const agentRouter = {
 	/**
-	 * Create a new AI stylist agent with CDP wallet
+	 * Create a new AI stylist agent
 	 */
 	create: protectedProcedure
 		.input(CreateAgentInput)
 		.handler(async ({ input, context }) => {
 			const userId = UserId.parse(context.session.user.id);
-
-			// Create CDP wallet on Base network
-			const wallet = await context.walletClient.createWallet({
-				networkId: "base-mainnet",
-			});
-
-			const address = await wallet.getDefaultAddress();
 
 			// Create agent in DB
 			const [agent] = await context.db
@@ -53,7 +46,7 @@ export const agentRouter = {
 					description: input.description,
 					specialty: input.specialty,
 					priceMonthly: Math.round(input.priceMonthly * 100),
-					walletAddress: address.getId(),
+					walletAddress: null,
 					creatorUserId: userId,
 					active: true,
 				})
