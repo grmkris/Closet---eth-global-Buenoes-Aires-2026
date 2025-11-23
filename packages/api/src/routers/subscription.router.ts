@@ -92,7 +92,6 @@ export const subscriptionRouter = {
 			const existingSub = await context.db.query.subscriptionsTable.findFirst({
 				where: and(
 					eq(subscriptionsTable.userId, userId),
-					eq(subscriptionsTable.agentId, agent.id),
 					eq(subscriptionsTable.status, "active")
 				),
 			});
@@ -113,8 +112,7 @@ export const subscriptionRouter = {
 				.insert(subscriptionsTable)
 				.values({
 					userId,
-					agentId: agent.id,
-					priceMonthly: agent.priceMonthly,
+					priceMonthly: 0.001,
 					status: "active",
 					lastPaymentAt: now,
 					nextPaymentDue,
@@ -167,9 +165,6 @@ export const subscriptionRouter = {
 		const subscriptions = await context.db.query.subscriptionsTable.findMany({
 			where: eq(subscriptionsTable.userId, userId),
 			orderBy: (subs, { desc: descFn }) => [descFn(subs.startedAt)],
-			with: {
-				agent: true,
-			},
 		});
 
 		return {
@@ -191,9 +186,6 @@ export const subscriptionRouter = {
 					eq(subscriptionsTable.id, input.id),
 					eq(subscriptionsTable.userId, userId)
 				),
-				with: {
-					agent: true,
-				},
 			});
 
 			if (!subscription) {
@@ -237,7 +229,6 @@ export const subscriptionRouter = {
 				msg: "Subscription cancelled",
 				subscriptionId: input.id,
 				userId,
-				agentId: subscription.agentId,
 			});
 
 			if (!cancelled) {

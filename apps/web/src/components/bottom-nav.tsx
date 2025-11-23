@@ -3,6 +3,9 @@
 import { Camera, Home, MessageSquare, Shirt } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import UserMenu from "@/components/user-menu";
+import { WalletBadge } from "@/components/wallet/wallet-badge";
 import { cn } from "@/lib/utils";
 
 /**
@@ -14,10 +17,10 @@ export function BottomNav() {
 
 	const routes = [
 		{
-			href: "/dashboard",
+			href: "/",
 			label: "Home",
 			icon: Home,
-			active: pathname === "/dashboard",
+			active: pathname === "/",
 		},
 		{
 			href: "/wardrobe",
@@ -50,6 +53,28 @@ export function BottomNav() {
 			<div className="flex h-16 items-center justify-around px-2">
 				{routes.map((route) => {
 					const Icon = route.icon;
+
+					// Special case: Profile menu
+					if ("isProfile" in route && route.isProfile) {
+						return (
+							<div className="flex flex-col items-center" key={route.label}>
+								<UserMenu
+									trigger={
+										<Button
+											className="flex min-w-[44px] flex-col items-center justify-center gap-0.5 rounded-lg px-3 py-2 font-medium text-muted-foreground text-xs transition-colors hover:text-foreground"
+											variant="ghost"
+										>
+											<Icon className="h-5 w-5" />
+											<span>{route.label}</span>
+										</Button>
+									}
+								/>
+								<div className="absolute right-2 bottom-20">
+									<WalletBadge />
+								</div>
+							</div>
+						);
+					}
 
 					if ("isFAB" in route && route.isFAB) {
 						return (

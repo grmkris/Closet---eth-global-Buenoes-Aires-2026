@@ -1,18 +1,4 @@
-export interface MarketplaceItem {
-	id: string;
-	name: string;
-	description: string;
-	category: string;
-	brand: string;
-	price: number;
-	imageUrl: string;
-	available: boolean;
-	metadata: {
-		size?: string[];
-		color?: string[];
-		material?: string;
-	};
-}
+import type { MarketplaceItem } from "./types";
 
 export const items: MarketplaceItem[] = [
 	{
@@ -164,4 +150,4 @@ export const items: MarketplaceItem[] = [
 			material: "Cotton Twill",
 		},
 	},
-]
+];

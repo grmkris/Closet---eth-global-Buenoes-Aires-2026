@@ -5,7 +5,7 @@ const envSchema = z.object({
 	APP_ENV: z.enum(["dev", "prod"]).default("dev"),
 	DATABASE_URL: z.string(),
 	POLYGON_RPC_URL: z.string().url().optional(),
-	MERCHANT_WALLET_ADDRESS: z.string(),
+	MERCHANT_WALLET_ADDRESS: z.string().startsWith("0x"),
 	CORS_ORIGIN: z.string().url(),
 });
 

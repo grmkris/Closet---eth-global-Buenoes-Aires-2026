@@ -93,7 +93,7 @@ export function SignInFlow({ session }: SignInFlowProps) {
 	const { authenticate, isPending, error } = useSiweAuthentication({
 		onSuccess: () => {
 			setStep("complete");
-			setTimeout(() => router.push("/dashboard"), UI_CONFIG.REDIRECT_DELAY_MS);
+			setTimeout(() => router.push("/"), UI_CONFIG.REDIRECT_DELAY_MS);
 		},
 	});
 
@@ -103,9 +103,9 @@ export function SignInFlow({ session }: SignInFlowProps) {
 
 	// Smart initialization: check auth state and auto-progress
 	useEffect(() => {
-		// If already authenticated, redirect to dashboard
+		// If already authenticated, redirect to home
 		if (session?.user) {
-			router.push("/dashboard");
+			router.push("/");
 		}
 	}, [session, router]);
 
@@ -195,7 +195,7 @@ export function SignInFlow({ session }: SignInFlowProps) {
 						Your wallet has been linked to your account.
 					</p>
 					<p className="text-muted-foreground text-sm">
-						Redirecting to dashboard...
+						Redirecting to home...
 					</p>
 				</div>
 			)}

@@ -1,10 +1,6 @@
 "use client";
 
-import {
-	CHAIN_IDS,
-	USDC_ADDRESSES,
-	WALLET_UI_CONFIG,
-} from "@ai-stilist/shared/constants";
+import { CHAIN_IDS, USDC_ADDRESSES } from "@ai-stilist/shared/constants";
 import { useState } from "react";
 import { erc20Abi, formatUnits } from "viem";
 import { useAccount, useChainId, useReadContract } from "wagmi";
@@ -44,9 +40,7 @@ export function WalletBalanceCard() {
 
 	// Format USDC balance for display
 	const formattedUsdcBalance = usdcBalance
-		? Number.parseFloat(formatUnits(usdcBalance, 6)).toFixed(
-				WALLET_UI_CONFIG.USDC_DECIMALS
-			)
+		? formatUnits(usdcBalance, 6)
 		: "0.00";
 
 	return (

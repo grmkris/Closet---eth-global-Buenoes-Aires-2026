@@ -1,5 +1,7 @@
+import { SERVICE_URLS } from "@ai-stilist/shared/services";
 import type { AgentId, SubscriptionId } from "@ai-stilist/shared/typeid";
 import { useState } from "react";
+import { env } from "@/env";
 import { useX402Fetch } from "./use-x402-fetch";
 
 type SubscribeResponse = {
@@ -69,7 +71,7 @@ export function useSubscribe() {
 	const [error, setError] = useState<SubscribeError | null>(null);
 	const [data, setData] = useState<SubscribeResponse | null>(null);
 
-	const subscribe = async (agentId: AgentId): Promise<SubscribeResponse> => {
+	const subscribe = async (): Promise<SubscribeResponse> => {
 		if (!(isReady && x402Fetch)) {
 			throw new Error(
 				"Wallet not connected. Please connect your wallet first."
@@ -81,13 +83,14 @@ export function useSubscribe() {
 		setData(null);
 
 		try {
-			const response = await x402Fetch(`/api/subscription/create/${agentId}`, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-			});
+			const response = await x402Fetch(
+				`${SERVICE_URLS[env.NEXT_PUBLIC_APP_ENV].api}/api/subscription/create`,
+				{
+					method: "POST",
+				}
+			);
 
+			console.log("response", response);
 			if (!response.ok) {
 				const errorText = await response.text();
 				let errorMessage: string;

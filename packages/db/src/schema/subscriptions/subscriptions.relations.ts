@@ -1,5 +1,4 @@
 import { relations } from "drizzle-orm";
-import { agentsTable } from "../agents/agents.db";
 import { user } from "../auth/auth.db";
 import {
 	subscriptionPaymentsTable,
@@ -12,10 +11,6 @@ export const subscriptionsRelations = relations(
 		user: one(user, {
 			fields: [subscriptionsTable.userId],
 			references: [user.id],
-		}),
-		agent: one(agentsTable, {
-			fields: [subscriptionsTable.agentId],
-			references: [agentsTable.id],
 		}),
 		payments: many(subscriptionPaymentsTable),
 	})

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import type { ReactNode } from "react";
 import { useDisconnect } from "wagmi";
 import {
 	DropdownMenu,
@@ -12,7 +13,11 @@ import {
 import { authClient } from "@/lib/auth-client";
 import { Button } from "./ui/button";
 
-export default function UserMenu() {
+type UserMenuProps = {
+	trigger?: ReactNode;
+};
+
+export default function UserMenu({ trigger }: UserMenuProps) {
 	const router = useRouter();
 	const { data: session } = authClient.useSession();
 	const { disconnect } = useDisconnect();
@@ -28,7 +33,7 @@ export default function UserMenu() {
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
-				<Button variant="outline">{session.user.name}</Button>
+				{trigger ?? <Button variant="outline">{session.user.name}</Button>}
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className="bg-card">
 				<DropdownMenuLabel>My Account</DropdownMenuLabel>

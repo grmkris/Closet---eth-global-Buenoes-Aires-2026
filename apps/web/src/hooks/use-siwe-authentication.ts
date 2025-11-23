@@ -25,7 +25,7 @@ type UseSiweAuthenticationOptions = {
  * @example
  * ```tsx
  * const { authenticate, isPending, error } = useSiweAuthentication({
- *   onSuccess: () => router.push("/dashboard"),
+ *   onSuccess: () => router.push("/"),
  * });
  *
  * // Trigger authentication

@@ -35,7 +35,6 @@ export function createX402Fetch(walletClient: WalletClient) {
 	if (!walletClient.account) {
 		throw new Error("Wallet client account is not set");
 	}
-	// Wrap native fetch with x402 payment handling
-	// @ts-expect-error - x402-fetch accepts viem WalletClient directly
-	return wrapFetchWithPayment(fetch, walletClient);
+	// @ts-expect-error - wrapFetchWithPayment is not typed
+	return wrapFetchWithPayment(fetch, walletClient, 2_000_000_000_000_000_000);
 }

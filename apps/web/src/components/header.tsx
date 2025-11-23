@@ -3,16 +3,16 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { ModeToggle } from "./mode-toggle";
-import UserMenu from "./user-menu";
+import { WalletBadge } from "./wallet/wallet-badge";
 
 export default function Header() {
 	const pathname = usePathname();
 
 	const links = [
 		{ to: "/", label: "Home" },
-		{ to: "/dashboard", label: "Dashboard" },
 		{ to: "/wardrobe", label: "Wardrobe" },
 		{ to: "/chat", label: "AI Chat" },
+		{ to: "/subscribe", label: "Subscribe" },
 	] as const;
 
 	return (
@@ -36,7 +36,7 @@ export default function Header() {
 				</nav>
 				<div className="flex items-center gap-2">
 					<ModeToggle />
-					<UserMenu />
+					<WalletBadge />
 				</div>
 			</div>
 		</div>

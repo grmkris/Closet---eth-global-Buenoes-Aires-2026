@@ -90,20 +90,26 @@ export const createApp = async (props: {
 
 	const app = new Hono()
 		.use(honoLogger())
+		.route("/api/subscription", subscriptionRoute)
 		.get("/", (c) => c.text("OK"))
 		.use(
 			"/*",
 			cors({
 				origin: SERVICE_URLS[env.APP_ENV].web,
 				allowMethods: ["GET", "POST", "OPTIONS"],
-				allowHeaders: ["Content-Type", "Authorization"],
+				allowHeaders: [
+					"Content-Type",
+					"Authorization",
+					"X-PAYMENT",
+					"X-Wallet-Address",
+				],
+				exposeHeaders: ["X-PAYMENT-RESPONSE"],
 				credentials: true,
 			})
 		)
 		.on(["POST", "GET"], "/api/auth/*", (c) =>
 			deps.authClient.handler(c.req.raw)
 		)
-		.route("/api/subscription", subscriptionRoute)
 		.use("/rpc/*", async (c, next) => {
 			const requestId = typeIdGenerator("request");
 			const startTime = performance.now();

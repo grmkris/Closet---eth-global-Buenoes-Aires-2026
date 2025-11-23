@@ -119,7 +119,7 @@ export const USDC_ADDRESSES = {
 
 // Wallet UI Configuration
 export const WALLET_UI_CONFIG = {
-	USDC_DECIMALS: 2, // Display decimals for USDC balance
+	USDC_DECIMALS: 3, // Display decimals for USDC balance
 	POL_DECIMALS: 4, // Display decimals for POL gas balance
 	TOAST_COPY_TIMEOUT_MS: 2000, // Timeout for "copied" toast messages
 } as const;

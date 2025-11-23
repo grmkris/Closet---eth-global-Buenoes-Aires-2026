@@ -1,5 +1,4 @@
 import type {
-	AgentId,
 	SubscriptionId,
 	SubscriptionPaymentId,
 	UserId,
@@ -7,7 +6,6 @@ import type {
 import { typeIdGenerator } from "@ai-stilist/shared/typeid";
 import { integer, jsonb, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { typeId } from "../../utils/db-utils";
-import { agentsTable } from "../agents/agents.db";
 import { user } from "../auth/auth.db";
 
 export const subscriptionsTable = pgTable("subscriptions", {
@@ -19,11 +17,6 @@ export const subscriptionsTable = pgTable("subscriptions", {
 		.notNull()
 		.references(() => user.id, { onDelete: "cascade" })
 		.$type<UserId>(),
-	agentId: typeId("agent", "agent_id")
-		.notNull()
-		.references(() => agentsTable.id, { onDelete: "cascade" })
-		.$type<AgentId>(),
-
 	priceMonthly: integer("price_monthly").notNull(),
 	status: text("status").notNull().default("active"),
 

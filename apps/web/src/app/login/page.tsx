@@ -9,10 +9,10 @@ export default function LoginPage() {
 	const router = useRouter();
 	const { data: session } = authClient.useSession();
 
-	// Redirect authenticated users to dashboard
+	// Redirect authenticated users to home
 	useEffect(() => {
 		if (session?.user) {
-			router.push("/dashboard");
+			router.push("/");
 		}
 	}, [session, router]);
 

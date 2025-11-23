@@ -1,18 +1,17 @@
 import { createLogger } from "@ai-stilist/logger";
-import { serve } from "@hono/node-server";
-import { auto } from "@swader/x402facilitators";
+import { serve } from "bun";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger as honoLogger } from "hono/logger";
-import { paymentMiddleware } from "x402-hono";
 import { createDatabase } from "./db";
 import { env } from "./env";
 import { items } from "./items";
+import { createPaymentMiddleware } from "./middleware/payment";
 
 // Initialize logger
 const logger = createLogger({
 	level: "info",
-	name: "marketplace-server",
+	appName: "marketplace-server",
 });
 
 // Initialize database
@@ -35,94 +34,14 @@ app.use(
 // Configuration
 const network = env.APP_ENV === "prod" ? "polygon" : "polygon-amoy";
 
-// Apply x402 payment middleware to protect individual item routes
-app.use(
-	paymentMiddleware(
-		env.MERCHANT_WALLET_ADDRESS as `0x${string}`,
-		{
-			"GET /api/items/item-001": {
-				price: "$299.99",
-				network,
-				config: {
-					description: "Classic Leather Jacket - Heritage & Co",
-				},
-			},
-			"GET /api/items/item-002": {
-				price: "$89.99",
-				network,
-				config: {
-					description: "Vintage Denim Jacket - Vintage Co",
-				},
-			},
-			"GET /api/items/item-003": {
-				price: "$79.99",
-				network,
-				config: {
-					description: "White Canvas Sneakers - Urban Stride",
-				},
-			},
-			"GET /api/items/item-004": {
-				price: "$189.99",
-				network,
-				config: {
-					description: "Black Chelsea Boots - Heritage & Co",
-				},
-			},
-			"GET /api/items/item-005": {
-				price: "$249.99",
-				network,
-				config: {
-					description: "Cashmere Sweater - Luxury Knits",
-				},
-			},
-			"GET /api/items/item-006": {
-				price: "$129.99",
-				network,
-				config: {
-					description: "Tailored Wool Trousers - Formal House",
-				},
-			},
-			"GET /api/items/item-007": {
-				price: "$159.99",
-				network,
-				config: {
-					description: "Silk Scarf - Luxury House",
-				},
-			},
-			"GET /api/items/item-008": {
-				price: "$199.99",
-				network,
-				config: {
-					description: "Leather Crossbody Bag - Heritage & Co",
-				},
-			},
-			"GET /api/items/item-009": {
-				price: "$179.99",
-				network,
-				config: {
-					description: "Merino Wool Cardigan - Luxury Knits",
-				},
-			},
-			"GET /api/items/item-010": {
-				price: "$69.99",
-				network,
-				config: {
-					description: "Slim Fit Chinos - Urban Stride",
-				},
-			},
-		},
-		auto // Auto-discovers Polygon's facilitator
-	)
-);
-
 // Routes
 
 // Health check
 app.get("/", (c) =>
 	c.json({
-		name: "X402 Marketplace Server",
-		version: "1.0.0",
-		protocol: "x402",
+		name: "X402 Marketplace Server with AP2",
+		version: "2.0.0",
+		protocol: "x402 + AP2",
 		items: items.length,
 		network,
 	})
@@ -158,37 +77,63 @@ app.get("/api/items", (c) => {
 	});
 });
 
-// Get single item (X402 protected - payment required)
-app.get("/api/items/:id", async (c) => {
-	const itemId = c.req.param("id");
-	const item = items.find((i) => i.id === itemId);
+// Individual item routes with payment protection
+// Dynamic routes for all items
+for (const [index, item] of items.entries()) {
+	app.get(
+		`/api/items/${item.id}`,
+		createPaymentMiddleware({
+			item,
+			merchantWallet: env.MERCHANT_WALLET_ADDRESS as `0x${string}`,
+			network,
+			rpcUrl: env.POLYGON_RPC_URL,
+			db,
+			logger,
+		}),
+		(c) => {
+			const xPaymentHeader = c.req.header("x-payment");
+			if (!xPaymentHeader) {
+				return c.json(
+					{
+						error: "X-PAYMENT header is required",
+					},
+					400
+				);
+			}
+			const decodedJWT = atob(xPaymentHeader);
+			const jwtPayload = JSON.parse(decodedJWT);
+			console.log(jwtPayload);
+			const walletAddressDecoded = jwtPayload.payload.authorization.from;
+			console.log(walletAddressDecoded);
 
-	if (!item) {
-		return c.json({ error: "Item not found" }, 404);
-	}
+			return c.json({
+				success: true,
+				item: items[index],
+				purchase: {
+					id: item.id,
+					signature: jwtPayload.payload.signature,
+					timestamp: new Date().toISOString(),
+				},
+			});
+		}
+	);
+}
 
-	if (!item.available) {
-		return c.json({ error: "Item not available" }, 404);
-	}
-
-	// Payment already verified by middleware!
-	// If we reach here, payment was successful
-	logger.info({
-		msg: "Item purchased",
-		itemId: item.id,
-		price: item.price,
+// Get purchase history (for debugging)
+app.get("/api/purchases", async (c) => {
+	const purchases = await db.query.purchasesTable.findMany({
+		orderBy: (p, { desc }) => [desc(p.createdAt)],
 	});
 
 	return c.json({
-		success: true,
-		item,
-		message: "Payment verified - item purchased successfully",
+		purchases,
+		total: purchases.length,
 	});
 });
 
 // Start server
 logger.info({
-	msg: "Starting X402 Marketplace Server",
+	msg: "Starting X402 Marketplace Server with AP2",
 	port: env.PORT,
 	merchantWallet: env.MERCHANT_WALLET_ADDRESS,
 	network,
@@ -205,6 +150,12 @@ logger.info({
 	msg: "Server running",
 	url: `http://localhost:${env.PORT}`,
 	itemsEndpoint: "/api/items",
-	protocol: "X402 v1.0 with Polygon facilitator",
-	facilitator: "auto-discovery (Polygon)",
+	protocol: "X402 v1.0 with AP2 intent verification",
+	features: [
+		"EIP-712 signature verification",
+		"Spending constraint validation",
+		"On-chain payment verification",
+		"Double-spend prevention",
+		"Full audit trail",
+	],
 });

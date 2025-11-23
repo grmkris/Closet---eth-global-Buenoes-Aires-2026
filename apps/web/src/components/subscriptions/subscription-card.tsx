@@ -23,7 +23,7 @@ import { client } from "@/utils/orpc";
 import type { Subscription } from "@/utils/orpc-types";
 
 type SubscriptionCardProps = {
-	subscription: Subscription & { agent: { name: string; specialty: string } };
+	subscription: Subscription;
 };
 
 const SPECIALTY_COLORS: Record<
@@ -62,8 +62,7 @@ export function SubscriptionCard({ subscription }: SubscriptionCardProps) {
 	});
 
 	const specialtyConfig =
-		SPECIALTY_COLORS[subscription.agent.specialty] ||
-		SPECIALTY_COLORS.minimalist;
+		SPECIALTY_COLORS["AI Stylist"] || SPECIALTY_COLORS.minimalist;
 
 	const isActive = subscription.status === "active";
 	const isCancelled = subscription.status === "cancelled";
@@ -82,17 +81,13 @@ export function SubscriptionCard({ subscription }: SubscriptionCardProps) {
 					{/* Header */}
 					<div className="flex items-start justify-between gap-3">
 						<div className="min-w-0 flex-1">
-							<h3 className="truncate font-semibold text-lg">
-								{subscription.agent.name}
-							</h3>
+							<h3 className="truncate font-semibold text-lg">AI Stylist</h3>
 							<Badge
 								className={`mt-1 gap-1 ${specialtyConfig.bg} ${specialtyConfig.text}`}
 								variant="secondary"
 							>
 								<span>{specialtyConfig.icon}</span>
-								<span className="capitalize">
-									{subscription.agent.specialty}
-								</span>
+								<span className="capitalize">AI Stylist</span>
 							</Badge>
 						</div>
 						<Badge
@@ -160,7 +155,7 @@ export function SubscriptionCard({ subscription }: SubscriptionCardProps) {
 						<AlertDialogTitle>Cancel Subscription?</AlertDialogTitle>
 						<AlertDialogDescription>
 							Are you sure you want to cancel your subscription to{" "}
-							<strong>{subscription.agent.name}</strong>?
+							<strong>AI Stylist</strong>?
 							<br />
 							<br />
 							You'll lose access at the end of your current billing period (

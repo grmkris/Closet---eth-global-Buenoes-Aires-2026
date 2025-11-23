@@ -24,7 +24,7 @@ export async function seedDefaultAgent(props: {
 			"Your personal AI fashion assistant. Get personalized style advice, outfit recommendations, and wardrobe management.",
 		specialty: "general",
 		walletAddress,
-		priceMonthly: 999, // $9.99/month in cents
+		priceMonthly: 0.001, // $0.001/month in cents
 		verified: true,
 		active: true,
 		creatorUserId: null, // System agent

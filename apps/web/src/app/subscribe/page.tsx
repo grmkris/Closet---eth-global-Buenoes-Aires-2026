@@ -38,7 +38,7 @@ export default function SubscribePage() {
 
 	// Subscribe mutation - uses x402 for payment
 	const {
-		subscribe: subscribeToAgent,
+		subscribe,
 		isLoading: isSubscribing,
 		error: subscribeError,
 		data: subscribeData,
@@ -54,7 +54,7 @@ export default function SubscribePage() {
 		}
 
 		try {
-			await subscribeToAgent(defaultAgent.id);
+			await subscribe();
 			toast.success("Subscription activated!");
 			// Invalidate subscriptions query to refresh the list
 			queryClient.invalidateQueries({
@@ -76,7 +76,7 @@ export default function SubscribePage() {
 	// Redirect if already subscribed
 	useEffect(() => {
 		if (hasActiveSubscription) {
-			router.push("/dashboard");
+			router.push("/");
 		}
 	}, [hasActiveSubscription, router]);
 
@@ -140,7 +140,7 @@ export default function SubscribePage() {
 						)}
 						<div className="space-y-2">
 							<Button asChild className="w-full" size="lg">
-								<Link href="/dashboard">Go to Dashboard</Link>
+								<Link href="/">Go to Home</Link>
 							</Button>
 							<Button asChild className="w-full" variant="outline">
 								<Link href="/chat">Start Chatting</Link>

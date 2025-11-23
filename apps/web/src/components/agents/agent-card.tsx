@@ -64,7 +64,7 @@ export function AgentCard({ agent }: AgentCardProps) {
 						<span className="text-muted-foreground text-sm">/month</span>
 					</div>
 					<Button asChild size="sm" variant="default">
-						<Link href={`/agents/${agent.id}`}>
+						<Link href={"/subscribe"}>
 							<Sparkles className="mr-1.5 h-4 w-4" />
 							View Details
 						</Link>
