@@ -1,5 +1,6 @@
 "use client";
 
+import type { AgentId } from "@ai-stilist/shared/typeid";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft, BadgeCheck, Sparkles, Wallet } from "lucide-react";
 import Link from "next/link";
@@ -12,7 +13,6 @@ import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatAddress, formatPrice } from "@/lib/utils";
 import { orpc } from "@/utils/orpc";
-import type { AgentId } from "@ai-stilist/shared/typeid";
 
 const SPECIALTY_COLORS: Record<
 	string,
@@ -28,7 +28,7 @@ const SPECIALTY_COLORS: Record<
 export default function AgentDetailPage() {
 	const params = useParams();
 	const agentId = params.agentId as AgentId;
-	const { address, isConnected } = useAccount();
+	const { isConnected } = useAccount();
 
 	const { data: agent, isLoading: agentLoading } = useQuery(
 		orpc.agent.get.queryOptions({ input: { id: agentId } })

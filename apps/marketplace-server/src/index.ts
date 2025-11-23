@@ -1,21 +1,13 @@
 import { createLogger } from "@ai-stilist/logger";
 import { serve } from "@hono/node-server";
-import { eq } from "drizzle-orm";
+import { auto } from "@swader/x402facilitators";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger as honoLogger } from "hono/logger";
-import { createPublicClient, http } from "viem";
-import { polygon, polygonAmoy } from "viem/chains";
-import { purchasesTable } from "../drizzle/schema";
-import { validatePurchaseAgainstIntent, verifyAP2Intent } from "./ap2";
+import { paymentMiddleware } from "x402-hono";
 import { createDatabase } from "./db";
 import { env } from "./env";
 import { items } from "./items";
-import type {
-	X402PaymentRequirement,
-	XPaymentHeader,
-	XPaymentResponse,
-} from "./types";
 
 // Initialize logger
 const logger = createLogger({
@@ -25,19 +17,6 @@ const logger = createLogger({
 
 // Initialize database
 const db = createDatabase(env.DATABASE_URL);
-
-// Initialize viem client for blockchain verification
-const viemClient = createPublicClient({
-	chain: env.APP_ENV === "prod" ? polygon : polygonAmoy,
-	transport: http(env.POLYGON_RPC_URL),
-});
-
-// Initialize X402 client
-const x402Client = createX402Client({
-	facilitatorUrl: env.FACILITATOR_URL,
-	viemClient,
-	logger,
-});
 
 const app = new Hono();
 
@@ -53,6 +32,89 @@ app.use(
 	})
 );
 
+// Configuration
+const network = env.APP_ENV === "prod" ? "polygon" : "polygon-amoy";
+
+// Apply x402 payment middleware to protect individual item routes
+app.use(
+	paymentMiddleware(
+		env.MERCHANT_WALLET_ADDRESS as `0x${string}`,
+		{
+			"GET /api/items/item-001": {
+				price: "$299.99",
+				network,
+				config: {
+					description: "Classic Leather Jacket - Heritage & Co",
+				},
+			},
+			"GET /api/items/item-002": {
+				price: "$89.99",
+				network,
+				config: {
+					description: "Vintage Denim Jacket - Vintage Co",
+				},
+			},
+			"GET /api/items/item-003": {
+				price: "$79.99",
+				network,
+				config: {
+					description: "White Canvas Sneakers - Urban Stride",
+				},
+			},
+			"GET /api/items/item-004": {
+				price: "$189.99",
+				network,
+				config: {
+					description: "Black Chelsea Boots - Heritage & Co",
+				},
+			},
+			"GET /api/items/item-005": {
+				price: "$249.99",
+				network,
+				config: {
+					description: "Cashmere Sweater - Luxury Knits",
+				},
+			},
+			"GET /api/items/item-006": {
+				price: "$129.99",
+				network,
+				config: {
+					description: "Tailored Wool Trousers - Formal House",
+				},
+			},
+			"GET /api/items/item-007": {
+				price: "$159.99",
+				network,
+				config: {
+					description: "Silk Scarf - Luxury House",
+				},
+			},
+			"GET /api/items/item-008": {
+				price: "$199.99",
+				network,
+				config: {
+					description: "Leather Crossbody Bag - Heritage & Co",
+				},
+			},
+			"GET /api/items/item-009": {
+				price: "$179.99",
+				network,
+				config: {
+					description: "Merino Wool Cardigan - Luxury Knits",
+				},
+			},
+			"GET /api/items/item-010": {
+				price: "$69.99",
+				network,
+				config: {
+					description: "Slim Fit Chinos - Urban Stride",
+				},
+			},
+		},
+		auto // Auto-discovers Polygon's facilitator
+	)
+);
+
 // Routes
 
 // Health check
@@ -62,10 +124,11 @@ app.get("/", (c) =>
 		version: "1.0.0",
 		protocol: "x402",
 		items: items.length,
+		network,
 	})
 );
 
-// List all items (public)
+// List all items (public - no payment required)
 app.get("/api/items", (c) => {
 	const category = c.req.query("category");
 	const minPrice = c.req.query("minPrice");
@@ -95,7 +158,7 @@ app.get("/api/items", (c) => {
 	});
 });
 
-// Get single item (X402 protocol)
+// Get single item (X402 protected - payment required)
 app.get("/api/items/:id", async (c) => {
 	const itemId = c.req.param("id");
 	const item = items.find((i) => i.id === itemId);
@@ -108,190 +171,18 @@ app.get("/api/items/:id", async (c) => {
 		return c.json({ error: "Item not available" }, 404);
 	}
 
-	// Check for X-PAYMENT header
-	const xPaymentHeader = c.req.header("X-PAYMENT");
-
-	if (!xPaymentHeader) {
-		// No payment provided - return 402 Payment Required
-		const paymentRequirement: X402PaymentRequirement = {
-			x402Version: "1.0",
-			accepts: [
-				{
-					amount: item.price.toFixed(2),
-					currency: "USDC",
-					network: "base-mainnet",
-					recipient: MERCHANT_WALLET_ADDRESS,
-				},
-			],
-			paymentMethods: ["crypto"],
-			item: {
-				id: item.id,
-				name: item.name,
-				price: item.price,
-				category: item.category,
-			},
-		};
-
-		return c.json(paymentRequirement, 402);
-	}
-
-	// Payment provided - verify it
-	try {
-		const payment: XPaymentHeader = JSON.parse(xPaymentHeader);
-
-		// 1. Verify AP2 intent signature
-		const intentVerification = await verifyAP2Intent(
-			payment.ap2Intent,
-			payment.ap2Signature
-		);
-
-		if (!intentVerification.valid) {
-			return c.json(
-				{
-					error: "AP2 intent verification failed",
-					details: intentVerification.error,
-				},
-				403
-			);
-		}
-
-		// 2. Validate purchase against intent constraints
-		const purchaseValidation = validatePurchaseAgainstIntent(
-			item,
-			payment.ap2Intent
-		);
-
-		if (!purchaseValidation.allowed) {
-			return c.json(
-				{
-					error: "Purchase not allowed by spending authorization",
-					details: purchaseValidation.reason,
-				},
-				403
-			);
-		}
-
-		// 3. Check for double-spend (database query)
-		const existingPurchase = await db.query.purchasesTable.findFirst({
-			where: eq(purchasesTable.txHash, payment.txHash),
-		});
-
-		if (existingPurchase) {
-			return c.json(
-				{
-					error: "Transaction hash already used",
-				},
-				409
-			);
-		}
-
-		// 4. Verify payment on-chain via X402
-		const requirements = x402Client.createPaymentRequirements({
-			resource: `/items/${itemId}`,
-			price: `${item.price}`,
-			recipient: env.MERCHANT_WALLET_ADDRESS as `0x${string}`,
-			network: env.APP_ENV === "prod" ? "polygon" : "polygon-amoy",
-		});
-
-		logger.info({
-			msg: "Verifying payment on-chain",
-			txHash: payment.txHash,
-			requirements,
-		});
-
-		const verification = await x402Client.verifyPayment(
-			payment.txHash as `0x${string}`,
-			requirements
-		);
-
-		if (!verification.valid) {
-			logger.error({
-				msg: "Payment verification failed",
-				txHash: payment.txHash,
-				error: verification.error,
-			});
-			return c.json(
-				{
-					error: "Payment verification failed",
-					details: verification.error,
-				},
-				402
-			);
-		}
-
-		logger.info({
-			msg: "Payment verified successfully",
-			txHash: payment.txHash,
-			from: verification.proof?.from,
-			to: verification.proof?.to,
-			amount: verification.proof?.amount,
-		});
-
-		// 5. Store purchase in database
-		const purchaseId = `purchase-${Date.now()}-${Math.random().toString(36).substring(7)}`;
-
-		await db.insert(purchasesTable).values({
-			id: purchaseId,
-			itemId: item.id,
-			txHash: payment.txHash,
-			userWalletAddress: payment.ap2Intent.userId,
-			agentWalletAddress: payment.ap2Intent.agentId,
-			amount: Math.round(item.price * 100),
-			network: env.APP_ENV === "prod" ? "polygon" : "polygon-amoy",
-			paymentProof: verification.proof as unknown as Record<string, unknown>,
-			ap2Intent: payment.ap2Intent as unknown as Record<string, unknown>,
-			itemSnapshot: item as unknown as Record<string, unknown>,
-		});
-
-		logger.info({
-			msg: "Purchase recorded",
-			purchaseId,
-			itemId: item.id,
-			txHash: payment.txHash,
-		});
-
-		// 6. Return success with X-PAYMENT-RESPONSE header
-		const paymentResponse: XPaymentResponse = {
-			txHash: payment.txHash,
-			status: "confirmed",
-			purchaseId,
-		};
-
-		c.header("X-PAYMENT-RESPONSE", JSON.stringify(paymentResponse));
-
-		return c.json({
-			success: true,
-			purchase: {
-				id: purchaseId,
-				item,
-				txHash: payment.txHash,
-				timestamp: new Date().toISOString(),
-			},
-		});
-	} catch (error) {
-		logger.error({
-			msg: "Payment processing failed",
-			error,
-		});
-		return c.json(
-			{
-				error: "Payment processing failed",
-				details: error instanceof Error ? error.message : String(error),
-			},
-			400
-		);
-	}
-});
-
-// Get purchase history (for debugging)
-app.get("/api/purchases", async (c) => {
-	const purchases = await db.query.purchasesTable.findMany({
-		orderBy: (purchases, { desc }) => [desc(purchases.createdAt)],
+	// Payment already verified by middleware!
+	// If we reach here, payment was successful
+	logger.info({
+		msg: "Item purchased",
+		itemId: item.id,
+		price: item.price,
 	});
 
 	return c.json({
-		purchases,
-		total: purchases.length,
+		success: true,
+		item,
+		message: "Payment verified - item purchased successfully",
 	});
 });
 
@@ -300,6 +191,7 @@ logger.info({
 	msg: "Starting X402 Marketplace Server",
 	port: env.PORT,
 	merchantWallet: env.MERCHANT_WALLET_ADDRESS,
+	network,
 	corsOrigin: env.CORS_ORIGIN,
 	appEnv: env.APP_ENV,
 });
@@ -313,5 +205,6 @@ logger.info({
 	msg: "Server running",
 	url: `http://localhost:${env.PORT}`,
 	itemsEndpoint: "/api/items",
-	protocol: "X402 v1.0 with AP2 intent verification",
+	protocol: "X402 v1.0 with Polygon facilitator",
+	facilitator: "auto-discovery (Polygon)",
 });

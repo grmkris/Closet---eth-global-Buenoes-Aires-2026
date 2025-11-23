@@ -4,8 +4,7 @@ const envSchema = z.object({
 	PORT: z.coerce.number().default(3003),
 	APP_ENV: z.enum(["dev", "prod"]).default("dev"),
 	DATABASE_URL: z.string(),
-	POLYGON_RPC_URL: z.string().url(),
-	FACILITATOR_URL: z.string().url(),
+	POLYGON_RPC_URL: z.string().url().optional(),
 	MERCHANT_WALLET_ADDRESS: z.string(),
 	CORS_ORIGIN: z.string().url(),
 });

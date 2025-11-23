@@ -1,4 +1,18 @@
-import type { MarketplaceItem } from "./types"
+export interface MarketplaceItem {
+	id: string;
+	name: string;
+	description: string;
+	category: string;
+	brand: string;
+	price: number;
+	imageUrl: string;
+	available: boolean;
+	metadata: {
+		size?: string[];
+		color?: string[];
+		material?: string;
+	};
+}
 
 export const items: MarketplaceItem[] = [
 	{

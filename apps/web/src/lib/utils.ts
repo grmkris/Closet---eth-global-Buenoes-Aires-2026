@@ -1,6 +1,6 @@
+import { UI_CONFIG } from "@ai-stilist/shared/constants";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { UI_CONFIG } from "@ai-stilist/shared/constants";
 import type { Address } from "viem";
 
 export function cn(...inputs: ClassValue[]) {
@@ -49,9 +49,7 @@ export function formatRelativeDate(date: Date): string {
 	if (Math.abs(diffMinutes) >= 1) {
 		const minutes = Math.abs(diffMinutes);
 		const unit = minutes === 1 ? "minute" : "minutes";
-		return diffMinutes > 0
-			? `in ${minutes} ${unit}`
-			: `${minutes} ${unit} ago`;
+		return diffMinutes > 0 ? `in ${minutes} ${unit}` : `${minutes} ${unit} ago`;
 	}
 
 	return "just now";

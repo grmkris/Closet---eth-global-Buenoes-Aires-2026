@@ -1,6 +1,6 @@
 "use client";
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { CheckCircle, Loader2, Sparkles, Wallet } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -11,13 +11,24 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { callX402Endpoint } from "@/lib/x402-client";
+import { useSubscribe } from "@/hooks/use-subscribe";
 import { orpc } from "@/utils/orpc";
 
 export default function SubscribePage() {
 	const router = useRouter();
 	const queryClient = useQueryClient();
 	const { isConnected } = useAccount();
+
+	// Get the default agent to subscribe to
+	const { data: agents } = useQuery({
+		...orpc.agent.list.queryOptions({
+			// Default agent should be first active agent
+		}),
+		enabled: isConnected,
+	});
+
+	// Get first active agent (default "AI Stylist" agent)
+	const defaultAgent = agents?.agents?.[0];
 
 	// Check existing subscriptions
 	const { data: subscriptions, isLoading: subsLoading } = useQuery({
@@ -26,32 +37,36 @@ export default function SubscribePage() {
 	});
 
 	// Subscribe mutation - uses x402 for payment
-	const subscribe = useMutation({
-		mutationFn: async () => {
-			// Call backend subscription endpoint
-			// Backend will return 402 Payment Required with x402 headers
-			// x402-fetch will automatically handle payment and retry
-			const result = await callX402Endpoint("/rpc/subscription.subscribe", {
-				method: "POST",
-				credentials: "include", // Include auth cookies
-			});
+	const {
+		subscribe: subscribeToAgent,
+		isLoading: isSubscribing,
+		error: subscribeError,
+		data: subscribeData,
+		canSubscribe,
+	} = useSubscribe();
 
-			return result;
-		},
-		onSuccess: () => {
+	const handleSubscribe = async () => {
+		if (!defaultAgent) {
+			toast.error("No agent available", {
+				description: "Please try again later",
+			});
+			return;
+		}
+
+		try {
+			await subscribeToAgent(defaultAgent.id);
 			toast.success("Subscription activated!");
 			// Invalidate subscriptions query to refresh the list
 			queryClient.invalidateQueries({
 				queryKey: ["subscription", "list"],
 			});
-		},
-		onError: (error) => {
+		} catch (error) {
 			console.error("Subscription failed:", error);
 			toast.error("Subscription failed", {
 				description: error instanceof Error ? error.message : "Unknown error",
 			});
-		},
-	});
+		}
+	};
 
 	// Check if already subscribed
 	const hasActiveSubscription = subscriptions?.subscriptions.some(
@@ -95,7 +110,7 @@ export default function SubscribePage() {
 	}
 
 	// Success state
-	if (subscribe.isSuccess) {
+	if (subscribeData) {
 		return (
 			<div className="container space-y-6 py-6">
 				<Card className="p-8">
@@ -106,9 +121,23 @@ export default function SubscribePage() {
 						<div>
 							<h2 className="font-bold text-2xl">Subscription Activated!</h2>
 							<p className="text-muted-foreground">
-								You're now subscribed to AI Stylist
+								You're now subscribed to {subscribeData.agent.name}
 							</p>
 						</div>
+						{subscribeData.payment.network && (
+							<div className="rounded-lg border bg-muted/50 p-4 text-sm">
+								<p className="text-muted-foreground">Payment Details:</p>
+								<p className="font-mono text-xs">
+									Network: {subscribeData.payment.network}
+								</p>
+								<p className="font-mono text-xs">
+									Amount: ${(subscribeData.payment.amount / 100).toFixed(2)}
+								</p>
+								<p className="font-mono text-xs">
+									Status: {subscribeData.payment.status}
+								</p>
+							</div>
+						)}
 						<div className="space-y-2">
 							<Button asChild className="w-full" size="lg">
 								<Link href="/dashboard">Go to Dashboard</Link>
@@ -130,12 +159,15 @@ export default function SubscribePage() {
 				<div className="space-y-6">
 					{/* Header */}
 					<div className="text-center">
-						<h1 className="font-bold text-3xl">Subscribe to AI Stylist</h1>
+						<h1 className="font-bold text-3xl">
+							Subscribe to {defaultAgent?.name || "AI Stylist"}
+						</h1>
 						<p className="text-muted-foreground">
-							Get personalized style advice and wardrobe management
+							{defaultAgent?.description ||
+								"Get personalized style advice and wardrobe management"}
 						</p>
 						<p className="mt-2 text-muted-foreground text-sm">
-							$9.99/month • Pay with USDC • Gasless transactions
+							$9.99/month • Pay with USDC on Polygon
 						</p>
 					</div>
 
@@ -162,14 +194,22 @@ export default function SubscribePage() {
 						</ul>
 					</div>
 
+					{/* Error display */}
+					{subscribeError && (
+						<Alert variant="destructive">
+							<AlertTitle>Subscription Failed</AlertTitle>
+							<AlertDescription>{subscribeError.message}</AlertDescription>
+						</Alert>
+					)}
+
 					{/* Subscribe Button */}
 					<Button
 						className="w-full"
-						disabled={subscribe.isPending}
-						onClick={() => subscribe.mutate()}
+						disabled={isSubscribing || !canSubscribe || !defaultAgent}
+						onClick={handleSubscribe}
 						size="lg"
 					>
-						{subscribe.isPending ? (
+						{isSubscribing ? (
 							<>
 								<Loader2 className="mr-2 h-5 w-5 animate-spin" />
 								Processing Payment...
@@ -186,7 +226,9 @@ export default function SubscribePage() {
 					<div className="space-y-2 text-center text-muted-foreground text-xs">
 						<p>Payment processed securely via x402 protocol</p>
 						<p>You'll be prompted to authorize payment in your wallet</p>
-						<p className="font-medium text-green-600">No gas fees required</p>
+						<p className="font-medium">
+							Powered by multi-facilitator auto-routing
+						</p>
 					</div>
 				</div>
 			</Card>

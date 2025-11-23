@@ -5,13 +5,7 @@ import type {
 	UserId,
 } from "@ai-stilist/shared/typeid";
 import { typeIdGenerator } from "@ai-stilist/shared/typeid";
-import {
-	integer,
-	jsonb,
-	pgTable,
-	text,
-	timestamp,
-} from "drizzle-orm/pg-core";
+import { integer, jsonb, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { typeId } from "../../utils/db-utils";
 import { agentsTable } from "../agents/agents.db";
 import { user } from "../auth/auth.db";

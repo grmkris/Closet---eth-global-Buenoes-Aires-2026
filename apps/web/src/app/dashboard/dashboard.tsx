@@ -129,22 +129,29 @@ export default function Dashboard({
 				<div className="flex items-center justify-between">
 					<h2 className="font-semibold text-lg">My Subscriptions</h2>
 					<Button asChild size="sm" variant="ghost">
-						<Link href="/subscribe">Subscribe</Link>
+						<Link href={"/subscribe"}>Subscribe</Link>
 					</Button>
 				</div>
 
-				{subsLoading ? (
+				{subsLoading && (
 					<div className="grid gap-3 sm:grid-cols-2">
 						<SubscriptionCardSkeleton />
 						<SubscriptionCardSkeleton />
 					</div>
-				) : activeSubscriptions.length > 0 ? (
+				)}
+
+				{!subsLoading && activeSubscriptions.length > 0 && (
 					<div className="grid gap-3 sm:grid-cols-2">
 						{activeSubscriptions.slice(0, 4).map((subscription) => (
-							<SubscriptionCard key={subscription.id} subscription={subscription} />
+							<SubscriptionCard
+								key={subscription.id}
+								subscription={subscription}
+							/>
 						))}
 					</div>
-				) : (
+				)}
+
+				{!subsLoading && activeSubscriptions.length === 0 && (
 					<Alert>
 						<Sparkles className="h-4 w-4" />
 						<AlertTitle>No active subscriptions</AlertTitle>

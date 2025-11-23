@@ -1,7 +1,7 @@
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { AlertCircle, BadgeCheck, Calendar, XCircle } from "lucide-react";
+import { BadgeCheck, Calendar, XCircle } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import {
@@ -43,31 +43,7 @@ export function SubscriptionCard({ subscription }: SubscriptionCardProps) {
 
 	const cancelMutation = useMutation({
 		mutationFn: () => client.subscription.cancel({ id: subscription.id }),
-		onMutate: async () => {
-			// Optimistic update
-			await queryClient.cancelQueries({
-				queryKey: ["subscription", "list"],
-			});
-
-			const previousData = queryClient.getQueryData(["subscription", "list"]);
-
-			queryClient.setQueryData(["subscription", "list"], (old: any) => {
-				if (!old) return old;
-				return {
-					...old,
-					subscriptions: old.subscriptions.map((sub: any) =>
-						sub.id === subscription.id ? { ...sub, status: "cancelled" } : sub
-					),
-				};
-			});
-
-			return { previousData };
-		},
-		onError: (error, _variables, context) => {
-			// Rollback on error
-			if (context?.previousData) {
-				queryClient.setQueryData(["subscription", "list"], context.previousData);
-			}
+		onError: (error) => {
 			toast.error("Failed to cancel subscription", {
 				description: error instanceof Error ? error.message : "Unknown error",
 			});
@@ -92,6 +68,13 @@ export function SubscriptionCard({ subscription }: SubscriptionCardProps) {
 	const isActive = subscription.status === "active";
 	const isCancelled = subscription.status === "cancelled";
 
+	let badgeColor = "bg-yellow-500";
+	if (isActive) {
+		badgeColor = "bg-green-500";
+	} else if (isCancelled) {
+		badgeColor = "bg-gray-400";
+	}
+
 	return (
 		<>
 			<Card className="overflow-hidden transition-all hover:shadow-md">
@@ -107,18 +90,14 @@ export function SubscriptionCard({ subscription }: SubscriptionCardProps) {
 								variant="secondary"
 							>
 								<span>{specialtyConfig.icon}</span>
-								<span className="capitalize">{subscription.agent.specialty}</span>
+								<span className="capitalize">
+									{subscription.agent.specialty}
+								</span>
 							</Badge>
 						</div>
 						<Badge
+							className={badgeColor}
 							variant={isActive ? "default" : "secondary"}
-							className={
-								isActive
-									? "bg-green-500"
-									: isCancelled
-										? "bg-gray-400"
-										: "bg-yellow-500"
-							}
 						>
 							{subscription.status === "active" && (
 								<BadgeCheck className="mr-1 h-3 w-3" />
@@ -140,7 +119,7 @@ export function SubscriptionCard({ subscription }: SubscriptionCardProps) {
 						</div>
 						{isActive && subscription.nextPaymentDue && (
 							<div className="flex items-center justify-between">
-								<span className="text-muted-foreground flex items-center gap-1">
+								<span className="flex items-center gap-1 text-muted-foreground">
 									<Calendar className="h-3 w-3" />
 									Next Payment
 								</span>
@@ -163,9 +142,9 @@ export function SubscriptionCard({ subscription }: SubscriptionCardProps) {
 					{isActive && (
 						<Button
 							className="w-full"
+							onClick={() => setCancelDialogOpen(true)}
 							size="sm"
 							variant="outline"
-							onClick={() => setCancelDialogOpen(true)}
 						>
 							<XCircle className="mr-2 h-4 w-4" />
 							Cancel Subscription
@@ -175,7 +154,7 @@ export function SubscriptionCard({ subscription }: SubscriptionCardProps) {
 			</Card>
 
 			{/* Cancel Confirmation Dialog */}
-			<AlertDialog open={cancelDialogOpen} onOpenChange={setCancelDialogOpen}>
+			<AlertDialog onOpenChange={setCancelDialogOpen} open={cancelDialogOpen}>
 				<AlertDialogContent>
 					<AlertDialogHeader>
 						<AlertDialogTitle>Cancel Subscription?</AlertDialogTitle>
@@ -194,10 +173,12 @@ export function SubscriptionCard({ subscription }: SubscriptionCardProps) {
 						<AlertDialogCancel>Keep Subscription</AlertDialogCancel>
 						<AlertDialogAction
 							className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-							onClick={() => cancelMutation.mutate()}
 							disabled={cancelMutation.isPending}
+							onClick={() => cancelMutation.mutate()}
 						>
-							{cancelMutation.isPending ? "Cancelling..." : "Cancel Subscription"}
+							{cancelMutation.isPending
+								? "Cancelling..."
+								: "Cancel Subscription"}
 						</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>

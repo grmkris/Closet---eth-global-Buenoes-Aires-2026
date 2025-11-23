@@ -94,7 +94,9 @@ export const subscriptionRouter = {
 			});
 
 			if (existingSub) {
-				throw new Error("You already have an active subscription to this agent");
+				throw new Error(
+					"You already have an active subscription to this agent"
+				);
 			}
 
 			// Calculate next payment date (30 days from now)
