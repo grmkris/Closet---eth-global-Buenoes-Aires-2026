@@ -102,8 +102,10 @@ export const createApp = async (props: {
 					"Authorization",
 					"X-PAYMENT",
 					"X-Wallet-Address",
+					// Workaround: x402-fetch v0.7.3 incorrectly sends this as a request header
+					"Access-Control-Expose-Headers",
 				],
-				exposeHeaders: ["X-PAYMENT-RESPONSE", "Access-Control-Expose-Headers"],
+				exposeHeaders: ["X-PAYMENT-RESPONSE"],
 				credentials: true,
 			})
 		)

@@ -42,8 +42,10 @@ export const createSubscriptionHonoRoute = (deps: ContextDeps) => {
 					"Authorization",
 					"X-PAYMENT",
 					"X-Wallet-Address",
+					// Workaround: x402-fetch v0.7.3 incorrectly sends this as a request header
+					"Access-Control-Expose-Headers",
 				],
-				exposeHeaders: ["X-PAYMENT-RESPONSE", "Access-Control-Expose-Headers"],
+				exposeHeaders: ["X-PAYMENT-RESPONSE"],
 				credentials: true,
 			})
 		)
@@ -51,7 +53,7 @@ export const createSubscriptionHonoRoute = (deps: ContextDeps) => {
 			paymentMiddleware(
 				platformWallet as `0x${string}`,
 				{
-					"/api/subscription/create": {
+					"POST /api/subscription/create": {
 						price: platformPrice,
 						network,
 						config: {
@@ -65,7 +67,7 @@ export const createSubscriptionHonoRoute = (deps: ContextDeps) => {
 			)
 			// // POST /create/:agentId - Create subscription (runs AFTER x402 payment verified)
 		)
-		.get("/create", async (c) => {
+		.post("/create", async (c) => {
 			// Payment already verified by x402 middleware at this point
 
 			deps.logger.info({
