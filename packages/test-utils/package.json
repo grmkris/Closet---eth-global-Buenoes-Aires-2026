@@ -2,7 +2,7 @@
   "name": "@ai-stilist/test-utils",
   "version": "1.0.0",
   "type": "module",
-  "description": "Testing utilities for AI Stilist",
+  "description": "Testing utilities for Closet",
   "exports": {
     "./pg-lite": "./src/pg-lite.ts",
     "./pg-gateway-server": "./src/pg-gateway-server.ts",

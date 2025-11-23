@@ -76,7 +76,7 @@ export function Logo({ size = "md", iconOnly = false, className }: LogoProps) {
 						sizeClasses.text
 					)}
 				>
-					AI Stilist
+					Closet
 				</span>
 			)}
 		</Link>

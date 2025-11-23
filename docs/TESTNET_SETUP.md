@@ -4,7 +4,7 @@ Get Polygon Amoy testnet tokens for development and testing.
 
 ## Prerequisites
 
-- AI Stilist account with CDP Embedded Wallet
+- Closet account with CDP Embedded Wallet
 - Get your wallet address from the app dashboard
 
 ## Step 1: Get POL (Gas Token)
@@ -53,7 +53,7 @@ You need POL to pay for transaction gas fees on Polygon Amoy.
 
 Check your wallet balance:
 
-### Option A: In AI Stilist App
+### Option A: In Closet App
 1. Go to Dashboard
 2. View "Wallet Balance" card
 3. Should show USDC balance

@@ -1,5 +1,5 @@
 # IMAGEN 3 OPTIMIZED SLIDE PROMPTS
-## StyleAgent ETH Global Presentation
+## Closet ETH Global Presentation
 
 **Purpose:** Ultra-optimized prompts for Google Imagen 3 based on image generation and presentation design best practices.
 
@@ -48,7 +48,7 @@ Technical specs: 16:9 aspect ratio, ultra-high resolution, presentation-optimize
 ```
 
 #### Presentation Expert Notes:
-- **Text Overlay Zone:** Top 20% kept pristine white for "StyleAgent" title
+- **Text Overlay Zone:** Top 20% kept pristine white for "Closet" title
 - **Focal Point:** The connection between AI and closet (middle area)
 - **Visual Flow:** Eye enters from closet (familiar), flows to AI (innovation)
 - **Emotional Beat:** "This is premium, this is real, this is the future"
@@ -460,7 +460,7 @@ Slight frosted glass background blur
 Rounded corners (16px)
 
 CARD CONTENT:
-To: "StyleAgent"
+To: "Closet"
 - Small AI agent avatar/icon
 - "Verified Agent" badge (blue checkmark)
 
@@ -584,7 +584,7 @@ Technical specs: 16:9 aspect ratio, ultra-high resolution for text clarity, prof
 #### Optimized Imagen 3 Prompt:
 
 ```
-A clean, professional system architecture diagram showing the StyleAgent technical stack:
+A clean, professional system architecture diagram showing the Closet technical stack:
 
 OVERALL STYLE:
 Modern cloud architecture diagram aesthetic (similar to AWS, GCP, Azure documentation)
@@ -806,7 +806,7 @@ Technical specs: 16:9 aspect ratio, vector-quality graphics, ultra-crisp text, p
 #### Optimized Imagen 3 Prompt:
 
 ```
-A sophisticated timeline/roadmap visualization showing the evolution of StyleAgent:
+A sophisticated timeline/roadmap visualization showing the evolution of Closet:
 
 OVERALL DESIGN PHILOSOPHY:
 Modern product roadmap (similar to Linear, Notion, Stripe presentations)

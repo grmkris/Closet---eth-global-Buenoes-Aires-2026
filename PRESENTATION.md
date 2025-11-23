@@ -1,4 +1,4 @@
-# AI STILIST - ETH GLOBAL PRESENTATION
+# Closet - ETH GLOBAL PRESENTATION
 ## 2-Minute Pitch - Honest MVP Approach
 
 **Last Updated:** November 23, 2025
@@ -34,7 +34,7 @@ Style: Modern tech startup aesthetic, clean and professional
 Color palette: Deep blues (#1E40AF), purples (#7C3AED), and white
 Composition: Split 60/40 - closet on left, AI/blockchain network on right
 Mood: Innovative, trustworthy, futuristic but approachable
-Typography: Large, bold title space at top for "StyleAgent"
+Typography: Large, bold title space at top for "Closet"
 Details: Clothing should be diverse (shirts, jackets, dresses), AI should feel intelligent and helpful, blockchain elements subtle but present
 Lighting: Soft, professional lighting with a slight glow from the AI/network elements
 
@@ -43,7 +43,7 @@ Image quality: Clean, professional, suitable for presentation slide
 ```
 
 #### Slide Content:
-**Title:** StyleAgent
+**Title:** Closet
 **Subtitle:** Autonomous Fashion Intelligence
 **Main Text:** "What if your AI didn't just suggest—it understood, acted, and proved it?"
 
@@ -252,7 +252,7 @@ Top section (40%): CDP Embedded Wallet interface with:
 - Network: "Polygon" with logo
 
 Middle section (30%): Payment authorization card showing:
-- To: "StyleAgent Agent"
+- To: "Closet Agent"
 - Amount: "$89.00 USDC"
 - Purpose: "Purchase: Winter Jacket - Nordstrom"
 - x402 logo/badge indicating the payment protocol
@@ -303,7 +303,7 @@ Quality: Professional fintech UI design
 
 #### Image Generation Prompt:
 ```
-Create a clean technical architecture diagram showing the StyleAgent system:
+Create a clean technical architecture diagram showing the Closet system:
 
 Layout should be a layered architecture from top to bottom:
 
@@ -377,7 +377,7 @@ Quality: Professional technical diagram, suitable for engineers and business sta
 
 #### Image Generation Prompt:
 ```
-Create a timeline/roadmap visualization showing the evolution of StyleAgent:
+Create a timeline/roadmap visualization showing the evolution of Closet:
 
 Layout: Horizontal timeline with three main milestones, left to right:
 
@@ -800,7 +800,7 @@ Generated images will be saved to `scripts/generated-images/` with timestamp.
 ### Social Media Template:
 
 ```
-🎯 StyleAgent: Autonomous fashion agents with verifiable trust
+🎯 Closet: Autonomous fashion agents with verifiable trust
 
 Built at @ETHGlobal with:
 🔷 @0xPolygon - x402 autonomous payments

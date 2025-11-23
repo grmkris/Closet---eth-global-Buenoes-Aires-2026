@@ -3,6 +3,7 @@ import { serve } from "bun";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger as honoLogger } from "hono/logger";
+import { serveStatic } from "hono/bun";
 import { paymentMiddleware } from "x402-hono";
 import { purchasesTable } from "../drizzle/schema";
 import { createDatabase } from "./db";
@@ -37,6 +38,15 @@ app.use(
 		],
 		exposeHeaders: ["X-PAYMENT-RESPONSE"],
 		credentials: true,
+	})
+);
+
+// Serve static files from public directory
+app.use(
+	"/festival-items/*",
+	serveStatic({
+		root: "./public",
+		rewriteRequestPath: (path) => path,
 	})
 );
 

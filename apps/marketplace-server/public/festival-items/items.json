@@ -1,0 +1,334 @@
+{
+  "generatedAt": "2025-11-23T10:28:19.219Z",
+  "totalItems": 17,
+  "successfulGenerations": 17,
+  "theme": {
+    "name": "Festival/Rave Collection",
+    "colors": [
+      "red",
+      "yellow",
+      "purple",
+      "orange"
+    ],
+    "style": [
+      "rave",
+      "festival",
+      "neon",
+      "holographic"
+    ]
+  },
+  "items": [
+    {
+      "id": "festival-top-001",
+      "name": "Holographic Crop Top",
+      "category": "top",
+      "colors": [
+        "purple",
+        "orange"
+      ],
+      "style": [
+        "rave",
+        "festival",
+        "holographic"
+      ],
+      "gender": "unisex",
+      "imageUrl": "/festival-items/festival-top-001.webp",
+      "localPath": "/Users/kristjangrm/Code/github-com/ai-stilist/scripts/generated-images/generated-1763893436600.webp"
+    },
+    {
+      "id": "festival-top-002",
+      "name": "Mesh Festival Tank",
+      "category": "top",
+      "colors": [
+        "red",
+        "yellow"
+      ],
+      "style": [
+        "rave",
+        "festival",
+        "mesh"
+      ],
+      "gender": "unisex",
+      "imageUrl": "/festival-items/festival-top-002.webp",
+      "localPath": "/Users/kristjangrm/Code/github-com/ai-stilist/scripts/generated-images/generated-1763893454125.webp"
+    },
+    {
+      "id": "festival-outerwear-001",
+      "name": "LED Light-Up Jacket",
+      "category": "outerwear",
+      "colors": [
+        "red",
+        "yellow",
+        "purple",
+        "orange"
+      ],
+      "style": [
+        "rave",
+        "festival",
+        "led",
+        "futuristic"
+      ],
+      "gender": "unisex",
+      "imageUrl": "/festival-items/festival-outerwear-001.webp",
+      "localPath": "/Users/kristjangrm/Code/github-com/ai-stilist/scripts/generated-images/generated-1763893470235.webp"
+    },
+    {
+      "id": "festival-top-003",
+      "name": "Sequin Festival Top",
+      "category": "top",
+      "colors": [
+        "orange",
+        "purple"
+      ],
+      "style": [
+        "rave",
+        "festival",
+        "sequin",
+        "sparkle"
+      ],
+      "gender": "women",
+      "imageUrl": "/festival-items/festival-top-003.webp",
+      "localPath": "/Users/kristjangrm/Code/github-com/ai-stilist/scripts/generated-images/generated-1763893486797.webp"
+    },
+    {
+      "id": "festival-top-004",
+      "name": "Metallic Bodysuit Top",
+      "category": "top",
+      "colors": [
+        "yellow",
+        "red"
+      ],
+      "style": [
+        "rave",
+        "festival",
+        "metallic",
+        "futuristic"
+      ],
+      "gender": "women",
+      "imageUrl": "/festival-items/festival-top-004.webp",
+      "localPath": "/Users/kristjangrm/Code/github-com/ai-stilist/scripts/generated-images/generated-1763893503600.webp"
+    },
+    {
+      "id": "festival-bottom-001",
+      "name": "Neon Rave Pants",
+      "category": "bottom",
+      "colors": [
+        "purple",
+        "yellow"
+      ],
+      "style": [
+        "rave",
+        "festival",
+        "neon",
+        "wide-leg"
+      ],
+      "gender": "unisex",
+      "imageUrl": "/festival-items/festival-bottom-001.webp",
+      "localPath": "/Users/kristjangrm/Code/github-com/ai-stilist/scripts/generated-images/generated-1763893519288.webp"
+    },
+    {
+      "id": "festival-bottom-002",
+      "name": "Holographic Festival Shorts",
+      "category": "bottom",
+      "colors": [
+        "orange",
+        "red"
+      ],
+      "style": [
+        "rave",
+        "festival",
+        "holographic",
+        "shorts"
+      ],
+      "gender": "unisex",
+      "imageUrl": "/festival-items/festival-bottom-002.webp",
+      "localPath": "/Users/kristjangrm/Code/github-com/ai-stilist/scripts/generated-images/generated-1763893535516.webp"
+    },
+    {
+      "id": "festival-bottom-003",
+      "name": "LED Strip Leggings",
+      "category": "bottom",
+      "colors": [
+        "red",
+        "yellow",
+        "purple",
+        "orange"
+      ],
+      "style": [
+        "rave",
+        "festival",
+        "led",
+        "futuristic"
+      ],
+      "gender": "women",
+      "imageUrl": "/festival-items/festival-bottom-003.webp",
+      "localPath": "/Users/kristjangrm/Code/github-com/ai-stilist/scripts/generated-images/generated-1763893551173.webp"
+    },
+    {
+      "id": "festival-bottom-004",
+      "name": "Festival Fringe Skirt",
+      "category": "bottom",
+      "colors": [
+        "red",
+        "purple"
+      ],
+      "style": [
+        "rave",
+        "festival",
+        "fringe",
+        "flowing"
+      ],
+      "gender": "women",
+      "imageUrl": "/festival-items/festival-bottom-004.webp",
+      "localPath": "/Users/kristjangrm/Code/github-com/ai-stilist/scripts/generated-images/generated-1763893567613.webp"
+    },
+    {
+      "id": "festival-shoes-001",
+      "name": "LED Platform Boots",
+      "category": "shoes",
+      "colors": [
+        "purple",
+        "yellow"
+      ],
+      "style": [
+        "rave",
+        "festival",
+        "platform",
+        "led"
+      ],
+      "gender": "unisex",
+      "imageUrl": "/festival-items/festival-shoes-001.webp",
+      "localPath": "/Users/kristjangrm/Code/github-com/ai-stilist/scripts/generated-images/generated-1763893584094.webp"
+    },
+    {
+      "id": "festival-accessory-001",
+      "name": "Glow Accessories Pack",
+      "category": "accessory",
+      "colors": [
+        "red",
+        "yellow",
+        "purple",
+        "orange"
+      ],
+      "style": [
+        "rave",
+        "festival",
+        "glow",
+        "neon"
+      ],
+      "gender": "unisex",
+      "imageUrl": "/festival-items/festival-accessory-001.webp",
+      "localPath": "/Users/kristjangrm/Code/github-com/ai-stilist/scripts/generated-images/generated-1763893600763.webp"
+    },
+    {
+      "id": "festival-accessory-002",
+      "name": "Holographic Festival Bag",
+      "category": "accessory",
+      "colors": [
+        "orange",
+        "purple"
+      ],
+      "style": [
+        "rave",
+        "festival",
+        "holographic",
+        "bag"
+      ],
+      "gender": "unisex",
+      "imageUrl": "/festival-items/festival-accessory-002.webp",
+      "localPath": "/Users/kristjangrm/Code/github-com/ai-stilist/scripts/generated-images/generated-1763893616923.webp"
+    },
+    {
+      "id": "festival-accessory-003",
+      "name": "LED Flower Crown",
+      "category": "accessory",
+      "colors": [
+        "red",
+        "yellow"
+      ],
+      "style": [
+        "rave",
+        "festival",
+        "led",
+        "headpiece"
+      ],
+      "gender": "unisex",
+      "imageUrl": "/festival-items/festival-accessory-003.webp",
+      "localPath": "/Users/kristjangrm/Code/github-com/ai-stilist/scripts/generated-images/generated-1763893632737.webp"
+    },
+    {
+      "id": "festival-dress-001",
+      "name": "Festival Bodysuit",
+      "category": "dress",
+      "colors": [
+        "red",
+        "yellow",
+        "purple",
+        "orange"
+      ],
+      "style": [
+        "rave",
+        "festival",
+        "bodysuit",
+        "colorful"
+      ],
+      "gender": "women",
+      "imageUrl": "/festival-items/festival-dress-001.webp",
+      "localPath": "/Users/kristjangrm/Code/github-com/ai-stilist/scripts/generated-images/generated-1763893650286.webp"
+    },
+    {
+      "id": "festival-dress-002",
+      "name": "Rave Dress with Cutouts",
+      "category": "dress",
+      "colors": [
+        "purple",
+        "orange"
+      ],
+      "style": [
+        "rave",
+        "festival",
+        "dress",
+        "cutout"
+      ],
+      "gender": "women",
+      "imageUrl": "/festival-items/festival-dress-002.webp",
+      "localPath": "/Users/kristjangrm/Code/github-com/ai-stilist/scripts/generated-images/generated-1763893665328.webp"
+    },
+    {
+      "id": "festival-dress-003",
+      "name": "Holographic Romper",
+      "category": "dress",
+      "colors": [
+        "yellow",
+        "red"
+      ],
+      "style": [
+        "rave",
+        "festival",
+        "holographic",
+        "romper"
+      ],
+      "gender": "women",
+      "imageUrl": "/festival-items/festival-dress-003.webp",
+      "localPath": "/Users/kristjangrm/Code/github-com/ai-stilist/scripts/generated-images/generated-1763893681764.webp"
+    },
+    {
+      "id": "festival-dress-004",
+      "name": "Festival Jumpsuit",
+      "category": "dress",
+      "colors": [
+        "red",
+        "purple"
+      ],
+      "style": [
+        "rave",
+        "festival",
+        "jumpsuit",
+        "bold"
+      ],
+      "gender": "unisex",
+      "imageUrl": "/festival-items/festival-dress-004.webp",
+      "localPath": "/Users/kristjangrm/Code/github-com/ai-stilist/scripts/generated-images/generated-1763893699218.webp"
+    }
+  ]
+}

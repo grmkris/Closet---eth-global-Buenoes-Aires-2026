@@ -54,7 +54,7 @@ export function useSiweAuthentication(
 			const siweMessage = new SiweMessage({
 				domain: new URL(SERVICE_URLS[env.NEXT_PUBLIC_APP_ENV].auth).hostname,
 				address,
-				statement: "Sign in to AI Stilist with your wallet",
+				statement: "Sign in to Closet with your wallet",
 				uri: window.location.origin,
 				version: "1",
 				chainId,

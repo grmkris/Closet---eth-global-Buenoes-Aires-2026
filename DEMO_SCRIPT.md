@@ -20,7 +20,7 @@
 
 **"But without cryptographic verification, they're just chatbots playing dress-up."**
 
-**"AI Stilist proves autonomous commerce can work when trust is programmable."**
+**"Closet proves autonomous commerce can work when trust is programmable."**
 
 ---
 
@@ -114,9 +114,9 @@
 ---
 
 ### CLOSING (15 seconds)
-*[SLIDE: AI Stilist logo with tagline]*
+*[SLIDE: Closet logo with tagline]*
 
-**"AI Stilist: Where autonomous agents meet verifiable commerce."**
+**"Closet: Where autonomous agents meet verifiable commerce."**
 
 **"We're not asking you to imagine the future of AI agents."**
 
@@ -360,7 +360,7 @@ Remove any one and the system doesn't work."
 
 ### Main Tweet:
 ```
-🎯 AI Stilist: Autonomous fashion agents that actually shop for you
+🎯 Closet: Autonomous fashion agents that actually shop for you
 
 Built @ETHGlobal with:
 🔷 @0xPolygon - x402 autonomous payments

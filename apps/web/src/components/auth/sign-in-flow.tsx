@@ -148,7 +148,7 @@ export function SignInFlow({ session }: SignInFlowProps) {
 						</div>
 					) : (
 						<>
-							<h2 className="mb-4 font-bold text-2xl">Sign in to AI Stilist</h2>
+							<h2 className="mb-4 font-bold text-2xl">Sign in to Closet</h2>
 							<p className="mb-4 text-muted-foreground">
 								Create your wallet to get started. No seed phrase needed!
 							</p>

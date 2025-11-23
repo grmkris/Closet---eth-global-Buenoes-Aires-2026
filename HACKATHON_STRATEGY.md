@@ -1,4 +1,4 @@
-# AI STILIST - HACKATHON WINNING STRATEGY
+# Closet - HACKATHON WINNING STRATEGY
 
 ## EXECUTIVE SUMMARY
 
@@ -42,7 +42,7 @@ We're targeting 3 sponsors with deep integration rather than spreading thin:
 ### System Overview
 
 ```
-AI STILIST ARCHITECTURE
+Closet ARCHITECTURE
 ├── Polygon Network (Deployment)
 │   ├── Agent Registry Contract (ERC-8004)
 │   ├── Payment Handler (x402 protocol)
@@ -152,7 +152,7 @@ AI STILIST ARCHITECTURE
 "How do you trust an AI with your credit card? We solved this for fashion, but the solution scales to all autonomous agents."
 
 ### Problem Statement (20 seconds)
-"AI agents promise to shop, book, and transact for us. But without cryptographic verification, they're just chatbots. AI Stilist proves autonomous commerce can work when trust is programmable."
+"AI agents promise to shop, book, and transact for us. But without cryptographic verification, they're just chatbots. Closet proves autonomous commerce can work when trust is programmable."
 
 ### Solution Demo (60 seconds)
 1. **Show agent marketplace** (10s)
@@ -179,7 +179,7 @@ AI STILIST ARCHITECTURE
 "Three-sided marketplace: Stylists earn commissions, users save time, retailers get qualified buyers. Fashion is the beachhead—travel, nutrition, and finance agents follow."
 
 ### Closing (10 seconds)
-"AI Stilist: Where autonomous agents meet verifiable commerce. Built on Polygon with CDP wallets and Nethermind's Triple-Verified Stack."
+"Closet: Where autonomous agents meet verifiable commerce. Built on Polygon with CDP wallets and Nethermind's Triple-Verified Stack."
 
 ---
 

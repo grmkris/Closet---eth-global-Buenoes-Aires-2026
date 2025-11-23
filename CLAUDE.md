@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-AI Stilist is a full-stack TypeScript monorepo for fashion/wardrobe management built with:
+Closet is a full-stack TypeScript monorepo for fashion/wardrobe management built with:
 - **Frontend**: Next.js 16 (App Router), React 19, TanStack Query, Tailwind CSS v4, shadcn/ui
 - **Backend**: Hono server with ORPC for type-safe APIs, Better Auth for authentication
 - **Database**: PostgreSQL with Drizzle ORM

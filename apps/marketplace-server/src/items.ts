@@ -1,6 +1,7 @@
 import type { MarketplaceItem } from "./types";
 
 export const items: MarketplaceItem[] = [
+	// Classic Collection (Unsplash)
 	{
 		id: "item-001",
 		name: "Classic Leather Jacket",
@@ -148,6 +149,277 @@ export const items: MarketplaceItem[] = [
 			size: ["30", "32", "34", "36", "38"],
 			color: ["Khaki"],
 			material: "Cotton Twill",
+		},
+	},
+
+	// Festival Collection
+	{
+		id: "festival-top-001",
+		name: "Holographic Crop Top",
+		description:
+			"Vibrant holographic top in purple and orange colors, perfect for festivals and raves",
+		category: "tops",
+		brand: "Festival Collective",
+		price: 0.03,
+		imageUrl: "/festival-items/festival-top-001.webp",
+		available: true,
+		metadata: {
+			size: ["XS", "S", "M", "L", "XL"],
+			color: ["purple", "orange"],
+			material: "Holographic Fabric",
+		},
+	},
+	{
+		id: "festival-top-002",
+		name: "Mesh Festival Tank",
+		description:
+			"Vibrant mesh top in red and yellow colors, perfect for festivals and raves",
+		category: "tops",
+		brand: "Festival Collective",
+		price: 0.03,
+		imageUrl: "/festival-items/festival-top-002.webp",
+		available: true,
+		metadata: {
+			size: ["XS", "S", "M", "L", "XL"],
+			color: ["red", "yellow"],
+			material: "Breathable Mesh",
+		},
+	},
+	{
+		id: "festival-outerwear-001",
+		name: "LED Light-Up Jacket",
+		description:
+			"Vibrant led futuristic outerwear in red, yellow, purple and orange colors, perfect for festivals and raves",
+		category: "outerwear",
+		brand: "Festival Collective",
+		price: 0.05,
+		imageUrl: "/festival-items/festival-outerwear-001.webp",
+		available: true,
+		metadata: {
+			size: ["S", "M", "L", "XL"],
+			color: ["red", "yellow", "purple", "orange"],
+			material: "LED-Integrated Fabric",
+		},
+	},
+	{
+		id: "festival-top-003",
+		name: "Sequin Festival Top",
+		description:
+			"Vibrant sequin sparkle top in orange and purple colors, perfect for festivals and raves",
+		category: "tops",
+		brand: "Festival Collective",
+		price: 0.03,
+		imageUrl: "/festival-items/festival-top-003.webp",
+		available: true,
+		metadata: {
+			size: ["XS", "S", "M", "L", "XL"],
+			color: ["orange", "purple"],
+			material: "Sequin Fabric",
+		},
+	},
+	{
+		id: "festival-top-004",
+		name: "Metallic Bodysuit Top",
+		description:
+			"Vibrant metallic futuristic top in yellow and red colors, perfect for festivals and raves",
+		category: "tops",
+		brand: "Festival Collective",
+		price: 0.03,
+		imageUrl: "/festival-items/festival-top-004.webp",
+		available: true,
+		metadata: {
+			size: ["XS", "S", "M", "L", "XL"],
+			color: ["yellow", "red"],
+			material: "Metallic Fabric",
+		},
+	},
+	{
+		id: "festival-bottom-001",
+		name: "Neon Rave Pants",
+		description:
+			"Vibrant neon wide-leg bottom in purple and yellow colors, perfect for festivals and raves",
+		category: "bottoms",
+		brand: "Festival Collective",
+		price: 0.03,
+		imageUrl: "/festival-items/festival-bottom-001.webp",
+		available: true,
+		metadata: {
+			size: ["XS", "S", "M", "L", "XL"],
+			color: ["purple", "yellow"],
+			material: "UV-Reactive Fabric",
+		},
+	},
+	{
+		id: "festival-bottom-002",
+		name: "Holographic Festival Shorts",
+		description:
+			"Vibrant holographic shorts bottom in orange and red colors, perfect for festivals and raves",
+		category: "bottoms",
+		brand: "Festival Collective",
+		price: 0.03,
+		imageUrl: "/festival-items/festival-bottom-002.webp",
+		available: true,
+		metadata: {
+			size: ["XS", "S", "M", "L", "XL"],
+			color: ["orange", "red"],
+			material: "Holographic Fabric",
+		},
+	},
+	{
+		id: "festival-bottom-003",
+		name: "LED Strip Leggings",
+		description:
+			"Vibrant led futuristic bottom in red, yellow, purple and orange colors, perfect for festivals and raves",
+		category: "bottoms",
+		brand: "Festival Collective",
+		price: 0.03,
+		imageUrl: "/festival-items/festival-bottom-003.webp",
+		available: true,
+		metadata: {
+			size: ["XS", "S", "M", "L", "XL"],
+			color: ["red", "yellow", "purple", "orange"],
+			material: "LED-Integrated Fabric",
+		},
+	},
+	{
+		id: "festival-bottom-004",
+		name: "Festival Fringe Skirt",
+		description:
+			"Vibrant fringe flowing bottom in red and purple colors, perfect for festivals and raves",
+		category: "bottoms",
+		brand: "Festival Collective",
+		price: 0.03,
+		imageUrl: "/festival-items/festival-bottom-004.webp",
+		available: true,
+		metadata: {
+			size: ["XS", "S", "M", "L", "XL"],
+			color: ["red", "purple"],
+			material: "Fringe Fabric",
+		},
+	},
+	{
+		id: "festival-shoes-001",
+		name: "LED Platform Boots",
+		description:
+			"Vibrant platform led shoes in purple and yellow colors, perfect for festivals and raves",
+		category: "footwear",
+		brand: "Festival Collective",
+		price: 0.04,
+		imageUrl: "/festival-items/festival-shoes-001.webp",
+		available: true,
+		metadata: {
+			size: ["7", "8", "9", "10", "11", "12"],
+			color: ["purple", "yellow"],
+			material: "LED-Integrated Fabric",
+		},
+	},
+	{
+		id: "festival-accessory-001",
+		name: "Glow Accessories Pack",
+		description:
+			"Vibrant glow neon accessory in red, yellow, purple and orange colors, perfect for festivals and raves",
+		category: "accessories",
+		brand: "Festival Collective",
+		price: 0.02,
+		imageUrl: "/festival-items/festival-accessory-001.webp",
+		available: true,
+		metadata: {
+			color: ["red", "yellow", "purple", "orange"],
+			material: "UV-Reactive Fabric",
+		},
+	},
+	{
+		id: "festival-accessory-002",
+		name: "Holographic Festival Bag",
+		description:
+			"Vibrant holographic bag accessory in orange and purple colors, perfect for festivals and raves",
+		category: "accessories",
+		brand: "Festival Collective",
+		price: 0.02,
+		imageUrl: "/festival-items/festival-accessory-002.webp",
+		available: true,
+		metadata: {
+			color: ["orange", "purple"],
+			material: "Holographic Fabric",
+		},
+	},
+	{
+		id: "festival-accessory-003",
+		name: "LED Flower Crown",
+		description:
+			"Vibrant led headpiece accessory in red and yellow colors, perfect for festivals and raves",
+		category: "accessories",
+		brand: "Festival Collective",
+		price: 0.02,
+		imageUrl: "/festival-items/festival-accessory-003.webp",
+		available: true,
+		metadata: {
+			color: ["red", "yellow"],
+			material: "LED-Integrated Fabric",
+		},
+	},
+	{
+		id: "festival-dress-001",
+		name: "Festival Bodysuit",
+		description:
+			"Vibrant bodysuit colorful dress in red, yellow, purple and orange colors, perfect for festivals and raves",
+		category: "dresses",
+		brand: "Festival Collective",
+		price: 0.04,
+		imageUrl: "/festival-items/festival-dress-001.webp",
+		available: true,
+		metadata: {
+			size: ["XS", "S", "M", "L", "XL"],
+			color: ["red", "yellow", "purple", "orange"],
+			material: "Synthetic Blend",
+		},
+	},
+	{
+		id: "festival-dress-002",
+		name: "Rave Dress with Cutouts",
+		description:
+			"Vibrant dress cutout dress in purple and orange colors, perfect for festivals and raves",
+		category: "dresses",
+		brand: "Festival Collective",
+		price: 0.04,
+		imageUrl: "/festival-items/festival-dress-002.webp",
+		available: true,
+		metadata: {
+			size: ["XS", "S", "M", "L", "XL"],
+			color: ["purple", "orange"],
+			material: "Synthetic Blend",
+		},
+	},
+	{
+		id: "festival-dress-003",
+		name: "Holographic Romper",
+		description:
+			"Vibrant holographic romper dress in yellow and red colors, perfect for festivals and raves",
+		category: "dresses",
+		brand: "Festival Collective",
+		price: 0.04,
+		imageUrl: "/festival-items/festival-dress-003.webp",
+		available: true,
+		metadata: {
+			size: ["XS", "S", "M", "L", "XL"],
+			color: ["yellow", "red"],
+			material: "Holographic Fabric",
+		},
+	},
+	{
+		id: "festival-dress-004",
+		name: "Festival Jumpsuit",
+		description:
+			"Vibrant jumpsuit bold dress in red and purple colors, perfect for festivals and raves",
+		category: "dresses",
+		brand: "Festival Collective",
+		price: 0.04,
+		imageUrl: "/festival-items/festival-dress-004.webp",
+		available: true,
+		metadata: {
+			size: ["XS", "S", "M", "L", "XL"],
+			color: ["red", "purple"],
+			material: "Synthetic Blend",
 		},
 	},
 ];

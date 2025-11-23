@@ -18,7 +18,7 @@ This is a **standalone service** representing an external marketplace. It:
 - Has its own PostgreSQL database (separate from main app)
 - Uses workspace packages (`@ai-stilist/x402`, `@ai-stilist/logger`)
 - Verifies payments independently on Polygon blockchain
-- Does NOT share database with the main AI Stilist application
+- Does NOT share database with the main Closet application
 
 ## Setup
 
@@ -204,7 +204,7 @@ Key settings:
 
 ## AI Agent Integration
 
-From the AI Stilist app, agents can search and purchase items:
+From the Closet app, agents can search and purchase items:
 
 ```typescript
 // Search marketplace

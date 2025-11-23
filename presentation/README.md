@@ -1,4 +1,4 @@
-# StyleAgent Presentation Package
+# Closet Presentation Package
 
 ## 📁 Contents
 
@@ -50,7 +50,7 @@ All slides are located in `slides/` directory as high-quality WebP images (16:9 
 For each slide, add text as specified in the "Slide Content" sections of PRESENTATION.md.
 
 **Example for Slide 1:**
-- Large title: "StyleAgent"
+- Large title: "Closet"
 - Subtitle: "Autonomous Fashion Intelligence"
 - Main text: "What if your AI didn't just suggest—it understood, acted, and proved it?"
 
@@ -185,7 +185,7 @@ All prompts are in PRESENTATION.md under each slide section.
 After the presentation, use the social media templates in PRESENTATION.md to share:
 
 ```
-🎯 StyleAgent: Autonomous fashion agents with verifiable trust
+🎯 Closet: Autonomous fashion agents with verifiable trust
 
 Built at @ETHGlobal with:
 🔷 @0xPolygon - x402 autonomous payments

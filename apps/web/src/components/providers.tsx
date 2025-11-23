@@ -1,7 +1,6 @@
 "use client";
 
 import { QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { WagmiProviderWrapper } from "@/providers/wagmi-provider";
 import { queryClient } from "@/utils/orpc";
@@ -19,7 +18,6 @@ export default function Providers({ children }: { children: React.ReactNode }) {
 			<WagmiProviderWrapper>
 				<QueryClientProvider client={queryClient}>
 					<NuqsAdapter>{children}</NuqsAdapter>
-					<ReactQueryDevtools />
 				</QueryClientProvider>
 			</WagmiProviderWrapper>
 			<Toaster richColors />

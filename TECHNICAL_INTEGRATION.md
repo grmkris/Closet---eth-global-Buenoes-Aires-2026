@@ -385,7 +385,7 @@ export class UserWallet {
 
   async connect() {
     this.wallet = new EmbeddedWallet({
-      appName: 'AI Stilist',
+      appName: 'Closet',
       appLogoUrl: 'https://ai-stilist.com/logo.png',
       network: 'polygon',
       features: ['x402', 'gasless']
@@ -434,7 +434,7 @@ export class UserWallet {
       amount: '9.99',
       currency: 'USDC',
       frequency: 'monthly',
-      description: 'AI Stilist Agent Subscription'
+      description: 'Closet Agent Subscription'
     });
 
     return subscription;

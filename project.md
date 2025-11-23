@@ -1,11 +1,11 @@
- AI Stilist - Autonomous Fashion Agent Platform
+ Closet - Autonomous Fashion Agent Platform
 
   Product Vision Document
 
   ---
   The Big Idea
 
-  AI Stilist is a three-sided marketplace where professional fashion stylists create autonomous AI
+  Closet is a three-sided marketplace where professional fashion stylists create autonomous AI
   agents that help people with their complete fashion journey - from daily outfit decisions to smart
   shopping - while users can discover, subscribe to, and trust these agents through transparent
   reputation systems.
@@ -529,7 +529,7 @@
   ---
   The Elevator Pitch
 
-  "AI Stilist is a marketplace where fashion stylists create autonomous AI agents that help you decide
+  "Closet is a marketplace where fashion stylists create autonomous AI agents that help you decide
   what to wear, identify what to buy, and can even shop for you - all while building transparent
   reputation so you know which agents to trust. It's like having a personal stylist in your pocket for
   $15/month, except the stylist can actually take action on your behalf."
@@ -561,5 +561,5 @@
   - Finance agents: Invest your savings, optimize spending
   - Health agents: Schedule appointments, refill prescriptions
 
-  AI Stilist is the proof of concept that autonomous agent economies can work when trust is transparent
+  Closet is the proof of concept that autonomous agent economies can work when trust is transparent
    and users control the autonomy level.
