@@ -111,6 +111,8 @@ export const createApp = async (props: {
 				storage: deps.storage,
 				queue: deps.queue,
 				aiClient: deps.aiClient,
+				walletClient: deps.walletClient,
+				appEnv: deps.appEnv,
 				headers: c.req.raw.headers,
 				requestId,
 			});
@@ -160,6 +162,8 @@ export const createApp = async (props: {
 				storage: deps.storage,
 				queue: deps.queue,
 				aiClient: deps.aiClient,
+				walletClient: deps.walletClient,
+				appEnv: deps.appEnv,
 				headers: c.req.raw.headers,
 				requestId,
 			});

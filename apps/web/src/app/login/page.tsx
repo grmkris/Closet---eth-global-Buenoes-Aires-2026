@@ -19,10 +19,10 @@ export default function LoginPage() {
 	// Don't render sign-in flow if already authenticated (redirect in progress)
 	if (session?.user) {
 		return (
-			<div className="flex min-h-screen items-center justify-center">
+			<div className="flex h-svh items-center justify-center p-4">
 				<div className="text-center">
 					<div className="mb-4 text-4xl">✅</div>
-					<p className="text-muted-foreground">
+					<p className="text-muted-foreground text-sm sm:text-base">
 						Already authenticated. Redirecting...
 					</p>
 				</div>
@@ -31,7 +31,7 @@ export default function LoginPage() {
 	}
 
 	return (
-		<div className="flex min-h-screen items-center justify-center">
+		<div className="flex h-svh items-center justify-center p-4 pb-24 md:pb-4">
 			<SignInFlow session={session} />
 		</div>
 	);

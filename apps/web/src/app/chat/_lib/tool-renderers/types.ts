@@ -102,11 +102,11 @@ export function isToolResult(part: MyUIMessagePart): part is (
 /**
  * Helper to extract tool name from part
  */
-export function getToolName(part: MyUIMessagePart): string | undefined {
+export function getToolName(part: MyUIMessagePart): ToolName | undefined {
 	if (!isToolOrDynamicToolUIPart(part)) {
 		return;
 	}
-	return getToolOrDynamicToolName(part);
+	return getToolOrDynamicToolName(part) as ToolName | undefined;
 }
 
 /**
@@ -139,9 +139,8 @@ export function getToolOutput(part: MyUIMessagePart): unknown | undefined {
 	if (!isToolOrDynamicToolUIPart(part)) {
 		return;
 	}
-	const toolPart = part as ToolUIPart<MyToolSet> | DynamicToolUIPart;
-	if (toolPart.state === "output-available") {
-		return toolPart.output;
+	if (part.state === "output-available") {
+		return part.output;
 	}
 	return;
 }

@@ -22,6 +22,7 @@
   "dependencies": {
     "@ai-stilist/ai": "workspace:*",
     "@ai-stilist/auth": "workspace:*",
+    "@ai-stilist/cdp-wallet": "workspace:*",
     "@ai-stilist/db": "workspace:*",
     "@ai-stilist/logger": "workspace:*",
     "@ai-stilist/queue": "workspace:*",
@@ -33,6 +34,7 @@
     "@orpc/server": "catalog:",
     "@orpc/zod": "catalog:",
     "hono": "catalog:",
+    "viem": "catalog:",
     "zod": "catalog:"
   }
 }

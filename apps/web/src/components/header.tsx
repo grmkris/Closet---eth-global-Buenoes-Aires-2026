@@ -1,21 +1,36 @@
 "use client";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 import { ModeToggle } from "./mode-toggle";
 import UserMenu from "./user-menu";
 
 export default function Header() {
+	const pathname = usePathname();
+
 	const links = [
 		{ to: "/", label: "Home" },
 		{ to: "/dashboard", label: "Dashboard" },
+		{ to: "/wardrobe", label: "Wardrobe" },
+		{ to: "/agents", label: "Agents" },
 		{ to: "/chat", label: "AI Chat" },
 	] as const;
 
 	return (
-		<div>
-			<div className="flex flex-row items-center justify-between px-2 py-1">
-				<nav className="flex gap-4 text-lg">
+		<div className="hidden border-b bg-background md:block">
+			<div className="flex flex-row items-center justify-between px-4 py-3">
+				<nav className="flex gap-6 text-sm">
 					{links.map(({ to, label }) => (
-						<Link href={to} key={to}>
+						<Link
+							className={cn(
+								"font-medium transition-colors hover:text-foreground",
+								pathname === to || (to !== "/" && pathname.startsWith(to))
+									? "text-foreground"
+									: "text-muted-foreground"
+							)}
+							href={to}
+							key={to}
+						>
 							{label}
 						</Link>
 					))}
@@ -25,7 +40,6 @@ export default function Header() {
 					<UserMenu />
 				</div>
 			</div>
-			<hr />
 		</div>
 	);
 }

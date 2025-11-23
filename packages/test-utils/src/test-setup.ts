@@ -1,6 +1,8 @@
 import type { AiClient } from "@ai-stilist/ai";
 import { createAiClient } from "@ai-stilist/ai";
 import { type Auth, createAuth } from "@ai-stilist/auth";
+import type { WalletClient } from "@ai-stilist/cdp-wallet";
+import { createWalletClient } from "@ai-stilist/cdp-wallet";
 import { createDb, type Database, runMigrations } from "@ai-stilist/db";
 import type { Logger as DrizzleLogger } from "@ai-stilist/db/drizzle";
 import {
@@ -13,6 +15,7 @@ import {
 import { createLogger, type Logger } from "@ai-stilist/logger";
 import type { QueueClient } from "@ai-stilist/queue";
 import { createQueueClient } from "@ai-stilist/queue";
+import type { Environment } from "@ai-stilist/shared/services";
 import {
 	type RequestId,
 	typeIdGenerator,
@@ -24,10 +27,9 @@ import type { User } from "better-auth";
 import { env } from "bun";
 import { z } from "zod";
 import { createPgLite, type PGlite } from "./pg-lite";
-import { createTestRedisSetup } from "./redis-test-server";
+import { createTestRedisSetup, type RedisTestSetup } from "./redis-test-server";
 import { createTestS3Setup } from "./s3-test-server";
 import { testEnv } from "./test-env";
-
 /**
  * ORPC Context type for API tests
  * This must match the Context type from @ai-stilist/api/context
@@ -38,6 +40,8 @@ export type Context = {
 	storage: StorageClient;
 	queue: QueueClient;
 	aiClient: AiClient;
+	walletClient: WalletClient;
+	appEnv: Environment;
 	logger: Logger;
 	headers: Headers;
 	requestId: RequestId;
@@ -75,10 +79,10 @@ export type TestSetup = {
 		pgLite: PGlite;
 		authClient: Auth;
 		logger: Logger;
-		storage: ReturnType<typeof createStorageClient>;
-		redis: Awaited<ReturnType<typeof createTestRedisSetup>>;
-		queue: ReturnType<typeof createQueueClient>;
-		aiClient: ReturnType<typeof createAiClient>;
+		storage: StorageClient;
+		redis: RedisTestSetup;
+		queue: QueueClient;
+		aiClient: AiClient;
 	};
 	users: {
 		authenticated: TestUser;
@@ -236,7 +240,6 @@ export async function createTestSetup(): Promise<TestSetup> {
 		},
 		environment: testEnv.APP_ENV,
 	});
-
 	// Cleanup function to reset data between tests
 	const cleanup = async () => {
 		logger.info("Cleaning up test data...");
@@ -310,6 +313,11 @@ export async function createTestContext(props: {
 		headers,
 	});
 
+	const walletClient = createWalletClient({
+		apiKeyFile: testEnv.CDP_API_KEY_FILE,
+		logger,
+	});
+
 	// Build context object directly
 	return {
 		session,
@@ -317,6 +325,8 @@ export async function createTestContext(props: {
 		storage: deps.storage,
 		queue: deps.queue,
 		aiClient: deps.aiClient,
+		walletClient,
+		appEnv: testEnv.APP_ENV,
 		logger: deps.logger,
 		headers,
 		requestId: typeIdGenerator("request"),

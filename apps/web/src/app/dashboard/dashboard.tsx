@@ -4,6 +4,11 @@ import { POLLING_CONFIG } from "@ai-stilist/shared/constants";
 import { useQuery } from "@tanstack/react-query";
 import { Camera, Loader2, Sparkles } from "lucide-react";
 import Link from "next/link";
+import {
+	SubscriptionCard,
+	SubscriptionCardSkeleton,
+} from "@/components/subscriptions/subscription-card";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -26,41 +31,49 @@ export default function Dashboard({
 		})
 	);
 
+	// Fetch user subscriptions
+	const { data: subscriptionsData, isLoading: subsLoading } = useQuery(
+		orpc.subscription.list.queryOptions()
+	);
+
 	const processingCount = 0; // We could track this in getTags if needed
+	const activeSubscriptions =
+		subscriptionsData?.subscriptions.filter((sub) => sub.status === "active") ||
+		[];
 
 	if (isLoading) {
 		return (
-			<div className="mx-auto max-w-2xl space-y-6 px-4 py-8 sm:px-6">
+			<div className="mx-auto max-w-2xl space-y-4 px-4 py-4 pb-24 sm:px-6 md:space-y-6 md:py-8 md:pb-8">
 				{/* Welcome Header Skeleton */}
 				<div className="space-y-2 text-center">
-					<Skeleton className="mx-auto h-10 w-64 sm:h-12" />
-					<Skeleton className="mx-auto h-5 w-48" />
+					<Skeleton className="mx-auto h-8 w-64 sm:h-10 md:h-12" />
+					<Skeleton className="mx-auto h-4 w-48 sm:h-5" />
 				</div>
 
 				{/* Stats Skeleton */}
-				<div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-					<Skeleton className="h-24" />
-					<Skeleton className="h-24" />
-					<Skeleton className="col-span-2 h-24 sm:col-span-1" />
+				<div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:gap-4">
+					<Skeleton className="h-20 sm:h-24" />
+					<Skeleton className="h-20 sm:h-24" />
+					<Skeleton className="col-span-2 h-20 sm:col-span-1 sm:h-24" />
 				</div>
 
 				{/* Buttons Skeleton */}
-				<div className="space-y-3">
-					<Skeleton className="h-14 w-full sm:h-16" />
-					<Skeleton className="h-14 w-full sm:h-16" />
+				<div className="space-y-2 sm:space-y-3">
+					<Skeleton className="h-12 w-full sm:h-14 md:h-16" />
+					<Skeleton className="h-12 w-full sm:h-14 md:h-16" />
 				</div>
 			</div>
 		);
 	}
 
 	return (
-		<div className="mx-auto max-w-2xl space-y-6 px-4 py-8 sm:px-6">
+		<div className="mx-auto max-w-2xl space-y-4 px-4 py-4 pb-24 sm:px-6 md:space-y-6 md:py-8 md:pb-8">
 			{/* Welcome Header */}
 			<div className="text-center">
-				<h1 className="font-bold text-3xl sm:text-4xl">
+				<h1 className="font-bold text-2xl sm:text-3xl md:text-4xl">
 					Welcome back{session.user.name ? `, ${session.user.name}` : ""}!
 				</h1>
-				<p className="mt-2 text-muted-foreground">
+				<p className="mt-2 text-muted-foreground text-sm sm:text-base">
 					Your AI-powered wardrobe assistant
 				</p>
 			</div>
@@ -84,20 +97,26 @@ export default function Dashboard({
 			)}
 
 			{/* Wallet Balance and Quick Stats */}
-			<div className="grid gap-4 md:grid-cols-2">
+			<div className="grid gap-3 md:grid-cols-2 md:gap-4">
 				{/* Wallet Balance Card */}
 				<WalletBalanceCard />
 
 				{/* Quick Stats */}
 				{stats && stats.totalItems > 0 && (
-					<div className="grid grid-cols-2 gap-4">
-						<Card className="p-4 text-center">
-							<p className="text-muted-foreground text-sm">Total Items</p>
-							<p className="mt-1 font-bold text-2xl">{stats.totalItems}</p>
+					<div className="grid grid-cols-2 gap-3 md:gap-4">
+						<Card className="p-3 text-center sm:p-4">
+							<p className="text-muted-foreground text-xs sm:text-sm">
+								Total Items
+							</p>
+							<p className="mt-1 font-bold text-xl sm:text-2xl">
+								{stats.totalItems}
+							</p>
 						</Card>
-						<Card className="p-4 text-center">
-							<p className="text-muted-foreground text-sm">Categories</p>
-							<p className="mt-1 font-bold text-2xl">
+						<Card className="p-3 text-center sm:p-4">
+							<p className="text-muted-foreground text-xs sm:text-sm">
+								Categories
+							</p>
+							<p className="mt-1 font-bold text-xl sm:text-2xl">
 								{stats.categories.length}
 							</p>
 						</Card>
@@ -105,41 +124,75 @@ export default function Dashboard({
 				)}
 			</div>
 
-			{/* Primary Actions */}
+			{/* Subscriptions Section */}
 			<div className="space-y-3">
+				<div className="flex items-center justify-between">
+					<h2 className="font-semibold text-lg">My Subscriptions</h2>
+					<Button asChild size="sm" variant="ghost">
+						<Link href="/agents">Browse Agents</Link>
+					</Button>
+				</div>
+
+				{subsLoading ? (
+					<div className="grid gap-3 sm:grid-cols-2">
+						<SubscriptionCardSkeleton />
+						<SubscriptionCardSkeleton />
+					</div>
+				) : activeSubscriptions.length > 0 ? (
+					<div className="grid gap-3 sm:grid-cols-2">
+						{activeSubscriptions.slice(0, 4).map((subscription) => (
+							<SubscriptionCard key={subscription.id} subscription={subscription} />
+						))}
+					</div>
+				) : (
+					<Alert>
+						<Sparkles className="h-4 w-4" />
+						<AlertTitle>No active subscriptions</AlertTitle>
+						<AlertDescription>
+							Browse AI stylist agents to get personalized fashion advice.
+						</AlertDescription>
+					</Alert>
+				)}
+			</div>
+
+			{/* Primary Actions */}
+			<div className="space-y-2 sm:space-y-3">
 				<Link className="block" href={"/wardrobe"}>
-					<Button
-						className="h-14 w-full text-base sm:h-16 sm:text-lg"
-						size="lg"
-					>
-						<Sparkles className="mr-2 h-5 w-5 sm:h-6 sm:w-6" />
-						Browse Wardrobe
+					<Button className="h-12 w-full sm:h-14 md:h-16" size="lg">
+						<Sparkles className="mr-2 h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6" />
+						<span className="text-sm sm:text-base md:text-lg">
+							Browse Wardrobe
+						</span>
 					</Button>
 				</Link>
 				<Link className="block" href={"/wardrobe"}>
 					<Button
-						className="h-14 w-full text-base sm:h-16 sm:text-lg"
+						className="h-12 w-full sm:h-14 md:h-16"
 						size="lg"
 						variant="outline"
 					>
-						<Camera className="mr-2 h-5 w-5 sm:h-6 sm:w-6" />
-						Upload Photos
+						<Camera className="mr-2 h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6" />
+						<span className="text-sm sm:text-base md:text-lg">
+							Upload Photos
+						</span>
 					</Button>
 				</Link>
 			</div>
 
 			{/* Empty State */}
 			{stats && stats.totalItems === 0 && (
-				<Card className="p-8 text-center">
-					<div className="mx-auto max-w-md space-y-4">
+				<Card className="p-6 text-center sm:p-8">
+					<div className="mx-auto max-w-md space-y-3 sm:space-y-4">
 						<div className="flex justify-center">
-							<div className="rounded-full bg-muted p-4">
-								<Camera className="h-12 w-12 text-muted-foreground" />
+							<div className="rounded-full bg-muted p-3 sm:p-4">
+								<Camera className="h-10 w-10 text-muted-foreground sm:h-12 sm:w-12" />
 							</div>
 						</div>
 						<div>
-							<h2 className="font-semibold text-lg">Start Your Wardrobe</h2>
-							<p className="mt-1 text-muted-foreground text-sm">
+							<h2 className="font-semibold text-base sm:text-lg">
+								Start Your Wardrobe
+							</h2>
+							<p className="mt-1 text-muted-foreground text-xs sm:text-sm">
 								Upload photos of your clothing to get AI-powered organization,
 								tags, and styling suggestions
 							</p>

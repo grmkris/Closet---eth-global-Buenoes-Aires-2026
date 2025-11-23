@@ -27,9 +27,9 @@ export function ItemDetailsRenderer({ part }: ToolRendererProps) {
 		output.processedImageUrl || output.imageUrl || output.thumbnailUrl;
 
 	return (
-		<div className="my-3 overflow-hidden rounded-lg border bg-card">
-			{/* Header */}
-			<div className="flex items-center gap-2 border-b bg-muted/30 px-3 py-2">
+		<div className="my-3 overflow-hidden rounded-lg border bg-card shadow-sm">
+			{/* Header with gradient */}
+			<div className="flex items-center gap-2 border-b bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 px-4 py-3">
 				<Info className="h-4 w-4 text-muted-foreground" />
 				<span className="font-medium text-sm">Item Details</span>
 				<Badge className="ml-auto" variant="secondary">
@@ -38,9 +38,9 @@ export function ItemDetailsRenderer({ part }: ToolRendererProps) {
 				</Badge>
 			</div>
 
-			<div className="grid gap-4 p-4 md:grid-cols-2">
+			<div className="grid gap-4 p-4 md:grid-cols-2 md:gap-6 md:p-6">
 				{/* Image */}
-				<div className="relative aspect-square overflow-hidden rounded-md bg-muted/10">
+				<div className="relative aspect-square overflow-hidden rounded-lg bg-gradient-to-br from-muted/20 to-muted/5 shadow-sm">
 					{imageUrl ? (
 						<>
 							{!imageLoaded && (
@@ -61,19 +61,19 @@ export function ItemDetailsRenderer({ part }: ToolRendererProps) {
 						</>
 					) : (
 						<div className="absolute inset-0 flex items-center justify-center">
-							<ShirtIcon className="h-16 w-16 text-muted-foreground/30" />
+							<ShirtIcon className="h-20 w-20 text-muted-foreground/20" />
 						</div>
 					)}
 				</div>
 
-				{/* Metadata */}
+				{/* Metadata with improved spacing */}
 				<div className="space-y-4">
 					{/* Categories */}
 					<div>
-						<div className="mb-1 font-medium text-muted-foreground text-xs uppercase">
+						<div className="mb-2 font-medium text-muted-foreground text-xs uppercase tracking-wide">
 							Categories
 						</div>
-						<div className="flex flex-wrap gap-1">
+						<div className="flex flex-wrap gap-1.5">
 							{output.categories.map((category) => (
 								<Badge key={category} variant="secondary">
 									{category}
@@ -85,18 +85,18 @@ export function ItemDetailsRenderer({ part }: ToolRendererProps) {
 					{/* Colors */}
 					{output.colors.length > 0 && (
 						<div>
-							<div className="mb-1 font-medium text-muted-foreground text-xs uppercase">
+							<div className="mb-2 font-medium text-muted-foreground text-xs uppercase tracking-wide">
 								Colors
 							</div>
 							<div className="flex flex-wrap gap-2">
 								{output.colors.map((color, idx) => (
 									<div
-										className="flex items-center gap-2 rounded-md border bg-background px-2 py-1"
+										className="flex items-center gap-2 rounded-lg border bg-background px-3 py-1.5 shadow-sm"
 										key={`${color.name}-${idx}`}
 									>
 										{color.hex && (
 											<div
-												className="h-4 w-4 rounded-full border"
+												className="h-4 w-4 rounded-full border-2 shadow-sm"
 												style={{ backgroundColor: color.hex }}
 												title={color.name}
 											/>
@@ -111,16 +111,16 @@ export function ItemDetailsRenderer({ part }: ToolRendererProps) {
 					{/* Tags by Type */}
 					{Object.entries(output.tagsByType).length > 0 && (
 						<div>
-							<div className="mb-1 font-medium text-muted-foreground text-xs uppercase">
+							<div className="mb-2 font-medium text-muted-foreground text-xs uppercase tracking-wide">
 								Tags
 							</div>
-							<div className="space-y-2">
+							<div className="space-y-3">
 								{Object.entries(output.tagsByType).map(([type, tags]) => (
 									<div key={type}>
-										<div className="mb-1 text-muted-foreground text-xs">
+										<div className="mb-1.5 font-medium text-muted-foreground text-xs">
 											{type.charAt(0).toUpperCase() + type.slice(1)}
 										</div>
-										<div className="flex flex-wrap gap-1">
+										<div className="flex flex-wrap gap-1.5">
 											{tags.map((tag) => (
 												<Badge key={tag} variant="outline">
 													{tag}
@@ -134,7 +134,7 @@ export function ItemDetailsRenderer({ part }: ToolRendererProps) {
 					)}
 
 					{/* Dates */}
-					<div className="border-t pt-3">
+					<div className="rounded-lg border-t bg-muted/20 pt-3">
 						<div className="space-y-1 text-muted-foreground text-xs">
 							<div>
 								Created:{" "}

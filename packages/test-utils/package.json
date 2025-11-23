@@ -29,6 +29,7 @@
     "@ai-stilist/queue": "workspace:*",
     "@ai-stilist/shared": "workspace:*",
     "@ai-stilist/storage": "workspace:*",
+    "@ai-stilist/cdp-wallet": "workspace:*",
     "@electric-sql/pglite": "^0.3.14",
     "@faker-js/faker": "^10.1.0",
     "better-auth": "catalog:",

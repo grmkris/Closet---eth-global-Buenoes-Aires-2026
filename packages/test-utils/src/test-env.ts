@@ -18,6 +18,8 @@ export const testEnvSchema = z.object({
 	// When missing, returns undefined (not empty string)
 	// Tests will fail fast with clear error if AI is needed without key
 	GOOGLE_GEMINI_API_KEY: z.string().optional(),
+	CDP_API_KEY_FILE: z.string(),
+	FACILITATOR_PRIVATE_KEY: z.string(),
 });
 
 /**

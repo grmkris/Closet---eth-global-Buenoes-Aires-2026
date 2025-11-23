@@ -3,4 +3,4 @@ export type {
 	WalletClient,
 	WalletConfig,
 } from "./wallet-client";
-export { createWalletClient } from "./wallet-client";
+export { createWalletClient, getCdpNetworkId } from "./wallet-client";

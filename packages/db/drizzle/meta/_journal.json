@@ -8,6 +8,13 @@
       "when": 1763828147381,
       "tag": "0000_living_iron_monger",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1763853261835,
+      "tag": "0001_lyrical_nova",
+      "breakpoints": true
     }
   ]
 }

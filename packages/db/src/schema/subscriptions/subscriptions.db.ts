@@ -1,9 +1,20 @@
-import { integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import type {
+	AgentId,
+	SubscriptionId,
+	SubscriptionPaymentId,
+	UserId,
+} from "@ai-stilist/shared/typeid";
+import { typeIdGenerator } from "@ai-stilist/shared/typeid";
+import {
+	integer,
+	jsonb,
+	pgTable,
+	text,
+	timestamp,
+} from "drizzle-orm/pg-core";
+import { typeId } from "../../utils/db-utils";
 import { agentsTable } from "../agents/agents.db";
 import { user } from "../auth/auth.db";
-import { typeId } from "../../utils/db-utils";
-import { typeIdGenerator } from "@ai-stilist/shared/typeid";
-import type { SubscriptionId, SubscriptionPaymentId } from "@ai-stilist/shared/typeid";
 
 export const subscriptionsTable = pgTable("subscriptions", {
 	id: typeId("subscription", "id")
@@ -12,10 +23,12 @@ export const subscriptionsTable = pgTable("subscriptions", {
 		.$type<SubscriptionId>(),
 	userId: typeId("user", "user_id")
 		.notNull()
-		.references(() => user.id),
+		.references(() => user.id, { onDelete: "cascade" })
+		.$type<UserId>(),
 	agentId: typeId("agent", "agent_id")
 		.notNull()
-		.references(() => agentsTable.id),
+		.references(() => agentsTable.id, { onDelete: "cascade" })
+		.$type<AgentId>(),
 
 	priceMonthly: integer("price_monthly").notNull(),
 	status: text("status").notNull().default("active"),
@@ -34,12 +47,18 @@ export const subscriptionPaymentsTable = pgTable("subscription_payments", {
 		.$type<SubscriptionPaymentId>(),
 	subscriptionId: typeId("subscription", "subscription_id")
 		.notNull()
-		.references(() => subscriptionsTable.id),
+		.references(() => subscriptionsTable.id, { onDelete: "cascade" })
+		.$type<SubscriptionId>(),
 
 	amount: integer("amount").notNull(),
 	paymentMethod: text("payment_method").notNull(),
 	txHash: text("tx_hash"),
 	status: text("status").notNull().default("completed"),
+
+	// x402 payment tracking
+	network: text("network"), // "polygon" | "polygon-amoy" | "base" | "base-sepolia"
+	paymentProof: jsonb("payment_proof"), // Full PaymentProof object from x402
+	verifiedAt: timestamp("verified_at"), // When payment was verified on-chain
 
 	paidAt: timestamp("paid_at").notNull().defaultNow(),
 });

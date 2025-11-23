@@ -1,8 +1,10 @@
 import type { AiClient } from "@ai-stilist/ai";
 import type { Auth } from "@ai-stilist/auth";
+import type { WalletClient } from "@ai-stilist/cdp-wallet";
 import type { Database } from "@ai-stilist/db";
 import type { Logger } from "@ai-stilist/logger";
 import type { QueueClient } from "@ai-stilist/queue";
+import type { Environment } from "@ai-stilist/shared/services";
 import type { RequestId } from "@ai-stilist/shared/typeid";
 import type { StorageClient } from "@ai-stilist/storage";
 
@@ -13,6 +15,8 @@ export type OrpcContextParams = {
 	storage: StorageClient;
 	queue: QueueClient;
 	aiClient: AiClient;
+	walletClient: WalletClient;
+	appEnv: Environment;
 	headers: Headers;
 	requestId: RequestId;
 };

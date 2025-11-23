@@ -9,7 +9,10 @@
     "./schema/wardrobe": "./src/schema/wardrobe/index.ts",
     "./schema/wardrobe/index": "./src/schema/wardrobe/index.ts",
     "./schema/ai": "./src/schema/ai/index.ts",
-    "./schema/ai/index": "./src/schema/ai/index.ts"
+    "./schema/ai/index": "./src/schema/ai/index.ts",
+    "./schema/agents": "./src/schema/agents/index.ts",
+    "./schema/spending": "./src/schema/spending/index.ts",
+    "./schema/subscriptions": "./src/schema/subscriptions/index.ts"
   },
   "scripts": {
     "build": "tsdown",

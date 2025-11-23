@@ -21,9 +21,9 @@ export function OutfitPreviewRenderer({ part }: ToolRendererProps) {
 	}
 
 	return (
-		<div className="my-3 overflow-hidden rounded-lg border bg-card">
-			{/* Header */}
-			<div className="flex items-center gap-2 border-b bg-muted/30 px-3 py-2">
+		<div className="my-3 overflow-hidden rounded-lg border bg-card shadow-sm">
+			{/* Header with gradient */}
+			<div className="flex items-center gap-2 border-b bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 px-4 py-3">
 				<ImageIcon className="h-4 w-4 text-muted-foreground" />
 				<span className="font-medium text-sm">Outfit Preview</span>
 				<Badge className="ml-auto" variant="secondary">
@@ -33,7 +33,7 @@ export function OutfitPreviewRenderer({ part }: ToolRendererProps) {
 			</div>
 
 			{/* Image */}
-			<div className="relative aspect-square bg-muted/10">
+			<div className="relative aspect-square overflow-hidden bg-gradient-to-br from-muted/20 to-muted/5">
 				{!output.imageUrl && (
 					<div className="absolute inset-0 flex items-center justify-center">
 						<div className="text-muted-foreground text-sm">
@@ -58,9 +58,9 @@ export function OutfitPreviewRenderer({ part }: ToolRendererProps) {
 				/>
 			</div>
 
-			{/* Footer with message */}
+			{/* Footer with gradient */}
 			{output.message && (
-				<div className="border-t bg-muted/30 px-3 py-2">
+				<div className="border-t bg-gradient-to-r from-muted/40 to-muted/20 px-4 py-3">
 					<p className="text-muted-foreground text-sm">{output.message}</p>
 					{output.itemCount !== undefined && (
 						<p className="mt-1 text-muted-foreground text-xs">

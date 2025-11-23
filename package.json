@@ -62,8 +62,11 @@
     "db:down": "turbo -F @ai-stilist/db db:down"
   },
   "dependencies": {
+    "@coinbase/x402": "^0.7.3",
     "dotenv": "^17.2.3",
     "nuqs": "^2.8.1",
+    "x402": "^0.7.3",
+    "x402-hono": "^0.7.3",
     "zod": "^4.1.12"
   },
   "devDependencies": {

@@ -14,6 +14,7 @@ export const SERVICE_URLS: Record<
 		cookieDomain: string;
 		storage: string;
 		redis: string;
+		x402FacilitatorUrl: string;
 		chain: {
 			id: number;
 			name: string;
@@ -29,6 +30,7 @@ export const SERVICE_URLS: Record<
 		cookieDomain: "localhost",
 		storage: "http://localhost:9000",
 		redis: "redis://localhost:63791",
+		x402FacilitatorUrl: "http://localhost:3002",
 		chain: {
 			id: 80_002, // Polygon Amoy testnet
 			name: "polygon-amoy",
@@ -43,6 +45,7 @@ export const SERVICE_URLS: Record<
 		cookieDomain: ".ai-stilist.com",
 		storage: "https://storage.ai-stilist.com",
 		redis: "redis://redis.ai-stilist.com:6379",
+		x402FacilitatorUrl: "https://x402.org/facilitator",
 		chain: {
 			id: 137, // Polygon mainnet
 			name: "polygon",

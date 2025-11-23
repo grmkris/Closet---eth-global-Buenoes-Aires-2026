@@ -2,9 +2,11 @@
 // This would eliminate the need for UserId.parse() in every router endpoint
 import type { AiClient } from "@ai-stilist/ai";
 import type { Auth } from "@ai-stilist/auth";
+import type { WalletClient } from "@ai-stilist/cdp-wallet";
 import type { Database } from "@ai-stilist/db";
 import type { Logger } from "@ai-stilist/logger";
 import type { QueueClient } from "@ai-stilist/queue";
+import type { Environment } from "@ai-stilist/shared/services";
 import type { RequestId } from "@ai-stilist/shared/typeid";
 import type { StorageClient } from "@ai-stilist/storage";
 
@@ -14,6 +16,8 @@ export type CreateContextOptions = {
 	storage: StorageClient;
 	queue: QueueClient;
 	aiClient: AiClient;
+	walletClient: WalletClient;
+	appEnv: Environment;
 	logger: Logger;
 	headers: Headers;
 	requestId: RequestId;
@@ -25,6 +29,8 @@ export async function createContext({
 	storage,
 	queue,
 	aiClient,
+	walletClient,
+	appEnv,
 	logger,
 	headers,
 	requestId,
@@ -34,6 +40,8 @@ export async function createContext({
 	storage: StorageClient;
 	queue: QueueClient;
 	aiClient: AiClient;
+	walletClient: WalletClient;
+	appEnv: Environment;
 	logger: Logger;
 	headers: Headers;
 	requestId: RequestId;
@@ -47,6 +55,8 @@ export async function createContext({
 		storage,
 		queue,
 		aiClient,
+		walletClient,
+		appEnv,
 		logger,
 		headers,
 		requestId,

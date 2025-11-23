@@ -1,33 +1,107 @@
 "use client";
 
-import {
-	CheckCircle,
-	ChevronDown,
-	ChevronRight,
-	Loader2,
-	Wrench,
-	XCircle,
-} from "lucide-react";
-import { useState } from "react";
+import { CheckCircle, Info, Loader2, XCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { ToolRendererProps } from "./types";
 import {
 	getToolInput,
 	getToolName,
-	getToolOutput,
 	getToolStatus,
-	isToolCall,
+	getTypedToolOutput,
 	isToolResult,
 } from "./types";
 
+const REGEX_CAMEL_CASE = /([A-Z])/g;
+const REGEX_SNAKE_CASE = /([a-z])/g;
+const REGEX_FIRST_LETTER = /^./;
+/**
+ * Converts camelCase to readable text
+ */
+function formatToolName(name: string): string {
+	return name
+		.replace(REGEX_CAMEL_CASE, " $1")
+		.replace(REGEX_SNAKE_CASE, " $1")
+		.replace(REGEX_FIRST_LETTER, (str) => str.toUpperCase())
+		.trim();
+}
+
+/**
+ * Renders data in a more user-friendly format than raw JSON
+ */
+function renderValue(value: unknown): React.ReactNode {
+	if (value === null || value === undefined) {
+		return <span className="text-muted-foreground italic">Not provided</span>;
+	}
+
+	if (typeof value === "boolean") {
+		return <span className="text-foreground">{value ? "Yes" : "No"}</span>;
+	}
+
+	if (typeof value === "string") {
+		return <span className="text-foreground">{value}</span>;
+	}
+
+	if (typeof value === "number") {
+		return <span className="text-foreground">{value}</span>;
+	}
+
+	if (Array.isArray(value)) {
+		if (value.length === 0) {
+			return <span className="text-muted-foreground italic">None</span>;
+		}
+		return (
+			<span className="text-foreground">{value.map(String).join(", ")}</span>
+		);
+	}
+
+	if (typeof value === "object") {
+		return (
+			<span className="font-mono text-foreground text-xs">
+				{JSON.stringify(value)}
+			</span>
+		);
+	}
+
+	return <span className="text-foreground">{String(value)}</span>;
+}
+
+/**
+ * Renders a data object as key-value pairs
+ */
+function DataDisplay({ data }: { data: unknown }) {
+	if (!data || typeof data !== "object") {
+		return <div className="text-sm">{renderValue(data)}</div>;
+	}
+
+	const entries = Object.entries(data);
+	if (entries.length === 0) {
+		return (
+			<div className="text-center text-muted-foreground text-sm">
+				No details available
+			</div>
+		);
+	}
+
+	return (
+		<div className="space-y-2">
+			{entries.map(([key, value]) => (
+				<div className="flex items-start gap-3" key={key}>
+					<span className="min-w-[100px] font-medium text-muted-foreground text-sm capitalize">
+						{key.replace(/([A-Z])/g, " $1").trim()}:
+					</span>
+					<span className="flex-1 text-sm">{renderValue(value)}</span>
+				</div>
+			))}
+		</div>
+	);
+}
+
 /**
  * Default tool renderer for any tool call or result
- * Provides a collapsible view with formatted JSON display
+ * Provides a clean, user-friendly card view
  */
 export function DefaultToolRenderer({ part }: ToolRendererProps) {
-	const [isExpanded, setIsExpanded] = useState(false);
 	const toolName = getToolName(part);
 	const status = getToolStatus(part);
 
@@ -37,100 +111,95 @@ export function DefaultToolRenderer({ part }: ToolRendererProps) {
 
 	const statusConfig = {
 		pending: {
-			icon: Loader2,
-			className: "animate-spin",
-			color: "text-accent",
-			badge: "default" as const,
-			label: "Pending",
+			icon: Info,
+			className: "",
+			color: "text-muted-foreground",
+			badge: "secondary" as const,
+			label: "Preparing...",
+			bgGradient: "bg-muted/30",
 		},
 		running: {
 			icon: Loader2,
 			className: "animate-spin",
 			color: "text-primary",
 			badge: "default" as const,
-			label: "Running",
+			label: "Working...",
+			bgGradient: "bg-gradient-to-br from-primary/5 to-transparent",
 		},
 		success: {
 			icon: CheckCircle,
 			className: "",
 			color: "text-primary",
 			badge: "secondary" as const,
-			label: "Success",
+			label: "Completed",
+			bgGradient: "bg-gradient-to-br from-primary/5 to-transparent",
 		},
 		error: {
 			icon: XCircle,
 			className: "",
 			color: "text-destructive",
 			badge: "destructive" as const,
-			label: "Error",
+			label: "Failed",
+			bgGradient: "bg-gradient-to-br from-destructive/5 to-transparent",
 		},
 	};
 
 	const config = statusConfig[status];
 	const StatusIcon = config.icon;
+	const formattedName = formatToolName(toolName);
 
-	const getContent = () => {
-		if (isToolCall(part)) {
-			return {
-				title: "Tool Call",
-				data: getToolInput(part),
-				label: "Parameters",
-			};
-		}
-		if (isToolResult(part)) {
-			return {
-				title: "Tool Result",
-				data: getToolOutput(part),
-				label: "Output",
-			};
-		}
-		return null;
-	};
-
-	const content = getContent();
-	if (!content) {
-		return null;
-	}
+	const showResult = isToolResult(part) && status === "success";
+	const output = showResult ? getTypedToolOutput(part, toolName) : null;
+	const input = getToolInput(part);
 
 	return (
-		<div className="my-2 rounded-lg border bg-muted/30">
-			<Button
-				className="w-full justify-between px-3 py-2 hover:bg-muted/50"
-				onClick={() => setIsExpanded(!isExpanded)}
-				size="sm"
-				type="button"
-				variant="ghost"
-			>
-				<div className="flex items-center gap-2">
-					{isExpanded ? (
-						<ChevronDown className="h-4 w-4" />
-					) : (
-						<ChevronRight className="h-4 w-4" />
-					)}
-					<Wrench className="h-4 w-4 text-muted-foreground" />
-					<span className="font-mono text-sm">{toolName}</span>
-					<Badge className="ml-2" variant={config.badge}>
-						<StatusIcon
-							className={cn("mr-1 h-3 w-3", config.className, config.color)}
-						/>
-						{config.label}
-					</Badge>
-				</div>
-				<span className="text-muted-foreground text-xs">{content.title}</span>
-			</Button>
-
-			{isExpanded && (
-				<div className="border-t px-3 py-2">
-					<div className="space-y-2">
-						<div className="font-medium text-muted-foreground text-xs">
-							{content.label}:
-						</div>
-						<pre className="overflow-x-auto rounded bg-background p-2 text-xs">
-							<code>{JSON.stringify(content.data, null, 2)}</code>
-						</pre>
-					</div>
-				</div>
+		<div
+			className={cn(
+				"my-3 overflow-hidden rounded-lg border bg-card shadow-sm transition-shadow hover:shadow-md",
+				config.bgGradient
 			)}
+		>
+			{/* Header */}
+			<div className="flex items-center gap-2 border-b bg-muted/20 px-4 py-3">
+				<StatusIcon className={cn("h-4 w-4", config.className, config.color)} />
+				<span className="font-medium text-sm">{formattedName}</span>
+				<Badge className="ml-auto" variant={config.badge}>
+					{config.label}
+				</Badge>
+			</div>
+
+			{/* Content */}
+			<div className="p-4">
+				{status === "running" && (
+					<div className="text-center text-muted-foreground text-sm">
+						Processing your request...
+					</div>
+				)}
+
+				{status === "error" && (
+					<div className="text-destructive text-sm">
+						Something went wrong. Please try again.
+					</div>
+				)}
+
+				{showResult && output ? (
+					<div>
+						<div className="mb-2 font-medium text-muted-foreground text-xs uppercase tracking-wide">
+							Result
+						</div>
+						<DataDisplay data={output} />
+					</div>
+				) : null}
+
+				{status === "pending" && input ? (
+					<div>
+						<div className="mb-2 font-medium text-muted-foreground text-xs uppercase tracking-wide">
+							Details
+						</div>
+						<DataDisplay data={input} />
+					</div>
+				) : null}
+			</div>
 		</div>
 	);
 }

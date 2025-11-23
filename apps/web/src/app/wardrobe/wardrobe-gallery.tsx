@@ -117,9 +117,9 @@ export function WardrobeGallery() {
 	// Loading state
 	if (isLoading) {
 		return (
-			<div className="space-y-6">
+			<div className="space-y-4 md:space-y-6">
 				<UploadManager />
-				<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+				<div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 md:gap-4 lg:grid-cols-4">
 					{Array.from({ length: 8 }, (_, i) => `skeleton-${i}`).map((key) => (
 						<ItemCardSkeleton key={key} />
 					))}
@@ -159,7 +159,7 @@ export function WardrobeGallery() {
 	}
 
 	return (
-		<div className="space-y-6">
+		<div className="space-y-4 md:space-y-6">
 			{/* Processing Status Banner */}
 			<ProcessingBanner
 				onTap={() => {
@@ -205,7 +205,7 @@ export function WardrobeGallery() {
 			/>
 
 			{/* Item Count */}
-			<div className="flex items-center justify-between">
+			<div className="flex items-center justify-between px-1">
 				<p className="text-muted-foreground text-sm">
 					{allItems.length} {allItems.length === 1 ? "item" : "items"}
 					{allItems.length !== totalItems && ` of ${totalItems}`}
@@ -226,7 +226,7 @@ export function WardrobeGallery() {
 			{/* Items Grid */}
 			{allItems.length > 0 && (
 				<>
-					<div className="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:grid-cols-4 min-[375px]:grid-cols-2">
+					<div className="grid grid-cols-1 gap-3 sm:grid-cols-3 md:gap-4 lg:grid-cols-4 min-[375px]:grid-cols-2">
 						{allItems.map((item) => {
 							// Extract first category
 							const category = item.categories[0]?.category?.displayName;

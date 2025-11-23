@@ -106,3 +106,5 @@ export async function runMigrations(
 
 	logger?.info("Database migrations completed");
 }
+
+export { seedDefaultAgent } from "./seeds/default-agent.seed";

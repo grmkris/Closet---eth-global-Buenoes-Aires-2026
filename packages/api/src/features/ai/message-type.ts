@@ -44,3 +44,16 @@ export type ShowItemsOutput = ShowItemsTool["output"];
 
 export type GenerateOutfitPreviewInput = GenerateOutfitPreviewTool["input"];
 export type GenerateOutfitPreviewOutput = GenerateOutfitPreviewTool["output"];
+
+export type ToolOutput =
+	| SearchWardrobeOutput
+	| GetWardrobeSummaryOutput
+	| GetItemDetailsOutput
+	| ShowItemsOutput
+	| GenerateOutfitPreviewOutput;
+export type ToolInput =
+	| SearchWardrobeInput
+	| GetWardrobeSummaryInput
+	| GetItemDetailsInput
+	| ShowItemsInput
+	| GenerateOutfitPreviewInput;

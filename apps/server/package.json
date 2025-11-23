@@ -18,6 +18,7 @@
     "@ai-stilist/ai": "workspace:*",
     "@ai-stilist/api": "workspace:*",
     "@ai-stilist/auth": "workspace:*",
+    "@ai-stilist/cdp-wallet": "workspace:*",
     "@ai-stilist/db": "workspace:*",
     "@ai-stilist/logger": "workspace:*",
     "@ai-stilist/queue": "workspace:*",
@@ -34,6 +35,8 @@
     "hono": "catalog:",
     "node-gyp": "^12.1.0",
     "sharp": "^0.34.5",
+    "viem": "catalog:",
+    "x402-hono": "^0.7.3",
     "zod": "catalog:"
   },
   "devDependencies": {

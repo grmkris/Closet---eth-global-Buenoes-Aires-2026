@@ -129,7 +129,7 @@ export function Chat({
 
 			{/* Input area - always visible */}
 			<div className="border-t bg-background">
-				<div className="p-4">
+				<div className="p-3 pb-24 md:p-4 md:pb-4">
 					<PromptInput
 						onSubmit={(message) => {
 							if (message.text?.trim()) {

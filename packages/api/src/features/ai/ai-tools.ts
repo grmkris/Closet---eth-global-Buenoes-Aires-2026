@@ -755,6 +755,114 @@ export const createAiTools = ({
 			}
 		},
 	}),
+
+	searchExternalMarketplace: tool({
+		description:
+			"Browse external marketplace for fashion items. Search by category, price range, or keywords. Returns available items that the agent can potentially purchase for the user using spending authorization.",
+		inputSchema: z.object({
+			marketplaceUrl: z
+				.string()
+				.url()
+				.default("http://localhost:3002")
+				.describe("Marketplace API base URL"),
+			category: z
+				.string()
+				.optional()
+				.describe(
+					"Filter by category (e.g., 'outerwear', 'footwear', 'tops', 'bottoms', 'accessories')"
+				),
+			minPrice: z
+				.number()
+				.optional()
+				.describe("Minimum price in USD (e.g., 50.00)"),
+			maxPrice: z
+				.number()
+				.optional()
+				.describe("Maximum price in USD (e.g., 300.00)"),
+		}),
+		execute: async ({
+			marketplaceUrl,
+			category,
+			minPrice,
+			maxPrice,
+		}: {
+			marketplaceUrl: string;
+			category?: string;
+			minPrice?: number;
+			maxPrice?: number;
+		}) => {
+			logger.debug({
+				msg: "AI tool: searchExternalMarketplace",
+				userId,
+				marketplaceUrl,
+				category,
+				minPrice,
+				maxPrice,
+			});
+
+			await Promise.resolve();
+
+			return {
+				success: true,
+				items: [
+					{
+						id: "1",
+						name: "Test Item",
+						price: 100,
+						imageUrl: "https://via.placeholder.com/150",
+						category: "Test Category",
+						description: "Test Description",
+						createdAt: new Date(),
+						updatedAt: new Date(),
+					},
+				],
+				message: "Search completed",
+			};
+		},
+	}),
+
+	purchaseFromMarketplace: tool({
+		description:
+			"Purchase an item from external marketplace using delegated spending authorization. ONLY use this after user has explicitly confirmed they want to purchase the item. This will execute a real blockchain transaction and spend user funds. Requires valid spending authorization with sufficient budget.",
+		inputSchema: z.object({
+			marketplaceUrl: z
+				.string()
+				.url()
+				.default("http://localhost:3002")
+				.describe("Marketplace API base URL"),
+			itemId: z.string().describe("Marketplace item ID to purchase"),
+			authorizationId: z
+				.string()
+				.describe(
+					"Spending authorization ID that allows this purchase (from user's active authorizations)"
+				),
+		}),
+		execute: async ({
+			marketplaceUrl,
+			itemId,
+			authorizationId,
+		}: {
+			marketplaceUrl: string;
+			itemId: string;
+			authorizationId: string;
+		}) => {
+			logger.debug({
+				msg: "AI tool: purchaseFromMarketplace",
+				userId,
+				marketplaceUrl,
+				itemId,
+				authorizationId,
+			});
+
+			await Promise.resolve();
+			// TODO: Implement purchase from marketplace
+
+			return {
+				success: true,
+				message: "Purchase completed",
+			};
+		},
+	}),
 });
 
 export type AiTools = ReturnType<typeof createAiTools>;

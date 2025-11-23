@@ -135,10 +135,10 @@ export function ItemCard({
 
 					{/* Colors */}
 					{colors && colors.length > 0 && (
-						<div className="flex flex-wrap gap-1">
+						<div className="flex flex-wrap gap-1.5">
 							{colors.slice(0, MAX_VISIBLE_COLORS).map((color) => (
 								<div
-									className="h-4 w-4 rounded-full border border-border"
+									className="h-5 w-5 rounded-full border-2 shadow-sm"
 									key={color}
 									style={{
 										backgroundColor: color.startsWith("#") ? color : undefined,

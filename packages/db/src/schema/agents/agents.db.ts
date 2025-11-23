@@ -1,6 +1,12 @@
 import type { AgentId, UserId } from "@ai-stilist/shared/typeid";
 import { typeIdGenerator } from "@ai-stilist/shared/typeid";
-import { boolean, integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import {
+	boolean,
+	integer,
+	pgTable,
+	text,
+	timestamp,
+} from "drizzle-orm/pg-core";
 import { typeId } from "../../utils/db-utils";
 import { user } from "../auth/auth.db";
 
@@ -23,9 +29,8 @@ export const agentsTable = pgTable("agents", {
 
 	priceMonthly: integer("price_monthly").notNull(), // cents
 	creatorUserId: typeId("user", "creator_user_id")
-		.notNull()
 		.references(() => user.id)
-		.$type<UserId>(),
+		.$type<UserId>(), // nullable for system agents
 
 	verified: boolean("verified").default(false),
 	active: boolean("active").default(true),

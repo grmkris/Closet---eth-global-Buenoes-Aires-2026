@@ -165,3 +165,83 @@ export type BatchUploadInput = Parameters<
  * Delete item input parameters
  */
 export type DeleteItemInput = Parameters<typeof client.wardrobe.deleteItem>[0];
+
+// ===== Agent Response Types =====
+
+/**
+ * Agents list response
+ */
+export type AgentsListResponse = ExtractSuccess<
+	Awaited<ReturnType<typeof client.agent.list>>
+>;
+
+/**
+ * Single agent from agents list
+ */
+export type Agent = AgentsListResponse["agents"][0];
+
+/**
+ * Single agent details
+ */
+export type AgentDetails = ExtractSuccess<
+	Awaited<ReturnType<typeof client.agent.get>>
+>;
+
+// ===== Agent Input Types =====
+
+/**
+ * List agents input parameters
+ */
+export type ListAgentsInput = Parameters<typeof client.agent.list>[0];
+
+/**
+ * Get agent input parameters
+ */
+export type GetAgentInput = Parameters<typeof client.agent.get>[0];
+
+/**
+ * Create agent input parameters
+ */
+export type CreateAgentInput = Parameters<typeof client.agent.create>[0];
+
+// ===== Subscription Response Types =====
+
+/**
+ * Subscriptions list response
+ */
+export type SubscriptionsListResponse = ExtractSuccess<
+	Awaited<ReturnType<typeof client.subscription.list>>
+>;
+
+/**
+ * Single subscription from list
+ */
+export type Subscription = SubscriptionsListResponse["subscriptions"][0];
+
+/**
+ * Single subscription details
+ */
+export type SubscriptionDetails = ExtractSuccess<
+	Awaited<ReturnType<typeof client.subscription.get>>
+>;
+
+/**
+ * Cancel subscription input parameters
+ */
+export type CancelSubscriptionInput = Parameters<
+	typeof client.subscription.cancel
+>[0];
+
+/**
+ * Payment requirements for subscription
+ */
+export type PaymentRequirements = ExtractSuccess<
+	Awaited<ReturnType<typeof client.subscription.initiate>>
+>;
+
+/**
+ * Complete subscription input parameters
+ */
+export type CompleteSubscriptionInput = Parameters<
+	typeof client.subscription.complete
+>[0];
