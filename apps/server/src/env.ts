@@ -35,11 +35,7 @@ export const envSchema = z.object({
 	CDP_API_KEY_FILE: z.string().optional(), // Legacy, keeping for backward compatibility
 
 	// x402 Facilitator (Optional - for gasless subscription payments)
-	FACILITATOR_PRIVATE_KEY: z.string().optional(),
-
-	// Polygon Network Configuration (optional - defaults from constants)
-	POLYGON_AMOY_RPC_URL: z.string().url().optional(),
-	POLYGON_MAINNET_RPC_URL: z.string().url().optional(),
+	DEFAULT_AGENT_WALLET_ADDRESS: z.string(),
 });
 
 export const env = envSchema.parse(bunEnv);

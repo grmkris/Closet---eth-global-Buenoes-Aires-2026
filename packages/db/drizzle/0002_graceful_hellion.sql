@@ -1,0 +1,1 @@
+ALTER TABLE "agents" ALTER COLUMN "creator_user_id" DROP NOT NULL;

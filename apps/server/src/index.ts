@@ -23,7 +23,11 @@ const db = createDb({
 });
 
 // Seed default agent
-await seedDefaultAgent(db);
+await seedDefaultAgent({
+	db,
+	logger,
+	walletAddress: env.DEFAULT_AGENT_WALLET_ADDRESS,
+});
 
 const authClient = createAuth({
 	db,

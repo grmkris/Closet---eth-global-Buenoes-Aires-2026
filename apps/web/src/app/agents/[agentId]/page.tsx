@@ -162,7 +162,7 @@ export default function AgentDetailPage() {
 							</Alert>
 						) : (
 							<Button asChild className="w-full" size="lg">
-								<Link href={`/subscribe/${agentId}`}>
+								<Link href={"/subscribe"}>
 									<Sparkles className="mr-2 h-5 w-5" />
 									Subscribe Now
 								</Link>

@@ -106,3 +106,5 @@ export async function runMigrations(
 
 	logger?.info("Database migrations completed");
 }
+// biome-ignore lint/performance/noBarrelFile: Drizzle requires full schema object for type inference
+export { seedDefaultAgent } from "./seeds/default-agent.seed";
