@@ -9,7 +9,7 @@ export const purchasesTable = pgTable("purchases", {
 	amount: integer("amount").notNull(),
 	network: text("network").notNull(),
 	paymentProof: jsonb("payment_proof"),
-	ap2Intent: jsonb("ap2_intent").notNull(),
+	ap2Intent: jsonb("ap2_intent"),
 	itemSnapshot: jsonb("item_snapshot").notNull(),
 	createdAt: timestamp("created_at").defaultNow().notNull(),
 });

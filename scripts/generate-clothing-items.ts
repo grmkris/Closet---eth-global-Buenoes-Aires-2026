@@ -1,7 +1,7 @@
-import { createAiClient } from "../packages/ai/src/ai-client.ts";
-import { createLogger } from "../packages/logger/src/logger.ts";
 import fs from "node:fs";
 import path from "node:path";
+import { createAiClient } from "../packages/ai/src/ai-client.ts";
+import { createLogger } from "../packages/logger/src/logger.ts";
 
 // ============================================================================
 // TYPES
@@ -2056,8 +2056,7 @@ async function main() {
 	let itemsToGenerate = CLOTHING_ITEMS;
 	if (GENDER_FILTER !== "all") {
 		itemsToGenerate = CLOTHING_ITEMS.filter(
-			(item) =>
-				item.gender === GENDER_FILTER || item.gender === "unisex"
+			(item) => item.gender === GENDER_FILTER || item.gender === "unisex"
 		);
 		logger.info({
 			msg: `Filtering items by gender: ${GENDER_FILTER}`,
@@ -2177,8 +2176,7 @@ async function main() {
 				filePath: path.relative(outputDir, filePath),
 			});
 		} catch (error) {
-			const errorMsg =
-				error instanceof Error ? error.message : String(error);
+			const errorMsg = error instanceof Error ? error.message : String(error);
 			logger.error({
 				msg: `${progress} ✗ Failed: ${item.name}`,
 				error: errorMsg,
@@ -2218,7 +2216,9 @@ async function main() {
 	// Save gender-specific metadata files
 	const genders = ["men", "women", "unisex"] as const;
 	for (const gender of genders) {
-		const genderItems = itemsToGenerate.filter((item) => item.gender === gender);
+		const genderItems = itemsToGenerate.filter(
+			(item) => item.gender === gender
+		);
 		if (genderItems.length > 0) {
 			const genderDir = path.join(outputDir, gender);
 			fs.mkdirSync(genderDir, { recursive: true });

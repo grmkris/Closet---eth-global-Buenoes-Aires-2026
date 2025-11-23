@@ -166,6 +166,7 @@ for (const [index, item] of items.entries()) {
 			purchase: {
 				id: purchaseId,
 				timestamp: now.toISOString(),
+				signature: jwtPayload.payload.signature,
 			},
 			item: {
 				id: item.id,
@@ -176,6 +177,7 @@ for (const [index, item] of items.entries()) {
 				brand: item.brand,
 				imageUrl: item.imageUrl,
 				metadata: item.metadata,
+				available: item.available,
 			},
 		});
 	});

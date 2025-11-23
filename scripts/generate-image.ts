@@ -1,10 +1,10 @@
 #!/usr/bin/env bun
 
+import { mkdir, writeFile } from "node:fs/promises";
+import { join } from "node:path";
+import type { AspectRatio, ImageSize } from "@ai-stilist/shared/constants";
 import { createAiClient } from "../packages/ai/src/ai-client.ts";
 import { createLogger } from "../packages/logger/src/logger.ts";
-import type { AspectRatio, ImageSize } from "@ai-stilist/shared/constants";
-import { writeFile, mkdir } from "node:fs/promises";
-import { join } from "node:path";
 
 type GenerateImageInput = {
 	prompt: string;
@@ -51,7 +51,7 @@ async function generateImage({
 		const result = await aiClient.generateText({
 			model: aiClient.getModel({
 				provider: "google",
-				modelId: "gemini-2.5-flash-image-preview",
+				modelId: "gemini-3-pro-image-preview",
 			}),
 			messages: [
 				{
@@ -185,9 +185,7 @@ Examples:
 	}
 
 	if (!parsed.prompt) {
-		throw new Error(
-			"--prompt is required. Use --help for usage information."
-		);
+		throw new Error("--prompt is required. Use --help for usage information.");
 	}
 
 	return parsed;
@@ -203,7 +201,10 @@ async function main() {
 		console.log(`  File: ${result.filePath}`);
 		console.log(`  Prompt: ${result.prompt}\n`);
 	} catch (error) {
-		console.error("\n✗ Error:", error instanceof Error ? error.message : String(error));
+		console.error(
+			"\n✗ Error:",
+			error instanceof Error ? error.message : String(error)
+		);
 		process.exit(1);
 	}
 }

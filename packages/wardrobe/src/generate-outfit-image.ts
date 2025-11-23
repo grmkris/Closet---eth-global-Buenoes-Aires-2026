@@ -128,7 +128,7 @@ export async function generateOutfitImage(
 		const result = await aiClient.generateText({
 			model: aiClient.getModel({
 				provider: "google",
-				modelId: "gemini-2.5-flash-image-preview",
+				modelId: "gemini-3-pro-preview",
 			}),
 			messages: [
 				{

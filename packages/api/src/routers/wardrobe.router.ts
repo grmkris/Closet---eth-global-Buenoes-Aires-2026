@@ -721,33 +721,84 @@ export const wardrobeRouter = {
 			const userId = UserId.parse(context.session.user.id);
 			const itemId = typeIdGenerator("clothingItem");
 
-			// Create placeholder storage key for external image
-			// We'll store the external URL in the DB and optionally download it later
-			const imageKey = `users/${userId}/marketplace/${itemId}_external`;
+			// 1. Determine file extension from URL or default to jpg
+			const urlPath = new URL(input.imageUrl).pathname;
+			const extension =
+				urlPath.split(".").pop()?.toLowerCase().replace(/[^a-z0-9]/g, "") ||
+				"jpg";
+			const imageKey = `users/${userId}/clothing/${itemId}.${extension}`;
 
-			// Insert item with 'completed' status since it's already purchased
-			// Note: This item won't have AI analysis initially
+			context.logger.info({
+				msg: "Fetching marketplace image",
+				itemId,
+				userId,
+				imageUrl: input.imageUrl,
+				extension,
+			});
+
+			// 2. Fetch image from external URL
+			const imageResponse = await fetch(input.imageUrl);
+			if (!imageResponse.ok) {
+				context.logger.error({
+					msg: "Failed to fetch marketplace image",
+					itemId,
+					imageUrl: input.imageUrl,
+					status: imageResponse.status,
+					statusText: imageResponse.statusText,
+				});
+				throw new Error(
+					`Failed to fetch image: ${imageResponse.statusText} (${imageResponse.status})`
+				);
+			}
+
+			const imageBuffer = Buffer.from(await imageResponse.arrayBuffer());
+			const contentType =
+				imageResponse.headers.get("content-type") || "image/jpeg";
+
+			context.logger.info({
+				msg: "Uploading marketplace image to S3",
+				itemId,
+				imageKey,
+				size: imageBuffer.length,
+				contentType,
+			});
+
+			// 3. Upload to S3
+			await context.storage.upload({
+				key: imageKey,
+				data: imageBuffer,
+				contentType,
+			});
+
+			// 4. Create DB record with "queued" status (same as regular upload flow)
 			await context.db.insert(clothingItemsTable).values({
 				id: itemId,
 				userId,
 				imageKey,
-				status: "completed",
-				// Store marketplace metadata in a JSON field if available, or in description
-				// For now, we'll just create the basic item
+				status: "queued",
+			});
+
+			// 5. Queue for image processing (same as confirmUpload)
+			const job = await context.queue.addJob("process-image", {
+				itemId,
+				imageKey,
+				userId,
 			});
 
 			context.logger.info({
-				msg: "Created wardrobe item from marketplace purchase",
+				msg: "Marketplace item queued for processing",
 				itemId,
 				userId,
 				marketplaceItemId: input.marketplaceItemId,
 				marketplaceUrl: input.metadata.marketplaceUrl,
+				jobId: job.jobId,
 			});
 
 			return {
 				itemId,
-				status: "completed",
-				message: "Item added to wardrobe",
+				status: "queued",
+				message: "Item added to wardrobe and queued for AI analysis",
+				jobId: job.jobId,
 			};
 		}),
 };

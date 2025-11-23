@@ -4,7 +4,9 @@ import { POLLING_CONFIG } from "@ai-stilist/shared/constants";
 import { useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
 import { ActionCardsGrid } from "@/components/home/action-cards-grid";
+import { UploadModal } from "@/components/wardrobe/upload-modal";
 import { OutfitSuggestionCard } from "@/components/home/outfit-suggestion-card";
 import {
 	SubscriptionCard,
@@ -21,6 +23,8 @@ export default function Dashboard({
 }: {
 	session: typeof authClient.$Infer.Session;
 }) {
+	const [uploadModalOpen, setUploadModalOpen] = useState(false);
+
 	// Fetch wardrobe stats to show processing queue
 	const { data: stats, isLoading } = useQuery(
 		orpc.wardrobe.getTags.queryOptions({
@@ -96,7 +100,7 @@ export default function Dashboard({
 			<OutfitSuggestionCard outfit={todayOutfit} />
 
 			{/* Quick Action Cards */}
-			<ActionCardsGrid />
+			<ActionCardsGrid onUploadClick={() => setUploadModalOpen(true)} />
 
 			{/* Subscriptions - Horizontal Scroll */}
 			{!subsLoading && activeSubscriptions.length > 0 && (
@@ -143,6 +147,9 @@ export default function Dashboard({
 					</Button>
 				</Card>
 			)}
+
+			{/* Upload Modal */}
+			<UploadModal onOpenChange={setUploadModalOpen} open={uploadModalOpen} />
 		</div>
 	);
 }

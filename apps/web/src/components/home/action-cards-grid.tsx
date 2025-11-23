@@ -26,11 +26,35 @@ const actions = [
 	},
 ] as const;
 
-export function ActionCardsGrid() {
+type ActionCardsGridProps = {
+	onUploadClick?: () => void;
+};
+
+export function ActionCardsGrid({ onUploadClick }: ActionCardsGridProps = {}) {
 	return (
 		<div className="grid grid-cols-2 gap-3">
 			{actions.map((action) => {
 				const Icon = action.icon;
+				const isUploadAction = action.label === "Upload Photos";
+
+				if (isUploadAction && onUploadClick) {
+					return (
+						<Card
+							className={cn(
+								"flex h-32 flex-col items-center justify-center p-6 text-center transition-shadow hover:shadow-md cursor-pointer"
+							)}
+							key={action.label}
+							onClick={onUploadClick}
+						>
+							<Icon className="mb-2 h-8 w-8 text-primary" />
+							<p className="font-medium text-sm">{action.label}</p>
+							<p className="mt-0.5 text-muted-foreground text-xs">
+								{action.description}
+							</p>
+						</Card>
+					);
+				}
+
 				return (
 					<Link href={action.href} key={action.label}>
 						<Card

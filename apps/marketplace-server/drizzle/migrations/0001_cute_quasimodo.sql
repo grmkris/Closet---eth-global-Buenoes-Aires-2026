@@ -1,0 +1,1 @@
+ALTER TABLE "purchases" ALTER COLUMN "ap2_intent" DROP NOT NULL;

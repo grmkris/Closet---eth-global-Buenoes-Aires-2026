@@ -14,7 +14,6 @@ import { FilterDrawer } from "@/components/wardrobe/filter-drawer";
 import { ItemCardMinimal } from "@/components/wardrobe/item-card-minimal";
 import { ItemDetailDialog } from "@/components/wardrobe/item-detail-dialog";
 import { StatusChipsMinimal } from "@/components/wardrobe/status-chips-minimal";
-import { UploadFab } from "@/components/wardrobe/upload-fab";
 import { UploadModal } from "@/components/wardrobe/upload-modal";
 import { useFilterParams } from "@/hooks/use-filter-params";
 import { orpc } from "@/utils/orpc";
@@ -186,7 +185,6 @@ export function WardrobeGallery() {
 						<Skeleton className="aspect-square w-full" key={key} />
 					))}
 				</div>
-				<UploadFab onClick={() => setUploadModalOpen(true)} />
 			</div>
 		);
 	}
@@ -200,7 +198,6 @@ export function WardrobeGallery() {
 					<h3 className="font-semibold text-lg">Failed to load items</h3>
 					<p className="text-muted-foreground text-sm">{error.message}</p>
 				</div>
-				<UploadFab onClick={() => setUploadModalOpen(true)} />
 			</div>
 		);
 	}
@@ -224,8 +221,7 @@ export function WardrobeGallery() {
 					<Camera className="mr-2 h-4 w-4" />
 					Upload Photos
 				</Button>
-				<UploadFab onClick={() => setUploadModalOpen(true)} />
-			</div>
+				</div>
 		);
 	}
 
@@ -259,7 +255,7 @@ export function WardrobeGallery() {
 				</Card>
 			)}
 
-			{/* Status Chips + Filter Button */}
+			{/* Status Chips + Upload Button + Filter Button */}
 			<div className="flex items-center gap-2">
 				<div className="flex-1 overflow-hidden">
 					<StatusChipsMinimal
@@ -277,6 +273,14 @@ export function WardrobeGallery() {
 						statusCounts={statusCounts}
 					/>
 				</div>
+				<Button
+					onClick={() => setUploadModalOpen(true)}
+					size="sm"
+					variant="outline"
+				>
+					<Camera className="h-4 w-4 sm:mr-2" />
+					<span className="hidden sm:inline">Upload</span>
+				</Button>
 				<FilterDrawer
 					activeFilterCount={activeFilterCount}
 					filters={filters}
@@ -347,10 +351,7 @@ export function WardrobeGallery() {
 				</>
 			)}
 
-			{/* Upload FAB */}
-			<UploadFab onClick={() => setUploadModalOpen(true)} />
-
-			{/* Upload Modal */}
+				{/* Upload Modal */}
 			<UploadModal onOpenChange={setUploadModalOpen} open={uploadModalOpen} />
 
 			{/* Item Detail Dialog */}

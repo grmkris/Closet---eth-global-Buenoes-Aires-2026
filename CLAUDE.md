@@ -205,8 +205,9 @@ Run `bun run fix` before committing to auto-fix most issues.
    bun run dev       # Start both web (:3001) and server (:3000)
    ```
 
-**Docker Services** (configured in `infra/docker-compose.yml`):
-- PostgreSQL on port 54321
+**Docker Services** (configured in `packages/db/docker-compose.yml`):
+- PostgreSQL (main) on port 54321
+- PostgreSQL (marketplace) on port 54322
 - Redis on port 63791
 - MinIO on ports 9000 (API) / 9001 (console)
 
