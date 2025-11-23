@@ -221,7 +221,7 @@ export function WardrobeGallery() {
 					<Camera className="mr-2 h-4 w-4" />
 					Upload Photos
 				</Button>
-				</div>
+			</div>
 		);
 	}
 
@@ -351,7 +351,7 @@ export function WardrobeGallery() {
 				</>
 			)}
 
-				{/* Upload Modal */}
+			{/* Upload Modal */}
 			<UploadModal onOpenChange={setUploadModalOpen} open={uploadModalOpen} />
 
 			{/* Item Detail Dialog */}

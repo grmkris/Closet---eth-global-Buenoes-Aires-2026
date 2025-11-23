@@ -6,7 +6,6 @@ import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { ActionCardsGrid } from "@/components/home/action-cards-grid";
-import { UploadModal } from "@/components/wardrobe/upload-modal";
 import { OutfitSuggestionCard } from "@/components/home/outfit-suggestion-card";
 import {
 	SubscriptionCard,
@@ -15,6 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { UploadModal } from "@/components/wardrobe/upload-modal";
 import type { authClient } from "@/lib/auth-client";
 import { orpc } from "@/utils/orpc";
 

@@ -66,7 +66,7 @@ export async function generateOutfitImage(
 	}
 
 	logger.info({
-		msg: "Generating outfit image with Gemini 2.5 Flash Image",
+		msg: "Generating outfit image with Gemini 3 Pro Image Preview",
 		itemCount: items.length,
 		occasion,
 		style,
@@ -128,7 +128,7 @@ export async function generateOutfitImage(
 		const result = await aiClient.generateText({
 			model: aiClient.getModel({
 				provider: "google",
-				modelId: "gemini-3-pro-preview",
+				modelId: "gemini-3-pro-image-preview",
 			}),
 			messages: [
 				{

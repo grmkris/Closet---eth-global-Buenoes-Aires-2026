@@ -724,8 +724,11 @@ export const wardrobeRouter = {
 			// 1. Determine file extension from URL or default to jpg
 			const urlPath = new URL(input.imageUrl).pathname;
 			const extension =
-				urlPath.split(".").pop()?.toLowerCase().replace(/[^a-z0-9]/g, "") ||
-				"jpg";
+				urlPath
+					.split(".")
+					.pop()
+					?.toLowerCase()
+					.replace(/[^a-z0-9]/g, "") || "jpg";
 			const imageKey = `users/${userId}/clothing/${itemId}.${extension}`;
 
 			context.logger.info({

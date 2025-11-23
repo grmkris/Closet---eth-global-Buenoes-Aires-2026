@@ -41,7 +41,7 @@ export function ActionCardsGrid({ onUploadClick }: ActionCardsGridProps = {}) {
 					return (
 						<Card
 							className={cn(
-								"flex h-32 flex-col items-center justify-center p-6 text-center transition-shadow hover:shadow-md cursor-pointer"
+								"flex h-32 cursor-pointer flex-col items-center justify-center p-6 text-center transition-shadow hover:shadow-md"
 							)}
 							key={action.label}
 							onClick={onUploadClick}

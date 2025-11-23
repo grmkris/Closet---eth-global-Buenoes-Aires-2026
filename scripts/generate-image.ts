@@ -43,7 +43,7 @@ async function generateImage({
 			groqApiKey: process.env.GROQ_API_KEY ?? "",
 			xaiApiKey: process.env.XAI_API_KEY ?? "",
 		},
-		environment: "development",
+		environment: "dev",
 	});
 
 	// Generate image using Gemini 2.5 Flash Image

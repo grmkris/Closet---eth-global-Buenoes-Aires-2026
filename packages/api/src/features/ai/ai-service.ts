@@ -96,7 +96,7 @@ const generateTitleWithLLM = async (params: {
 		// Use a fast model for title generation
 		const titleModel = aiClient.getModel({
 			provider: "google",
-			modelId: "gemini-2.0-flash-exp",
+			modelId: "gemini-2.5-flash",
 		});
 
 		// Use LLM to generate a concise, descriptive title
@@ -441,17 +441,11 @@ export function createAiService(deps: {
 			};
 			systemPrompt?: string;
 		}) => {
-			// 1. Get model configuration
-			const modelConfig = params.modelConfig || {
-				provider: "google" as const,
-				modelId: "gemini-2.0-flash-exp",
-			};
-
 			// 2. Ensure conversation exists
 			const conversationId = await ensureConversationExists({
 				conversationId: params.conversationId,
 				userId,
-				model: modelConfig.modelId,
+				model: "gemini-2.5-flash",
 				systemPrompt: params.systemPrompt,
 				db,
 				logger,
@@ -510,7 +504,10 @@ export function createAiService(deps: {
 			});
 
 			// 9. Get AI model
-			const model = aiClient.getModel(modelConfig);
+			const model = aiClient.getModel({
+				provider: "google",
+				modelId: "gemini-2.5-pro",
+			});
 
 			// 10. Create UI message stream
 			const stream = createUIMessageStream({
