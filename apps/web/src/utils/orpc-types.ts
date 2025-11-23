@@ -231,17 +231,3 @@ export type SubscriptionDetails = ExtractSuccess<
 export type CancelSubscriptionInput = Parameters<
 	typeof client.subscription.cancel
 >[0];
-
-/**
- * Payment requirements for subscription
- */
-export type PaymentRequirements = ExtractSuccess<
-	Awaited<ReturnType<typeof client.subscription.initiate>>
->;
-
-/**
- * Complete subscription input parameters
- */
-export type CompleteSubscriptionInput = Parameters<
-	typeof client.subscription.complete
->[0];

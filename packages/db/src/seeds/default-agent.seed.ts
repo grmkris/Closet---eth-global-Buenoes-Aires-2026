@@ -1,17 +1,5 @@
-import type { Database } from "..";
+import type { Database } from "../db";
 import { agentsTable } from "../schema/agents";
-
-const DEFAULT_AGENT = {
-	name: "AI Stylist",
-	description:
-		"Your personal AI fashion assistant. Get personalized style advice, outfit recommendations, and wardrobe management.",
-	specialty: "general",
-	walletAddress: "0x0000000000000000000000000000000000000000", // Placeholder - will be updated when CDP wallet is created
-	priceMonthly: 999, // $9.99/month in cents
-	verified: true,
-	active: true,
-	creatorUserId: null, // System agent
-} as const;
 
 /**
  * Ensures a default agent exists in the database.
@@ -22,8 +10,25 @@ export async function seedDefaultAgent(db: Database): Promise<void> {
 	const existingAgents = await db.select().from(agentsTable).limit(1);
 
 	if (existingAgents.length === 0) {
+		// Get wallet address from environment or use placeholder
+		const walletAddress =
+			process.env.DEFAULT_AGENT_WALLET_ADDRESS ||
+			"0x0000000000000000000000000000000000000000";
+
+		const DEFAULT_AGENT = {
+			name: "AI Stylist",
+			description:
+				"Your personal AI fashion assistant. Get personalized style advice, outfit recommendations, and wardrobe management.",
+			specialty: "general",
+			walletAddress,
+			priceMonthly: 999, // $9.99/month in cents
+			verified: true,
+			active: true,
+			creatorUserId: null, // System agent
+		};
+
 		// No agents exist, create the default one
 		await db.insert(agentsTable).values(DEFAULT_AGENT);
-		console.log("✓ Default agent created");
+		console.log(`✓ Default agent created with wallet: ${walletAddress}`);
 	}
 }

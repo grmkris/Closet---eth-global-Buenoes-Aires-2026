@@ -1,4 +1,5 @@
 import { createContext } from "@ai-stilist/api/context";
+import { createSubscriptionHonoRoute } from "@ai-stilist/api/features/sub/subscription-hono-route";
 import { appRouter } from "@ai-stilist/api/routers/index";
 import { runMigrations } from "@ai-stilist/db";
 import { HTTP_STATUS } from "@ai-stilist/shared/constants";
@@ -75,6 +76,11 @@ export const createApp = async (props: {
 	});
 	logger.info("oRPC handler initialized");
 
+	// Initialize subscription routes with x402 payment protection
+	logger.info("Initializing subscription routes");
+	const subscriptionRoute = createSubscriptionHonoRoute(deps);
+	logger.info("Subscription routes initialized");
+
 	const app = new Hono()
 		.use(honoLogger())
 		.get("/", (c) => c.text("OK"))
@@ -90,6 +96,7 @@ export const createApp = async (props: {
 		.on(["POST", "GET"], "/api/auth/*", (c) =>
 			deps.authClient.handler(c.req.raw)
 		)
+		.route("/api/subscription", subscriptionRoute)
 		.use("/rpc/*", async (c, next) => {
 			const requestId = typeIdGenerator("request");
 			const startTime = performance.now();

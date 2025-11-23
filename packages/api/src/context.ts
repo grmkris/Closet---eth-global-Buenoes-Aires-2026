@@ -23,6 +23,9 @@ export type CreateContextOptions = {
 	requestId: RequestId;
 };
 
+// Type alias for context dependencies (used in Hono routes and ORPC)
+export type ContextDeps = Omit<CreateContextOptions, "requestId" | "headers">;
+
 export async function createContext({
 	authClient,
 	db,

@@ -30,6 +30,7 @@
     "@orpc/openapi": "catalog:",
     "@orpc/server": "catalog:",
     "@orpc/zod": "catalog:",
+    "@swader/x402facilitators": "^0.0.14",
     "better-auth": "catalog:",
     "dotenv": "catalog:",
     "hono": "catalog:",

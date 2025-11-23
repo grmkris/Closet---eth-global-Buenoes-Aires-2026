@@ -33,8 +33,10 @@
     "@orpc/openapi": "catalog:",
     "@orpc/server": "catalog:",
     "@orpc/zod": "catalog:",
+    "@swader/x402facilitators": "^0.0.14",
     "hono": "catalog:",
     "viem": "catalog:",
+    "x402-hono": "^0.7.3",
     "zod": "catalog:"
   }
 }

@@ -129,7 +129,7 @@ export default function Dashboard({
 				<div className="flex items-center justify-between">
 					<h2 className="font-semibold text-lg">My Subscriptions</h2>
 					<Button asChild size="sm" variant="ghost">
-						<Link href="/agents">Browse Agents</Link>
+						<Link href="/subscribe">Subscribe</Link>
 					</Button>
 				</div>
 
@@ -149,7 +149,7 @@ export default function Dashboard({
 						<Sparkles className="h-4 w-4" />
 						<AlertTitle>No active subscriptions</AlertTitle>
 						<AlertDescription>
-							Browse AI stylist agents to get personalized fashion advice.
+							Subscribe to AI Stylist to get personalized fashion advice.
 						</AlertDescription>
 					</Alert>
 				)}
